@@ -264,6 +264,75 @@
             opacity: 0.6;
             cursor: not-allowed;
         }
+        
+        /* ===== حقل مع ملصق جانبي ===== */
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            width: 100%;
+        }
+        .input-wrapper input {
+            flex: 1;
+            border-radius: 12px 0 0 12px;
+            border-right: none;
+        }
+        .input-wrapper .label-suffix {
+            padding: 12px 14px;
+            background: var(--bg-input);
+            border: 1px solid var(--input-border);
+            border-radius: 0 12px 12px 0;
+            border-left: none;
+            font-weight: bold;
+            color: var(--text-sub);
+            font-size: calc(0.9rem * var(--font-scale));
+            white-space: nowrap;
+            background: var(--bg-body);
+        }
+        [data-theme="dark"] .input-wrapper .label-suffix {
+            background: var(--bg-section);
+        }
+        .input-wrapper input:focus {
+            border-color: var(--gold);
+        }
+        .input-wrapper input:focus + .label-suffix {
+            border-color: var(--gold);
+        }
+        
+        /* ===== حقل السعر مع د.ب ===== */
+        .price-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            width: 100%;
+        }
+        .price-input-wrapper input {
+            flex: 1;
+            border-radius: 12px 0 0 12px;
+            border-right: none;
+        }
+        .price-input-wrapper .currency-label {
+            padding: 12px 14px;
+            background: var(--bg-input);
+            border: 1px solid var(--input-border);
+            border-radius: 0 12px 12px 0;
+            border-left: none;
+            font-weight: bold;
+            color: var(--text-sub);
+            font-size: calc(0.9rem * var(--font-scale));
+            white-space: nowrap;
+            background: var(--bg-body);
+        }
+        [data-theme="dark"] .price-input-wrapper .currency-label {
+            background: var(--bg-section);
+        }
+        .price-input-wrapper input:focus {
+            border-color: var(--gold);
+        }
+        .price-input-wrapper input:focus + .currency-label {
+            border-color: var(--gold);
+        }
+        
         .btn {
             background: var(--green);
             color: #ffffff;
@@ -300,7 +369,7 @@
             flex-wrap: wrap;
             align-items: center;
         }
-        .gold-price-row input { flex: 2 1 150px; }
+        .gold-price-row .price-input-wrapper { flex: 2 1 150px; }
         .gold-price-row .btn { flex: 0 0 auto; }
         
         .result-box {
@@ -351,6 +420,20 @@
         .item-row input, .item-row select {
             flex: 1 1 120px;
             min-width: 100px;
+        }
+        .item-row .input-wrapper {
+            flex: 1 1 120px;
+            min-width: 100px;
+        }
+        .item-row .input-wrapper input {
+            flex: 1;
+        }
+        .item-row .price-input-wrapper {
+            flex: 1 1 120px;
+            min-width: 100px;
+        }
+        .item-row .price-input-wrapper input {
+            flex: 1;
         }
         .item-row .remove-btn {
             background: var(--danger);
@@ -523,7 +606,6 @@
             opacity: 0.5;
         }
         
-        /* ===== تنبيه تحقق تلقائي ===== */
         .auto-check-badge {
             display: inline-block;
             font-size: calc(0.75rem * var(--font-scale));
@@ -552,6 +634,18 @@
                 max-width: 90%;
             }
             .footer .brand { font-size: calc(1rem * var(--font-scale)); }
+            .input-wrapper input {
+                border-radius: 12px 0 0 12px;
+            }
+            .input-wrapper .label-suffix {
+                border-radius: 0 12px 12px 0;
+            }
+            .price-input-wrapper input {
+                border-radius: 12px 0 0 12px;
+            }
+            .price-input-wrapper .currency-label {
+                border-radius: 0 12px 12px 0;
+            }
         }
     </style>
 </head>
@@ -603,8 +697,11 @@
         <h2 id="titleBanks"><i class="fas fa-university"></i> المبلغ الموجود في جميع البنوك</h2>
         <div class="flex-row">
             <div class="field">
-                <label id="lblBanks"><i class="fas fa-wallet"></i> جميع البنوك (د.ب)</label>
-                <input type="number" id="bankTotal" placeholder="0.00" step="0.01" />
+                <label id="lblBanks"><i class="fas fa-wallet"></i> جميع البنوك</label>
+                <div class="price-input-wrapper">
+                    <input type="number" id="bankTotal" placeholder="0.00" step="0.01" />
+                    <span class="currency-label">د.ب</span>
+                </div>
             </div>
         </div>
     </div>
@@ -698,7 +795,7 @@ const translations = {
         noteHawl: 'حدد شهر البداية وشهر النهاية، وسيتم التحقق تلقائياً.',
         autoCheckText: 'يتم التحقق تلقائياً عند تغيير الشهور',
         titleBanks: 'المبلغ الموجود في جميع البنوك',
-        lblBanks: 'جميع البنوك (د.ب)',
+        lblBanks: 'جميع البنوك',
         titleGoldWear: 'الذهب الملبوس',
         btnAddGoldWear: 'إضافة قطعة ذهب',
         totalGoldWearText: 'إجمالي قيمة الذهب الملبوس:',
@@ -713,8 +810,8 @@ const translations = {
         btnCalculate: 'احسب الزكاة الآن',
         goldName: 'الاسم (مثال: خاتم، سلسلة...)',
         goldCarat: 'العيار',
-        goldWeight: 'الوزن (جرام)',
-        goldPrice: 'سعر العيار (د.ب/جرام)',
+        goldWeight: 'الوزن',
+        goldPrice: 'سعر العيار',
         btnFetch: 'جلب السعر',
         autoLabel: 'تلقائي (جلب من الإنترنت) 🌐',
         manualLabel: 'يدوي ✍️',
@@ -723,9 +820,9 @@ const translations = {
         notUpdated: 'لم يتم التحديث بعد',
         remove: 'حذف',
         invName: 'الاسم (مثال: عقار، سيارة، أسهم...)',
-        invValue: 'القيمة (د.ب)',
-        bullionWeight: 'الوزن (جرام)',
-        bullionPrice: 'سعر السبيكة (د.ب/جرام)',
+        invValue: 'القيمة',
+        bullionWeight: 'الوزن',
+        bullionPrice: 'سعر السبيكة',
         hawlComplete: '✅ مكتمل الحول!',
         hawlNotComplete: '⚠️ الحول غير مكتمل',
         hawlChecking: '⏳ جاري التحقق...',
@@ -745,7 +842,10 @@ const translations = {
         footerRights: 'جميع الحقوق محفوظة © 2026',
         footerDeveloped: 'تم التطوير بواسطة Muharraqi',
         footerPray: '🤲 أرجو الدعاء لي ولوالدي بالخير',
-        months: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
+        months: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+        currency: 'د.ب',
+        caratLabel: 'عيار',
+        gramLabel: 'غرام'
     },
     en: {
         pageTitle: 'Comprehensive Zakat Calculator',
@@ -757,7 +857,7 @@ const translations = {
         noteHawl: 'Select start month and end month, automatic check will be performed.',
         autoCheckText: 'Automatically checks when months change',
         titleBanks: 'Total Amount in All Banks',
-        lblBanks: 'All Banks (BHD)',
+        lblBanks: 'All Banks',
         titleGoldWear: 'Gold Jewelry',
         btnAddGoldWear: 'Add Gold Piece',
         totalGoldWearText: 'Total Gold Jewelry Value:',
@@ -772,8 +872,8 @@ const translations = {
         btnCalculate: 'Calculate Zakat Now',
         goldName: 'Name (e.g., Ring, Necklace...)',
         goldCarat: 'Carat',
-        goldWeight: 'Weight (g)',
-        goldPrice: 'Carat Price (BHD/g)',
+        goldWeight: 'Weight',
+        goldPrice: 'Carat Price',
         btnFetch: 'Fetch Price',
         autoLabel: 'Auto (Fetch from Internet) 🌐',
         manualLabel: 'Manual ✍️',
@@ -782,9 +882,9 @@ const translations = {
         notUpdated: 'Not updated yet',
         remove: 'Remove',
         invName: 'Name (e.g., Property, Car, Stocks...)',
-        invValue: 'Value (BHD)',
-        bullionWeight: 'Weight (g)',
-        bullionPrice: 'Bullion Price (BHD/g)',
+        invValue: 'Value',
+        bullionWeight: 'Weight',
+        bullionPrice: 'Bullion Price',
         hawlComplete: '✅ Hawl Complete!',
         hawlNotComplete: '⚠️ Hawl Not Complete',
         hawlChecking: '⏳ Checking...',
@@ -804,7 +904,10 @@ const translations = {
         footerRights: 'All Rights Reserved © 2026',
         footerDeveloped: 'Developed by Muharraqi',
         footerPray: '🤲 Please pray for me and my parents',
-        months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        currency: 'BHD',
+        caratLabel: 'Carat',
+        gramLabel: 'g'
     }
 };
 
@@ -885,7 +988,7 @@ async function fetchGoldPrices() {
 
             updateAllPriceFields();
             const t = translations[currentLang];
-            const successMsg = t.fetchSuccess + ' ' + source + ' | سعر 24: ' + appState.goldPrices['24'] + ' د.ب/جرام';
+            const successMsg = t.fetchSuccess + ' ' + source + ' | سعر 24: ' + appState.goldPrices['24'] + ' ' + t.currency;
             updateAllStatus('success', successMsg);
             updateAllPriceInfo(appState.goldPrices['lastUpdate'] + ' (من ' + source + ')');
             
@@ -945,6 +1048,8 @@ function updateAllPriceFields() {
             }
         }
     });
+    
+    updateTotals();
 }
 
 function updateAllPriceInfo(info) {
@@ -963,18 +1068,22 @@ function addGoldWearItem() {
     if (!hawlComplete) return;
     const container = document.getElementById('goldWearContainer');
     const id = goldWearCounter++;
+    const t = translations[currentLang];
     const div = document.createElement('div');
     div.className = 'item-row gold-wear-item';
     div.dataset.id = id;
     div.innerHTML = `
-        <input type="text" placeholder="${getText('goldName')}" class="gw-name" style="flex:1.5;" />
+        <input type="text" placeholder="${getText('goldName')}" class="gw-name" style="flex:1.2;" />
         <select class="gold-carat-select" onchange="updateGoldWearPrice(${id})" style="flex:0.8;">
-            <option value="18">18</option>
-            <option value="20">20</option>
-            <option value="21" selected>21</option>
-            <option value="22">22</option>
+            <option value="18">18 ${getText('caratLabel')}</option>
+            <option value="20">20 ${getText('caratLabel')}</option>
+            <option value="21" selected>21 ${getText('caratLabel')}</option>
+            <option value="22">22 ${getText('caratLabel')}</option>
         </select>
-        <input type="number" placeholder="${getText('goldWeight')}" step="0.01" class="gw-weight" style="flex:0.8;" />
+        <div class="input-wrapper" style="flex:0.8; min-width:100px;">
+            <input type="number" placeholder="${getText('goldWeight')}" step="0.01" class="gw-weight" style="flex:1;" />
+            <span class="label-suffix">${getText('gramLabel')}</span>
+        </div>
         <div style="flex:2; min-width:150px;">
             <div class="price-source-options" style="margin:0;">
                 <label style="font-size:calc(0.8rem * var(--font-scale));">
@@ -987,7 +1096,10 @@ function addGoldWearItem() {
                 </label>
             </div>
             <div class="gold-price-row">
-                <input type="number" placeholder="${getText('goldPrice')}" step="0.001" class="gw-price gold-price-input" style="flex:1;" />
+                <div class="price-input-wrapper">
+                    <input type="number" placeholder="${getText('goldPrice')}" step="0.001" class="gw-price gold-price-input" style="flex:1;" />
+                    <span class="currency-label">${getText('currency')}</span>
+                </div>
                 <button class="btn btn-gold btn-sm fetch-btn" onclick="fetchGoldPrices()" style="flex:0 0 auto; padding:8px 12px; font-size:calc(0.8rem * var(--font-scale));">
                     <i class="fas fa-sync-alt"></i> ${getText('btnFetch')}
                 </button>
@@ -996,6 +1108,12 @@ function addGoldWearItem() {
         <button class="remove-btn" onclick="removeGoldWearItem(this)">${getText('remove')}</button>
     `;
     container.appendChild(div);
+    
+    div.querySelectorAll('input, select').forEach(el => {
+        el.addEventListener('input', updateTotals);
+        el.addEventListener('change', updateTotals);
+    });
+    
     updateTotals();
 }
 
@@ -1017,6 +1135,7 @@ function toggleGoldWearSource(id) {
             priceInput.value = price;
             priceInput.readOnly = true;
             priceInput.style.backgroundColor = 'var(--bg-input)';
+            updateTotals();
         } else {
             fetchGoldPrices();
         }
@@ -1025,6 +1144,7 @@ function toggleGoldWearSource(id) {
         priceInput.style.backgroundColor = 'var(--bg-input)';
         priceInput.placeholder = getText('goldPrice');
         priceInput.value = '';
+        updateTotals();
     }
 }
 
@@ -1056,11 +1176,15 @@ function addBullionItem() {
     if (!hawlComplete) return;
     const container = document.getElementById('bullionContainer');
     const id = bullionCounter++;
+    const t = translations[currentLang];
     const div = document.createElement('div');
     div.className = 'item-row bullion-item';
     div.dataset.id = id;
     div.innerHTML = `
-        <input type="number" placeholder="${getText('bullionWeight')}" step="0.01" class="b-weight" style="flex:0.8;" />
+        <div class="input-wrapper" style="flex:0.8; min-width:100px;">
+            <input type="number" placeholder="${getText('bullionWeight')}" step="0.01" class="b-weight" style="flex:1;" />
+            <span class="label-suffix">${getText('gramLabel')}</span>
+        </div>
         <div style="flex:2; min-width:150px;">
             <div class="price-source-options" style="margin:0;">
                 <label style="font-size:calc(0.8rem * var(--font-scale));">
@@ -1073,7 +1197,10 @@ function addBullionItem() {
                 </label>
             </div>
             <div class="gold-price-row">
-                <input type="number" placeholder="${getText('bullionPrice')}" step="0.001" class="b-price bullion-price-input" style="flex:1;" />
+                <div class="price-input-wrapper">
+                    <input type="number" placeholder="${getText('bullionPrice')}" step="0.001" class="b-price bullion-price-input" style="flex:1;" />
+                    <span class="currency-label">${getText('currency')}</span>
+                </div>
                 <button class="btn btn-gold btn-sm fetch-btn" onclick="fetchGoldPrices()" style="flex:0 0 auto; padding:8px 12px; font-size:calc(0.8rem * var(--font-scale));">
                     <i class="fas fa-sync-alt"></i> ${getText('btnFetch')}
                 </button>
@@ -1082,6 +1209,12 @@ function addBullionItem() {
         <button class="remove-btn" onclick="removeBullionItem(this)">${getText('remove')}</button>
     `;
     container.appendChild(div);
+    
+    div.querySelectorAll('input, select').forEach(el => {
+        el.addEventListener('input', updateTotals);
+        el.addEventListener('change', updateTotals);
+    });
+    
     updateTotals();
 }
 
@@ -1102,6 +1235,7 @@ function toggleBullionSource(id) {
             priceInput.value = price;
             priceInput.readOnly = true;
             priceInput.style.backgroundColor = 'var(--bg-input)';
+            updateTotals();
         } else {
             fetchGoldPrices();
         }
@@ -1110,6 +1244,7 @@ function toggleBullionSource(id) {
         priceInput.style.backgroundColor = 'var(--bg-input)';
         priceInput.placeholder = getText('bullionPrice');
         priceInput.value = '';
+        updateTotals();
     }
 }
 
@@ -1120,22 +1255,33 @@ function toggleBullionSource(id) {
 function addInvestment() {
     if (!hawlComplete) return;
     const container = document.getElementById('investmentsContainer');
+    const t = translations[currentLang];
     const div = document.createElement('div');
     div.className = 'item-row';
     div.innerHTML = `
         <input type="text" placeholder="${getText('invName')}" class="inv-name" style="flex:2;" />
-        <input type="number" placeholder="${getText('invValue')}" class="inv-value" step="0.01" style="flex:1;" />
+        <div class="price-input-wrapper" style="flex:1; min-width:100px;">
+            <input type="number" placeholder="${getText('invValue')}" class="inv-value" step="0.01" style="flex:1;" />
+            <span class="currency-label">${getText('currency')}</span>
+        </div>
         <button class="remove-btn" onclick="this.parentElement.remove(); updateTotals();">${getText('remove')}</button>
     `;
     container.appendChild(div);
+    
+    div.querySelectorAll('input').forEach(el => {
+        el.addEventListener('input', updateTotals);
+        el.addEventListener('change', updateTotals);
+    });
+    
     updateTotals();
 }
 
 // ================================================================
-// 7. تحديث المجاميع
+// 7. تحديث المجاميع (تلقائياً)
 // ================================================================
 
 function updateTotals() {
+    // الذهب الملبوس
     let goldTotal = 0;
     document.querySelectorAll('.gold-wear-item').forEach(item => {
         const weight = parseFloat(item.querySelector('.gw-weight').value) || 0;
@@ -1144,6 +1290,7 @@ function updateTotals() {
     });
     document.getElementById('totalGoldWearValue').textContent = goldTotal.toFixed(3);
     
+    // السبائك
     let bullionTotal = 0;
     document.querySelectorAll('.bullion-item').forEach(item => {
         const weight = parseFloat(item.querySelector('.b-weight').value) || 0;
@@ -1178,11 +1325,9 @@ function checkHawl() {
         return;
     }
     
-    // استخراج السنة والشهر
     const [startYear, startMonthNum] = startMonth.split('-').map(Number);
     const [endYear, endMonthNum] = endMonth.split('-').map(Number);
     
-    // حساب عدد الشهور بين التاريخين
     let monthsDiff = (endYear - startYear) * 12 + (endMonthNum - startMonthNum);
     
     let msg = '';
@@ -1209,22 +1354,17 @@ function checkHawl() {
     hawlComplete = isComplete;
     window._hawlComplete = isComplete;
     
-    // تعطيل أو تفعيل الأقسام
     setSectionsDisabled(!isComplete);
     
     return isComplete;
 }
 
-// ===== ربط التحقق التلقائي عند تغيير الشهور =====
 document.addEventListener('DOMContentLoaded', function() {
     const startMonth = document.getElementById('startMonth');
     const endMonth = document.getElementById('endMonth');
     
-    // التحقق عند تغيير أي من الشهرين
     startMonth.addEventListener('change', checkHawl);
     endMonth.addEventListener('change', checkHawl);
-    
-    // التحقق عند الإدخال المباشر (للتحديث الفوري)
     startMonth.addEventListener('input', checkHawl);
     endMonth.addEventListener('input', checkHawl);
 });
@@ -1346,71 +1486,53 @@ function applyLanguage() {
     document.getElementById('footerDeveloped').innerHTML = 'تم التطوير بواسطة <span class="highlight-gold">Muharraqi</span>';
     document.getElementById('footerPray').textContent = t.footerPray;
     
-    document.querySelectorAll('.gold-wear-item').forEach(item => {
-        const nameInput = item.querySelector('.gw-name');
-        if (nameInput) nameInput.placeholder = t.goldName;
-        const weightInput = item.querySelector('.gw-weight');
-        if (weightInput) weightInput.placeholder = t.goldWeight;
-        const priceInput = item.querySelector('.gw-price');
-        if (priceInput && priceInput.readOnly === false) priceInput.placeholder = t.goldPrice;
-        const fetchBtn = item.querySelector('.fetch-btn');
-        if (fetchBtn) fetchBtn.innerHTML = '<i class="fas fa-sync-alt"></i> ' + t.btnFetch;
-        const removeBtn = item.querySelector('.remove-btn');
-        if (removeBtn) removeBtn.textContent = t.remove;
-        const labels = item.querySelectorAll('.price-source-options label');
-        if (labels.length >= 2) {
-            const name = item.querySelector('input[type="radio"]').name;
-            const checkedAuto = item.querySelector('input[value="auto"]').checked;
-            const checkedManual = item.querySelector('input[value="manual"]').checked;
-            labels[0].innerHTML = `<input type="radio" name="${name}" value="auto" ${checkedAuto ? 'checked' : ''} onchange="toggleGoldWearSource(${item.dataset.id})"> ${t.autoLabel}`;
-            labels[1].innerHTML = `<input type="radio" name="${name}" value="manual" ${checkedManual ? 'checked' : ''} onchange="toggleGoldWearSource(${item.dataset.id})"> ${t.manualLabel}`;
-        }
+    // تحديث خيارات العيار
+    document.querySelectorAll('.gold-carat-select option').forEach(opt => {
+        const val = opt.value;
+        opt.textContent = val + ' ' + t.caratLabel;
     });
     
-    document.querySelectorAll('.bullion-item').forEach(item => {
-        const weightInput = item.querySelector('.b-weight');
-        if (weightInput) weightInput.placeholder = t.bullionWeight;
-        const priceInput = item.querySelector('.b-price');
-        if (priceInput && priceInput.readOnly === false) priceInput.placeholder = t.bullionPrice;
-        const fetchBtn = item.querySelector('.fetch-btn');
-        if (fetchBtn) fetchBtn.innerHTML = '<i class="fas fa-sync-alt"></i> ' + t.btnFetch;
-        const removeBtn = item.querySelector('.remove-btn');
-        if (removeBtn) removeBtn.textContent = t.remove;
-        const labels = item.querySelectorAll('.price-source-options label');
-        if (labels.length >= 2) {
-            const name = item.querySelector('input[type="radio"]').name;
-            const checkedAuto = item.querySelector('input[value="auto"]').checked;
-            const checkedManual = item.querySelector('input[value="manual"]').checked;
-            labels[0].innerHTML = `<input type="radio" name="${name}" value="auto" ${checkedAuto ? 'checked' : ''} onchange="toggleBullionSource(${item.dataset.id})"> ${t.autoLabel}`;
-            labels[1].innerHTML = `<input type="radio" name="${name}" value="manual" ${checkedManual ? 'checked' : ''} onchange="toggleBullionSource(${item.dataset.id})"> ${t.manualLabel}`;
-        }
+    // تحديث ملصقات الغرام
+    document.querySelectorAll('.label-suffix').forEach(el => {
+        el.textContent = t.gramLabel;
     });
     
-    document.querySelectorAll('.investment-item .inv-name').forEach(el => {
-        el.placeholder = t.invName;
-    });
-    document.querySelectorAll('.investment-item .inv-value').forEach(el => {
-        el.placeholder = t.invValue;
-    });
-    document.querySelectorAll('.investment-item .remove-btn, .inv-remove-btn').forEach(el => {
-        el.textContent = t.remove;
+    // تحديث عملة جميع حقول السعر
+    document.querySelectorAll('.currency-label').forEach(el => {
+        el.textContent = t.currency;
     });
     
-    document.querySelectorAll('.price-status .status-text').forEach(el => {
-        if (!el.textContent.includes('✅') && !el.textContent.includes('❌') && !el.textContent.includes('جاري')) {
-            el.textContent = t.priceStatus;
-        }
+    // تحديث الـ placeholders
+    document.querySelectorAll('.gw-name').forEach(el => el.placeholder = t.goldName);
+    document.querySelectorAll('.gw-weight').forEach(el => el.placeholder = t.goldWeight);
+    document.querySelectorAll('.gw-price').forEach(el => {
+        if (el.readOnly === false) el.placeholder = t.goldPrice;
     });
-    document.querySelectorAll('.price-info-text').forEach(el => {
-        if (!el.textContent.includes('من') && !el.textContent.includes('from')) {
-            el.textContent = t.notUpdated;
+    document.querySelectorAll('.b-weight').forEach(el => el.placeholder = t.bullionWeight);
+    document.querySelectorAll('.b-price').forEach(el => {
+        if (el.readOnly === false) el.placeholder = t.bullionPrice;
+    });
+    document.querySelectorAll('.inv-name').forEach(el => el.placeholder = t.invName);
+    document.querySelectorAll('.inv-value').forEach(el => el.placeholder = t.invValue);
+    
+    document.querySelectorAll('.remove-btn').forEach(el => el.textContent = t.remove);
+    document.querySelectorAll('.fetch-btn').forEach(el => {
+        el.innerHTML = '<i class="fas fa-sync-alt"></i> ' + t.btnFetch;
+    });
+    
+    document.querySelectorAll('.price-source-options label').forEach(label => {
+        const radio = label.querySelector('input[type="radio"]');
+        if (radio) {
+            const isAuto = radio.value === 'auto';
+            const name = radio.name;
+            const checked = radio.checked ? 'checked' : '';
+            label.innerHTML = `<input type="radio" name="${name}" value="${radio.value}" ${checked}> ${isAuto ? t.autoLabel : t.manualLabel}`;
         }
     });
     
     document.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = currentLang;
     
-    // تحديث حالة الحول
     checkHawl();
 }
 
