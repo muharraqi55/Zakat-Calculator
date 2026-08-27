@@ -187,6 +187,18 @@
         .reset-btn:hover {
             opacity: 0.85 !important;
         }
+        .help-btn {
+            background: var(--gold) !important;
+            color: #1a1a1a !important;
+            border: none !important;
+            font-size: calc(0.8rem * var(--font-scale));
+        }
+        [data-theme="dark"] .help-btn {
+            color: #0d1117 !important;
+        }
+        .help-btn:hover {
+            background: var(--gold-hover) !important;
+        }
 
         h2 {
             color: var(--green);
@@ -418,6 +430,77 @@
         }
         .price-input-wrapper input:focus + .currency-label {
             border-color: var(--gold);
+        }
+        
+        .nisab-select-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+        .nisab-select-wrapper label {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: normal;
+            font-size: calc(0.8rem * var(--font-scale));
+            cursor: pointer;
+            margin: 0;
+        }
+        .nisab-select-wrapper select {
+            width: auto;
+            padding: 4px 10px;
+            font-size: calc(0.85rem * var(--font-scale));
+            min-width: 80px;
+        }
+        .nisab-select-wrapper .tooltip-trigger {
+            cursor: help;
+            color: var(--gold);
+            font-weight: bold;
+            font-size: calc(1.1rem * var(--font-scale));
+            position: relative;
+            display: inline-block;
+        }
+        .nisab-select-wrapper .tooltip-trigger .tooltip-text {
+            visibility: hidden;
+            width: 280px;
+            background: var(--bg-card);
+            color: var(--text-main);
+            text-align: right;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 2px solid var(--gold);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: absolute;
+            z-index: 100;
+            bottom: 130%;
+            right: 50%;
+            transform: translateX(50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: calc(0.8rem * var(--font-scale));
+            font-weight: normal;
+            line-height: 1.6;
+            width: 320px;
+        }
+        .nisab-select-wrapper .tooltip-trigger .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            right: 50%;
+            transform: translateX(50%);
+            border: 8px solid transparent;
+            border-top-color: var(--gold);
+        }
+        .nisab-select-wrapper .tooltip-trigger:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        .nisab-select-wrapper .nisab-note {
+            font-size: calc(0.75rem * var(--font-scale));
+            color: var(--text-sub);
+            font-style: italic;
         }
         
         .btn {
@@ -693,6 +776,191 @@
             opacity: 0.5;
         }
         
+        .nisab-banner {
+            background: var(--bg-status-loading);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        .nisab-banner .nisab-info {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+        }
+        .nisab-banner .nisab-info .label {
+            font-weight: bold;
+            color: var(--text-sub);
+            font-size: calc(0.85rem * var(--font-scale));
+        }
+        .nisab-banner .nisab-info .value {
+            font-weight: bold;
+            color: var(--green);
+            font-size: calc(1.1rem * var(--font-scale));
+        }
+        .nisab-banner .nisab-info .gold-price {
+            color: var(--text-sub);
+            font-size: calc(0.8rem * var(--font-scale));
+        }
+        .nisab-banner .nisab-status {
+            font-weight: bold;
+            font-size: calc(0.95rem * var(--font-scale));
+            padding: 4px 14px;
+            border-radius: 20px;
+        }
+        .nisab-banner .nisab-status.reached {
+            background: var(--success-bg);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+        .nisab-banner .nisab-status.not-reached {
+            background: var(--bg-status-loading);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+        }
+        
+        .zakat-details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: calc(0.85rem * var(--font-scale));
+        }
+        .zakat-details-table th,
+        .zakat-details-table td {
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .zakat-details-table th {
+            background: var(--bg-body);
+            color: var(--text-sub);
+            font-weight: bold;
+        }
+        .zakat-details-table .section-name {
+            font-weight: bold;
+            text-align: right;
+        }
+        .zakat-details-table .eligible {
+            color: var(--success);
+        }
+        .zakat-details-table .not-eligible {
+            color: var(--danger);
+        }
+        .zakat-details-table .zakat-amount {
+            font-weight: bold;
+            color: var(--gold);
+        }
+        .zakat-details-table .total-row {
+            font-weight: bold;
+            background: var(--bg-body);
+        }
+        
+        /* ===== نافذة التعليمات ===== */
+        .help-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .help-modal.show {
+            display: flex;
+        }
+        .help-modal .help-content {
+            background: var(--bg-card);
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+            border: 3px solid var(--gold);
+        }
+        .help-modal .help-content .close-help {
+            position: sticky;
+            top: 0;
+            float: left;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--text-main);
+            background: var(--bg-card);
+            border: none;
+            padding: 0 10px;
+            z-index: 10;
+        }
+        .help-modal .help-content .close-help:hover {
+            color: var(--danger);
+        }
+        .help-modal .help-content h2 {
+            margin-top: 0;
+            border-right: none;
+            text-align: center;
+            padding-right: 0;
+        }
+        .help-modal .help-content h3 {
+            color: var(--gold);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: calc(1.1rem * var(--font-scale));
+        }
+        .help-modal .help-content .help-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--bg-body);
+            border-radius: 12px;
+            border-right: 4px solid var(--gold);
+        }
+        .help-modal .help-content .help-section .highlight-gold {
+            color: var(--gold);
+            font-weight: bold;
+        }
+        .help-modal .help-content .help-section .highlight-success {
+            color: var(--success);
+            font-weight: bold;
+        }
+        .help-modal .help-content .help-section .highlight-danger {
+            color: var(--danger);
+            font-weight: bold;
+        }
+        .help-modal .help-content .help-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: calc(0.85rem * var(--font-scale));
+        }
+        .help-modal .help-content .help-table th,
+        .help-modal .help-content .help-table td {
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .help-modal .help-content .help-table th {
+            background: var(--bg-section);
+            font-weight: bold;
+        }
+        .help-modal .help-content .help-note {
+            font-size: calc(0.85rem * var(--font-scale));
+            color: var(--text-sub);
+            margin-top: 10px;
+            padding: 10px 14px;
+            background: var(--bg-status-loading);
+            border-radius: 8px;
+            border-right: 4px solid var(--gold);
+        }
+        
         @media (max-width: 600px) {
             .container { padding: 12px; }
             .item-row { flex-direction: column; align-items: stretch; }
@@ -725,19 +993,45 @@
             .hawl-mini input[type="month"] {
                 width: 100%;
             }
+            .nisab-banner {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .nisab-banner .nisab-info {
+                justify-content: center;
+            }
+            .zakat-details-table {
+                font-size: calc(0.7rem * var(--font-scale));
+            }
+            .zakat-details-table th,
+            .zakat-details-table td {
+                padding: 4px 6px;
+            }
+            .nisab-select-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .nisab-select-wrapper .tooltip-trigger .tooltip-text {
+                width: 200px;
+                right: 0;
+                transform: translateX(0);
+            }
+            .help-modal .help-content {
+                padding: 15px;
+                max-height: 95vh;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container" id="app">
 
-    <!-- ===== العنوان الرئيسي ===== -->
     <div class="main-title">
         <h1><i class="fas fa-coins"></i> <span id="pageTitle">حاسبة الزكاة الشاملة</span></h1>
         <div class="gold-line"></div>
     </div>
 
-    <!-- أدوات التحكم -->
     <div class="header-tools">
         <div class="tools-group">
             <button class="lang-btn" onclick="toggleLanguage()" id="langBtn">🇬🇧 English</button>
@@ -747,7 +1041,21 @@
             <button class="btn-theme" onclick="toggleTheme()">
                 <span id="themeIcon">🌙</span> <span id="themeText">ليلي</span>
             </button>
+            <button class="help-btn" onclick="toggleHelp()"><i class="fas fa-question-circle"></i> <span id="helpBtnText">تعليمات</span></button>
             <button class="reset-btn" onclick="resetAll()"><i class="fas fa-undo"></i> <span id="resetBtnText">إعادة ضبط</span></button>
+        </div>
+    </div>
+
+    <!-- ===== شريط النصاب ===== -->
+    <div class="nisab-banner" id="nisabBanner">
+        <div class="nisab-info">
+            <span class="label"><i class="fas fa-scale-balanced"></i> <span id="nisabLabel">نصاب الزكاة:</span></span>
+            <span class="value" id="nisabValue">0.00 د.ب</span>
+            <span class="gold-price" id="nisabGoldPrice">(سعر الذهب: 0.00 د.ب/جرام)</span>
+        </div>
+        <div class="nisab-status" id="nisabStatus">
+            <span class="nisab-icon">⏳</span>
+            <span id="nisabStatusText">جاري حساب النصاب...</span>
         </div>
     </div>
 
@@ -755,16 +1063,11 @@
     <div class="section" id="banksSection">
         <h2 id="titleBanks"><i class="fas fa-university"></i> المبلغ الموجود في جميع البنوك</h2>
         
-        <!-- الحول الخاص بالبنوك -->
-        <div class="hawl-mini">
+        <div class="hawl-mini" style="background:var(--success-bg);border-color:var(--success);">
             <label><i class="fas fa-calendar-alt"></i> <span id="banksHawlLabel">الحول:</span></label>
-            <input type="month" id="banksStartMonth" class="hawl-date-input" />
-            <span style="font-size:0.8rem;color:var(--text-sub);">→</span>
-            <input type="month" id="banksEndMonth" class="hawl-date-input" />
-            <span class="hawl-status" id="banksHawlStatus">⏳</span>
+            <span style="font-weight:bold;color:var(--success);">✅ مكتمل تلقائياً</span>
+            <span style="font-size:0.8rem;color:var(--text-sub);">(الأموال النقدية تجب فيها الزكاة فور بلوغ النصاب)</span>
         </div>
-        
-        <div class="hawl-message" id="banksHawlMessage"></div>
         
         <div class="flex-row">
             <div class="field">
@@ -775,13 +1078,31 @@
                 </div>
             </div>
         </div>
+        
+        <!-- اختيار نوع النصاب للبنوك -->
+        <div class="nisab-select-wrapper">
+            <span style="font-weight:600;color:var(--text-sub);font-size:calc(0.8rem * var(--font-scale));"><i class="fas fa-sliders-h"></i> <span id="banksNisabLabel">نوع النصاب:</span></span>
+            <select id="banksNisabType" onchange="calculateAll()">
+                <option value="gold">الذهب (85 جرام)</option>
+                <option value="silver" selected>الفضة (595 جرام) - الأحوط</option>
+            </select>
+            <span class="tooltip-trigger" id="banksTooltip">
+                <i class="fas fa-info-circle"></i>
+                <span class="tooltip-text" id="banksTooltipText">
+                    <strong>📖 نصاب المال بالذهب أم الفضة؟</strong><br>
+                    تقدير النصاب بالذهب (85 جرام) يعطي قيمة أعلى، وتقديره بالفضة (595 جرام) يعطي قيمة أقل.<br><br>
+                    <span class="highlight-gold">🔹 الأحوط والأبرأ للذمة:</span> اعتماد نصاب الفضة لأنه <strong>الأنفع للفقراء</strong>، وبه يبلغ المال النصاب بسرعة، وتكثر الزكاة.<br><br>
+                    <span style="font-size:0.85rem;color:var(--text-sub);">الرأي الراجح عند هيئة كبار العلماء تقدير النصاب بما هو أحظ للفقراء.</span>
+                </span>
+            </span>
+            <span class="nisab-note" id="banksNisabNote">(نصاب الفضة: 595 جرام)</span>
+        </div>
     </div>
 
     <!-- ===================== 2. الذهب الملبوس ===================== -->
     <div class="section" id="goldWearSection">
         <h2 id="titleGoldWear"><i class="fas fa-ring"></i> الذهب الملبوس</h2>
         
-        <!-- الحول الخاص بالذهب الملبوس -->
         <div class="hawl-mini">
             <label><i class="fas fa-calendar-alt"></i> <span id="gwHawlLabel">الحول:</span></label>
             <input type="month" id="gwStartMonth" class="hawl-date-input" />
@@ -814,7 +1135,6 @@
     <div class="section" id="bullionSection">
         <h2 id="titleBullion"><i class="fas fa-cubes"></i> سبائك الذهب (عيار 24)</h2>
         
-        <!-- الحول الخاص بالسبائك -->
         <div class="hawl-mini">
             <label><i class="fas fa-calendar-alt"></i> <span id="bullionHawlLabel">الحول:</span></label>
             <input type="month" id="bullionStartMonth" class="hawl-date-input" />
@@ -836,7 +1156,6 @@
     <div class="section" id="investmentsSection">
         <h2 id="titleInvestments"><i class="fas fa-chart-pie"></i> استثمارات وعقارات</h2>
         
-        <!-- الحول الخاص بالاستثمارات -->
         <div class="hawl-mini">
             <label><i class="fas fa-calendar-alt"></i> <span id="invHawlLabel">الحول:</span></label>
             <input type="month" id="invStartMonth" class="hawl-date-input" />
@@ -852,16 +1171,53 @@
         </div>
         <button class="add-btn" id="addInvestmentBtn" onclick="addInvestment()"><i class="fas fa-plus-circle"></i> <span id="btnAddInvestment">إضافة استثمار</span></button>
         <div class="note"><i class="fas fa-info-circle"></i> <span id="noteInvestments">أدخل قيمة العقار، السيارة، الأسهم، أو أي أصل آخر.</span></div>
+        
+        <!-- اختيار نوع النصاب للاستثمارات -->
+        <div class="nisab-select-wrapper" style="margin-top:10px;">
+            <span style="font-weight:600;color:var(--text-sub);font-size:calc(0.8rem * var(--font-scale));"><i class="fas fa-sliders-h"></i> <span id="invNisabLabel">نوع النصاب:</span></span>
+            <select id="invNisabType" onchange="calculateAll()">
+                <option value="gold">الذهب (85 جرام)</option>
+                <option value="silver" selected>الفضة (595 جرام) - الأحوط</option>
+            </select>
+            <span class="tooltip-trigger" id="invTooltip">
+                <i class="fas fa-info-circle"></i>
+                <span class="tooltip-text" id="invTooltipText">
+                    <strong>📖 نصاب عروض التجارة (العقارات، الأسهم، السيارات)</strong><br>
+                    العروض المعدة للبيع تُقدر قيمتها السوقية في نهاية الحول، ثم تُزكى إذا بلغت النصاب.<br><br>
+                    <span class="highlight-gold">🔹 الأحوط:</span> اعتماد نصاب الفضة (595 جرام) لأنه الأنفع للفقراء.<br><br>
+                    <span style="font-size:0.85rem;color:var(--text-sub);">ملاحظة: إذا كانت الأرض للاستخدام الشخصي (سكن) فلا زكاة فيها، أما إذا كانت للبيع ففيها الزكاة.</span>
+                </span>
+            </span>
+            <span class="nisab-note" id="invNisabNote">(نصاب الفضة: 595 جرام)</span>
+        </div>
     </div>
 
     <!-- ===================== 5. النتيجة النهائية ===================== -->
     <div class="result-box" id="resultBox">
-        <div class="sub"><i class="fas fa-calculator"></i> <span id="totalAssetsLabel">مجموع الأصول الخاضعة للزكاة</span></div>
-        <div class="big" id="totalAssets">0.00</div>
-        <div class="sub" style="margin-top:8px;">
-            <i class="fas fa-hand-holding-usd"></i> <span id="zakatLabel">مقدار الزكاة (المجموع ÷ 40)</span>
+        <div class="sub"><i class="fas fa-calculator"></i> <span id="totalAssetsLabel">تفاصيل الزكاة</span></div>
+        <div style="overflow-x:auto;">
+            <table class="zakat-details-table" id="zakatDetailsTable">
+                <thead>
+                    <tr>
+                        <th id="thSection">القسم</th>
+                        <th id="thAmount">المبلغ (د.ب)</th>
+                        <th id="thHawlStatus">حالة الحول</th>
+                        <th id="thStatus">الحالة</th>
+                    </tr>
+                </thead>
+                <tbody id="zakatDetailsBody">
+                    <!-- سيتم ملؤها بواسطة JavaScript -->
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td id="thTotalLabel">المجموع الكلي للأصول المكتملة الحول</td>
+                        <td id="totalAssets">0.00</td>
+                        <td id="thZakatStatus">حالة الزكاة</td>
+                        <td id="zakatAmount" style="color:var(--gold);">0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
-        <div class="big" id="zakatAmount" style="color:var(--gold);">0.00</div>
         <button class="btn" id="calculateBtn" style="margin-top:15px;width:100%;" onclick="calculateAll()"><i class="fas fa-calculator"></i> <span id="btnCalculate">احسب الزكاة الآن</span></button>
     </div>
 
@@ -881,6 +1237,100 @@
 
 </div>
 
+<!-- ===== نافذة التعليمات ===== -->
+<div class="help-modal" id="helpModal">
+    <div class="help-content">
+        <button class="close-help" onclick="toggleHelp()">✕</button>
+        <h2><i class="fas fa-graduation-cap"></i> <span id="helpTitle">📚 دليل الزكاة الشامل</span></h2>
+        
+        <div class="help-section">
+            <h3>📖 ما هي الزكاة؟</h3>
+            <p>الزكاة هي الركن الثالث من أركان الإسلام، وهي عبادة مالية واجبة على كل مسلم يملك مالاً بلغ النصاب وحال عليه الحول. وهي تطهير للمال وتزكية للنفس.</p>
+        </div>
+        
+        <div class="help-section">
+            <h3>⚖️ 1. النصاب - الحد الأدنى لوجوب الزكاة</h3>
+            <p>النصاب هو المقدار الذي إذا بلغه المال وجبت فيه الزكاة. وهناك نصابان رئيسيان:</p>
+            <ul style="list-style:none;padding:0;margin:10px 0;">
+                <li>🔹 <strong>نصاب الذهب:</strong> 85 جراماً من الذهب الخالص (عيار 24)</li>
+                <li>🔹 <strong>نصاب الفضة:</strong> 595 جراماً من الفضة الخالصة</li>
+            </ul>
+            <div style="background:var(--bg-status-loading);padding:10px;border-radius:8px;margin-top:10px;border-right:4px solid var(--gold);">
+                <strong>💡 نصيحة:</strong> يُفضل تقدير النصاب بالفضة لأنه <span class="highlight-gold">الأحوط والأبرأ للذمة</span> والأنفع للفقراء. هذا هو الرأي الراجح عند هيئة كبار العلماء.
+            </div>
+        </div>
+        
+        <div class="help-section">
+            <h3>🕒 2. الحول - مرور السنة الهجرية</h3>
+            <p>الحول هو مرور سنة هجرية كاملة (354 يوماً) على امتلاك المال. ويشترط لوجوب الزكاة أن يحول الحول على المال مع بقاء النصاب كاملاً طوال السنة.</p>
+            <div style="background:var(--bg-status-loading);padding:10px;border-radius:8px;margin-top:10px;border-right:4px solid var(--gold);">
+                <strong>📌 ملاحظة:</strong> الأموال النقدية في البنوك لا تحتاج حول لأنها من الأصول النقدية التي تجب فيها الزكاة فور بلوغ النصاب في بعض المذاهب، ولكن الأحوط اعتبار الحول عليها.
+            </div>
+        </div>
+        
+        <div class="help-section">
+            <h3>🏠 3. زكاة العقارات والأراضي</h3>
+            <p><strong>🔹 أرض للاستخدام الشخصي (سكن):</strong> لا زكاة فيها.</p>
+            <p><strong>🔹 أرض للإيجار (استثمار):</strong> لا زكاة في أصل العقار، ولكن <span class="highlight-gold">تجب الزكاة في الأجرة</span> إذا بلغت النصاب.</p>
+            <p><strong>🔹 أرض للبيع (تجارة):</strong> <span class="highlight-success">تجب فيها الزكاة</span> على القيمة السوقية كل سنة بنسبة 2.5%.</p>
+            <p><strong>🔹 أرض متردد فيها:</strong> لا زكاة فيها حتى يجزم بنية البيع.</p>
+        </div>
+        
+        <div class="help-section">
+            <h3>📊 4. كيفية حساب الزكاة للعقار المتأخر بيعه (مهم جداً)</h3>
+            <p><span class="highlight-gold">🔍 المبدأ الأساسي: التقويم السنوي</span></p>
+            <p>القاعدة الفقهية المستقرة أن زكاة عروض التجارة (وهي السلع والأراضي التي اشتريت بقصد البيع) تحتسب على أساس <strong>قيمتها السوقية في نهاية كل سنة هجرية على حدة</strong>، وليس بسعر الشراء أو سعر البيع النهائي.</p>
+            <p style="margin-top:10px;">هذا يعني أن الخسارة الفادحة التي حدثت في نهاية الخمس سنوات <span class="highlight-gold">لا تؤثر</span> على حساب السنوات الأربع السابقة، بل تحسب كل سنة بقيمتها المستقلة.</p>
+            
+            <p style="margin-top:15px;"><strong>💰 مثال: خمس سنوات مع خسارة 90%</strong></p>
+            <table class="help-table">
+                <thead>
+                    <tr>
+                        <th>السنة</th>
+                        <th>القيمة السوقية</th>
+                        <th>الزكاة (2.5%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>الأولى</td><td>100,000 د.ب</td><td>2,500 د.ب</td></tr>
+                    <tr><td>الثانية</td><td>95,000 د.ب</td><td>2,375 د.ب</td></tr>
+                    <tr><td>الثالثة</td><td>80,000 د.ب</td><td>2,000 د.ب</td></tr>
+                    <tr><td>الرابعة</td><td>50,000 د.ب</td><td>1,250 د.ب</td></tr>
+                    <tr><td>الخامسة</td><td>10,000 د.ب</td><td>250 د.ب</td></tr>
+                    <tr style="font-weight:bold;background:var(--bg-section);"><td>المجموع</td><td></td><td>8,375 د.ب</td></tr>
+                </tbody>
+            </table>
+            <div style="background:var(--bg-status-loading);padding:10px;border-radius:8px;margin-top:10px;border-right:4px solid var(--gold);">
+                <strong>⏳ حكم التأخير:</strong> الزكاة لا تسقط بتأخر البيع، بل تبقى <span class="highlight-gold">ديناً في الذمة</span>، ويجب إخراجها فور التمكن من البيع.<br>
+                <span class="highlight-danger">⚠️ التفريط يوجب الضمان:</span> إذا تأخر الشخص في إخراج الزكاة دون عذر، فإنه يضمن النقص الحاصل في قيمة المال.
+            </div>
+        </div>
+        
+        <div class="help-section">
+            <h3>💎 5. زكاة الذهب</h3>
+            <p><strong>نصاب الذهب:</strong> 85 جراماً من الذهب الخالص (عيار 24).</p>
+            <p><strong>للذهب بعيارات مختلفة:</strong> تُصحح الأوزان إلى عيار 24 (الوزن × العيار ÷ 24).</p>
+            <p><strong>الذهب الملبوس (للزينة):</strong> فيه <span class="highlight-gold">خلاف بين العلماء</span>، بعضهم يزكيه وبعضهم لا يزكيه.</p>
+        </div>
+        
+        <div class="help-section">
+            <h3>💰 6. مقدار الزكاة</h3>
+            <p>مقدار الزكاة الواجبة هو <strong>ربع العشر (2.5%)</strong> من مجموع الأموال التي بلغت النصاب وحال عليها الحول.</p>
+            <div style="background:var(--bg-status-loading);padding:10px;border-radius:8px;margin-top:10px;border-right:4px solid var(--gold);">
+                <strong>🧮 طريقة الحساب:</strong> (المبلغ الإجمالي × 2.5%) أو (المبلغ الإجمالي ÷ 40)
+            </div>
+        </div>
+        
+        <div class="help-note">
+            <strong>📌 تنبيه مهم:</strong> هذه المعلومات مبنية على آراء فقهية معتمدة، ولكن <span class="highlight-gold">ينبغي لكل مسلم</span> أن يستشير أهل العلم والثقة في أمور دينه، خاصة في المسائل التي فيها خلاف.
+        </div>
+        
+        <div style="text-align:center;margin-top:15px;">
+            <button class="btn" onclick="toggleHelp()"><i class="fas fa-times"></i> <span id="helpCloseBtn">إغلاق</span></button>
+        </div>
+    </div>
+</div>
+
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
@@ -893,11 +1343,17 @@ const translations = {
     ar: {
         pageTitle: 'حاسبة الزكاة الشاملة',
         langBtn: '🇬🇧 English',
+        helpBtnText: 'تعليمات',
         resetBtnText: 'إعادة ضبط',
         resetConfirm: '⚠️ هل أنت متأكد؟ سيتم مسح جميع البيانات التي أدخلتها.',
         resetSuccess: '✅ تم إعادة ضبط جميع البيانات بنجاح',
+        helpTitle: '📚 دليل الزكاة الشامل',
+        helpCloseBtn: 'إغلاق',
         titleBanks: 'المبلغ الموجود في جميع البنوك',
         lblBanks: 'جميع البنوك',
+        banksNisabLabel: 'نوع النصاب:',
+        banksTooltipText: '📖 نصاب المال بالذهب أم الفضة؟\nتقدير النصاب بالذهب (85 جرام) يعطي قيمة أعلى، وتقديره بالفضة (595 جرام) يعطي قيمة أقل.\n🔹 الأحوط والأبرأ للذمة: اعتماد نصاب الفضة لأنه الأنفع للفقراء، وبه يبلغ المال النصاب بسرعة، وتكثر الزكاة.\nالرأي الراجح عند هيئة كبار العلماء تقدير النصاب بما هو أحظ للفقراء.',
+        banksNisabNote: '(نصاب الفضة: 595 جرام)',
         titleGoldWear: 'الذهب الملبوس',
         btnAddGoldWear: 'إضافة قطعة ذهب',
         totalGoldWearText: 'إجمالي قيمة الذهب الملبوس:',
@@ -907,8 +1363,10 @@ const translations = {
         titleInvestments: 'استثمارات وعقارات',
         btnAddInvestment: 'إضافة استثمار',
         noteInvestments: 'أدخل قيمة العقار، السيارة، الأسهم، أو أي أصل آخر.',
-        totalAssetsLabel: 'مجموع الأصول الخاضعة للزكاة',
-        zakatLabel: 'مقدار الزكاة (المجموع ÷ 40)',
+        invNisabLabel: 'نوع النصاب:',
+        invTooltipText: '📖 نصاب عروض التجارة (العقارات، الأسهم، السيارات)\nالعروض المعدة للبيع تُقدر قيمتها السوقية في نهاية الحول، ثم تُزكى إذا بلغت النصاب.\n🔹 الأحوط: اعتماد نصاب الفضة (595 جرام) لأنه الأنفع للفقراء.\nملاحظة: إذا كانت الأرض للاستخدام الشخصي (سكن) فلا زكاة فيها، أما إذا كانت للبيع ففيها الزكاة.',
+        invNisabNote: '(نصاب الفضة: 595 جرام)',
+        totalAssetsLabel: 'تفاصيل الزكاة',
         btnCalculate: 'احسب الزكاة الآن',
         goldName: 'الاسم (مثال: خاتم، سلسلة...)',
         goldCarat: 'العيار',
@@ -926,13 +1384,11 @@ const translations = {
         bullionWeight: 'الوزن',
         bullionPrice: 'سعر السوق اليوم',
         hawlComplete: '✅ مكتمل',
-        hawlNotComplete: '⚠️ الحول غير مكتمل',
+        hawlNotComplete: '⚠️ غير مكتمل',
         hawlMessageComplete: '✅ الحول مكتمل - يمكنك إدخال البيانات',
         hawlMessageIncomplete: '⚠️ الحول غير مكتمل - عذراً لا يمكنك إدخال البيانات حالياً',
         fromMonth: 'من',
         toMonth: 'إلى',
-        noZakatYet: '⚠️ الحول غير مكتمل لبعض الأصول، لا تجب الزكاة على الأصول التي لم يكتمل حولها.',
-        zakatEstimate: '(حساب تقديري، بعض الأصول لم يكتمل حولها)',
         themeNight: 'ليلي',
         themeDay: 'نهاري',
         fetchSuccess: '✅ تم جلب الأسعار بنجاح من',
@@ -952,16 +1408,39 @@ const translations = {
         bullionHawlLabel: 'حول السبائك',
         invHawlLabel: 'حول الاستثمارات',
         hawlStatusComplete: '✅ مكتمل',
-        hawlStatusIncomplete: '⚠️ غير مكتمل'
+        hawlStatusIncomplete: '⚠️ غير مكتمل',
+        nisabLabel: 'نصاب الزكاة:',
+        nisabReached: '✅ بلغ النصاب',
+        nisabNotReached: '⚠️ لم يبلغ النصاب',
+        nisabCalculating: '⏳ جاري حساب النصاب...',
+        banksAlwaysComplete: 'الأموال النقدية تجب فيها الزكاة فور بلوغ النصاب',
+        thSection: 'القسم',
+        thAmount: 'المبلغ',
+        thHawlStatus: 'حالة الحول',
+        thStatus: 'الحالة',
+        thTotalLabel: 'المجموع الكلي للأصول المكتملة الحول',
+        thZakatStatus: 'حالة الزكاة',
+        zakatDue: '✅ تجب الزكاة',
+        zakatNotDue: '⚠️ لا تجب الزكاة (لم يبلغ النصاب)',
+        zakatNotDueHawl: '⚠️ لا تجب الزكاة (لم يكتمل الحول)',
+        eligible: '✅ مستحق للزكاة',
+        notEligible: '⚠️ غير مستحق للزكاة (لم يبلغ النصاب)',
+        notEligibleHawl: '⚠️ غير مستحق للزكاة (لم يكتمل الحول)'
     },
     en: {
         pageTitle: 'Comprehensive Zakat Calculator',
         langBtn: '🇸🇦 العربية',
+        helpBtnText: 'Guide',
         resetBtnText: 'Reset',
         resetConfirm: '⚠️ Are you sure? All entered data will be cleared.',
         resetSuccess: '✅ All data has been reset successfully',
+        helpTitle: '📚 Comprehensive Zakat Guide',
+        helpCloseBtn: 'Close',
         titleBanks: 'Total Amount in All Banks',
         lblBanks: 'All Banks',
+        banksNisabLabel: 'Nisab Type:',
+        banksTooltipText: '📖 Nisab of cash: Gold or Silver?\nEstimating Nisab with Gold (85g) gives a higher value, while Silver (595g) gives a lower value.\n🔹 The safest and most precautionary: Use Silver Nisab because it benefits the poor more, and the money reaches Nisab faster.\nThe preferred opinion of senior scholars is to estimate Nisab based on what benefits the poor.',
+        banksNisabNote: '(Silver Nisab: 595g)',
         titleGoldWear: 'Gold Jewelry',
         btnAddGoldWear: 'Add Gold Piece',
         totalGoldWearText: 'Total Gold Jewelry Value:',
@@ -971,8 +1450,10 @@ const translations = {
         titleInvestments: 'Investments & Properties',
         btnAddInvestment: 'Add Investment',
         noteInvestments: 'Enter value of property, car, stocks, or other assets.',
-        totalAssetsLabel: 'Total Zakatable Assets',
-        zakatLabel: 'Zakat Amount (Total ÷ 40)',
+        invNisabLabel: 'Nisab Type:',
+        invTooltipText: '📖 Nisab of trade goods (properties, stocks, cars)\nTrade goods are valued at market price at the end of the Hawl, then Zakat is due if Nisab is reached.\n🔹 The safest: Use Silver Nisab (595g) as it benefits the poor more.\nNote: If the land is for personal use (residence), no Zakat is due. If for sale, Zakat is due.',
+        invNisabNote: '(Silver Nisab: 595g)',
+        totalAssetsLabel: 'Zakat Details',
         btnCalculate: 'Calculate Zakat Now',
         goldName: 'Name (e.g., Ring, Necklace...)',
         goldCarat: 'Carat',
@@ -990,13 +1471,11 @@ const translations = {
         bullionWeight: 'Weight',
         bullionPrice: 'Market Price Today',
         hawlComplete: '✅ Complete',
-        hawlNotComplete: '⚠️ Hawl Not Complete',
+        hawlNotComplete: '⚠️ Not Complete',
         hawlMessageComplete: '✅ Hawl complete - You can enter data',
         hawlMessageIncomplete: '⚠️ Hawl not complete - You cannot enter data currently',
         fromMonth: 'From',
         toMonth: 'To',
-        noZakatYet: '⚠️ Hawl is not complete for some assets, zakat is not due on assets with incomplete Hawl.',
-        zakatEstimate: '(Estimated, some assets have incomplete Hawl)',
         themeNight: 'Night',
         themeDay: 'Day',
         fetchSuccess: '✅ Prices fetched successfully from',
@@ -1016,31 +1495,42 @@ const translations = {
         bullionHawlLabel: 'Bullion Hawl',
         invHawlLabel: 'Investments Hawl',
         hawlStatusComplete: '✅ Complete',
-        hawlStatusIncomplete: '⚠️ Not Complete'
+        hawlStatusIncomplete: '⚠️ Not Complete',
+        nisabLabel: 'Nisab:',
+        nisabReached: '✅ Nisab Reached',
+        nisabNotReached: '⚠️ Nisab Not Reached',
+        nisabCalculating: '⏳ Calculating Nisab...',
+        banksAlwaysComplete: 'Bank deposits require Zakat upon reaching Nisab',
+        thSection: 'Section',
+        thAmount: 'Amount',
+        thHawlStatus: 'Hawl Status',
+        thStatus: 'Status',
+        thTotalLabel: 'Total Assets with Complete Hawl',
+        thZakatStatus: 'Zakat Status',
+        zakatDue: '✅ Zakat is due',
+        zakatNotDue: '⚠️ Zakat is not due (Nisab not reached)',
+        zakatNotDueHawl: '⚠️ Zakat is not due (Hawl not complete)',
+        eligible: '✅ Eligible for Zakat',
+        notEligible: '⚠️ Not eligible (Nisab not reached)',
+        notEligibleHawl: '⚠️ Not eligible (Hawl not complete)'
     }
 };
 
 let currentLang = 'ar';
 let hawlStates = {
-    banks: false,
+    banks: true,
     goldWear: false,
     bullion: false,
     investments: false
 };
+let nisabValue = 0;
+let goldPrice24 = 0;
 
 // ================================================================
-// 2. جلب أسعار الذهب - باستخدام API مفتوح
+// 2. جلب أسعار الذهب
 // ================================================================
 
 async function fetchGoldPrices() {
-    document.querySelectorAll('.price-status .status-text').forEach(el => {
-        const parent = el.closest('.status-bar');
-        if (parent) {
-            parent.className = 'status-bar loading';
-            el.textContent = '⏳ جاري جلب الأسعار...';
-        }
-    });
-    
     document.querySelectorAll('.fetch-btn').forEach(btn => {
         btn.disabled = true;
         btn.innerHTML = '<span class="spinner"></span>';
@@ -1055,20 +1545,23 @@ async function fetchGoldPrices() {
         const pricePerGramUSD = priceUSD_Ounce / 31.1035;
         const pricePerGramBHD = pricePerGramUSD * 0.377;
         
-        appState.goldPrices['24'] = parseFloat(pricePerGramBHD.toFixed(4));
-        appState.goldPrices['22'] = parseFloat((pricePerGramBHD * (22/24)).toFixed(4));
-        appState.goldPrices['21'] = parseFloat((pricePerGramBHD * (21/24)).toFixed(4));
-        appState.goldPrices['20'] = parseFloat((pricePerGramBHD * (20/24)).toFixed(4));
-        appState.goldPrices['18'] = parseFloat((pricePerGramBHD * (18/24)).toFixed(4));
+        goldPrice24 = parseFloat(pricePerGramBHD.toFixed(4));
+        
+        appState.goldPrices['24'] = goldPrice24;
+        appState.goldPrices['22'] = parseFloat((goldPrice24 * (22/24)).toFixed(4));
+        appState.goldPrices['21'] = parseFloat((goldPrice24 * (21/24)).toFixed(4));
+        appState.goldPrices['20'] = parseFloat((goldPrice24 * (20/24)).toFixed(4));
+        appState.goldPrices['18'] = parseFloat((goldPrice24 * (18/24)).toFixed(4));
         appState.goldPrices['lastUpdate'] = new Date().toLocaleString(currentLang === 'ar' ? 'ar-BH' : 'en-US');
         appState.goldPrices['source'] = 'Gold-API.com';
 
+        updateNisabBanner();
         updateAllPriceFields();
         
         const t = translations[currentLang];
         const successMsg = t.fetchSuccess + ' Gold-API.com | سعر 24: ' + appState.goldPrices['24'] + ' ' + t.currency;
         
-        document.querySelectorAll('.price-status .status-text').forEach(el => {
+        document.querySelectorAll('.status-text').forEach(el => {
             const parent = el.closest('.status-bar');
             if (parent) {
                 parent.className = 'status-bar success';
@@ -1076,27 +1569,44 @@ async function fetchGoldPrices() {
             }
         });
         
-        const infoText = appState.goldPrices['lastUpdate'] + ' (من Gold-API.com)';
-        document.querySelectorAll('.price-info-text').forEach(el => {
-            el.textContent = infoText;
-        });
+        calculateAll();
         
     } catch (error) {
         console.error('Fetch error:', error);
         const t = translations[currentLang];
-        document.querySelectorAll('.price-status .status-text').forEach(el => {
+        document.querySelectorAll('.status-text').forEach(el => {
             const parent = el.closest('.status-bar');
             if (parent) {
                 parent.className = 'status-bar error';
                 el.textContent = t.fetchFail + ' ' + error.message;
             }
         });
+        goldPrice24 = 55.32;
+        updateNisabBanner();
     } finally {
         document.querySelectorAll('.fetch-btn').forEach(btn => {
             btn.disabled = false;
             btn.innerHTML = '<i class="fas fa-sync-alt"></i> ' + getText('btnFetch');
         });
     }
+}
+
+function updateNisabBanner() {
+    const t = translations[currentLang];
+    const currency = getText('currency');
+    const nisabEl = document.getElementById('nisabValue');
+    const goldPriceEl = document.getElementById('nisabGoldPrice');
+    
+    // حساب النصاب بالذهب والفضة
+    const goldNisab = goldPrice24 * 85;
+    const silverNisab = (goldPrice24 / 85) * 595; // تقريبي بناءً على سعر الذهب
+    
+    // استخدام نصاب الفضة كافتراضي (الأحوط)
+    const currentNisab = silverNisab;
+    nisabValue = currentNisab;
+    
+    nisabEl.textContent = currentNisab.toFixed(2) + ' ' + currency + ' (فضة)';
+    goldPriceEl.textContent = '(سعر الذهب: ' + goldPrice24.toFixed(2) + ' ' + currency + '/جرام)';
 }
 
 function getText(key) {
@@ -1148,12 +1658,16 @@ let appState = {
 };
 
 // ================================================================
-// 4. دوال الحول لكل قسم
+// 4. دوال الحول
 // ================================================================
 
 function checkHawl(section) {
+    if (section === 'banks') {
+        hawlStates.banks = true;
+        return;
+    }
+    
     const prefixMap = {
-        'banks': 'banks',
         'goldWear': 'gw',
         'bullion': 'bullion',
         'investments': 'inv'
@@ -1203,7 +1717,6 @@ function checkHawl(section) {
     }
     
     const addBtnMap = {
-        'banks': 'addBanksBtn',
         'goldWear': 'addGoldWearBtn',
         'bullion': 'addBullionBtn',
         'investments': 'addInvestmentBtn'
@@ -1213,9 +1726,10 @@ function checkHawl(section) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const sections = ['banks', 'gw', 'bullion', 'inv'];
+    hawlStates.banks = true;
+    
+    const sections = ['gw', 'bullion', 'inv'];
     const sectionMap = {
-        'banks': 'banks',
         'gw': 'goldWear',
         'bullion': 'bullion',
         'inv': 'investments'
@@ -1504,60 +2018,141 @@ document.addEventListener('input', function(e) {
 
 function calculateAll() {
     const t = translations[currentLang];
+    const currency = getText('currency');
+    const tbody = document.getElementById('zakatDetailsBody');
+    tbody.innerHTML = '';
     
-    // التحقق من حالة الحول لكل قسم
-    const banksComplete = hawlStates.banks;
-    const goldWearComplete = hawlStates.goldWear;
-    const bullionComplete = hawlStates.bullion;
-    const investmentsComplete = hawlStates.investments;
+    // الحصول على نوع النصاب المختار لكل قسم
+    const banksNisabType = document.getElementById('banksNisabType').value;
+    const invNisabType = document.getElementById('invNisabType').value;
     
-    const allComplete = banksComplete && goldWearComplete && bullionComplete && investmentsComplete;
+    // حساب النصاب للبنوك والاستثمارات (كل قسم حسب اختياره)
+    const goldNisab = goldPrice24 * 85;
+    const silverNisab = (goldPrice24 / 85) * 595;
     
-    if (!allComplete) {
-        alert(t.noZakatYet + '\n' + t.zakatEstimate);
-    }
-
-    let total = 0;
+    const banksNisab = banksNisabType === 'gold' ? goldNisab : silverNisab;
+    const invNisab = invNisabType === 'gold' ? goldNisab : silverNisab;
     
-    // البنوك: تضاف فقط إذا اكتمل حولها
-    if (banksComplete) {
-        total += parseFloat(document.getElementById('bankTotal').value) || 0;
+    // جمع الأصول
+    let totalEligibleAssets = 0;
+    let hasCompleteHawl = false;
+    
+    // 1. البنوك
+    const bankVal = parseFloat(document.getElementById('bankTotal').value) || 0;
+    const banksComplete = true;
+    const bankEligible = banksComplete && bankVal > 0 && bankVal >= banksNisab;
+    
+    // 2. الذهب الملبوس (نصابه ثابت بالذهب)
+    let goldTotal = 0;
+    document.querySelectorAll('.gold-wear-item').forEach(item => {
+        const weight = parseFloat(item.querySelector('.gw-weight').value) || 0;
+        const price = parseFloat(item.querySelector('.gw-price').value) || 0;
+        goldTotal += weight * price;
+    });
+    const gwComplete = hawlStates.goldWear;
+    const gwNisab = goldPrice24 * 85; // الذهب نصابه بالذهب فقط
+    const gwEligible = gwComplete && goldTotal > 0 && goldTotal >= gwNisab;
+    
+    // 3. السبائك (نصابها بالذهب)
+    let bullionTotal = 0;
+    document.querySelectorAll('.bullion-item').forEach(item => {
+        const weight = parseFloat(item.querySelector('.b-weight').value) || 0;
+        const price = parseFloat(item.querySelector('.b-price').value) || 0;
+        bullionTotal += weight * price;
+    });
+    const bComplete = hawlStates.bullion;
+    const bNisab = goldPrice24 * 85; // السبائك نصابها بالذهب
+    const bEligible = bComplete && bullionTotal > 0 && bullionTotal >= bNisab;
+    
+    // 4. الاستثمارات
+    let invTotal = 0;
+    document.querySelectorAll('.inv-value').forEach(input => {
+        invTotal += parseFloat(input.value) || 0;
+    });
+    const invComplete = hawlStates.investments;
+    const invEligible = invComplete && invTotal > 0 && invTotal >= invNisab;
+    
+    // عرض الجدول
+    const sections = [
+        { name: getText('titleBanks'), amount: bankVal, complete: banksComplete, eligible: bankEligible, nisab: banksNisab },
+        { name: getText('titleGoldWear'), amount: goldTotal, complete: gwComplete, eligible: gwEligible, nisab: gwNisab },
+        { name: getText('titleBullion'), amount: bullionTotal, complete: bComplete, eligible: bEligible, nisab: bNisab },
+        { name: getText('titleInvestments'), amount: invTotal, complete: invComplete, eligible: invEligible, nisab: invNisab }
+    ];
+    
+    sections.forEach((sec) => {
+        const row = document.createElement('tr');
+        const statusColor = sec.complete ? 'var(--success)' : 'var(--danger)';
+        const statusText = sec.complete ? getText('hawlComplete') : getText('hawlNotComplete');
+        const eligibleText = sec.eligible ? getText('eligible') : (sec.complete ? getText('notEligible') : getText('notEligibleHawl'));
+        const eligibleColor = sec.eligible ? 'var(--success)' : 'var(--gold)';
+        
+        // إضافة ملاحظة النصاب
+        let nisabNote = '';
+        if (sec.name === getText('titleBanks')) {
+            nisabNote = ' (نصاب: ' + (banksNisabType === 'gold' ? 'ذهب' : 'فضة') + ')';
+        } else if (sec.name === getText('titleInvestments')) {
+            nisabNote = ' (نصاب: ' + (invNisabType === 'gold' ? 'ذهب' : 'فضة') + ')';
+        } else if (sec.name === getText('titleGoldWear') || sec.name === getText('titleBullion')) {
+            nisabNote = ' (نصاب: ذهب)';
+        }
+        
+        row.innerHTML = `
+            <td class="section-name">${sec.name}${nisabNote}</td>
+            <td>${sec.amount.toFixed(2)}</td>
+            <td style="color:${statusColor};font-weight:bold;">${statusText}</td>
+            <td style="color:${eligibleColor};font-weight:bold;">${eligibleText}</td>
+        `;
+        tbody.appendChild(row);
+        
+        // إضافة الأصول المكتملة الحول والبالغة النصاب للمجموع
+        if (sec.eligible) {
+            totalEligibleAssets += sec.amount;
+            hasCompleteHawl = true;
+        }
+    });
+    
+    // تحديث شريط النصاب (باستخدام النصاب الأقل = الفضة)
+    updateNisabStatus(totalEligibleAssets);
+    
+    // حساب الزكاة
+    let zakatAmount = 0;
+    let zakatStatus = '';
+    let zakatColor = 'var(--gold)';
+    
+    if (hasCompleteHawl && totalEligibleAssets >= nisabValue) {
+        zakatAmount = totalEligibleAssets / 40;
+        zakatStatus = getText('zakatDue') + ' (' + zakatAmount.toFixed(3) + ' ' + currency + ')';
+        zakatColor = 'var(--success)';
+    } else if (hasCompleteHawl && totalEligibleAssets < nisabValue) {
+        zakatStatus = getText('zakatNotDue');
+        zakatColor = 'var(--gold)';
+    } else {
+        zakatStatus = getText('zakatNotDueHawl');
+        zakatColor = 'var(--gold)';
     }
+    
+    document.getElementById('totalAssets').textContent = totalEligibleAssets.toFixed(2) + ' ' + currency;
+    document.getElementById('zakatAmount').textContent = zakatAmount > 0 ? zakatAmount.toFixed(3) + ' ' + currency : '0.00';
+    document.getElementById('zakatAmount').style.color = zakatColor;
+    document.getElementById('thZakatStatus').textContent = zakatStatus;
+    document.getElementById('thZakatStatus').style.color = zakatColor;
+    
+    return totalEligibleAssets;
+}
 
-    // الذهب الملبوس: يضاف فقط إذا اكتمل حوله
-    if (goldWearComplete) {
-        document.querySelectorAll('.gold-wear-item').forEach(item => {
-            const weight = parseFloat(item.querySelector('.gw-weight').value) || 0;
-            const price = parseFloat(item.querySelector('.gw-price').value) || 0;
-            total += weight * price;
-        });
+function updateNisabStatus(totalAssets) {
+    const t = translations[currentLang];
+    const statusEl = document.getElementById('nisabStatus');
+    const statusText = document.getElementById('nisabStatusText');
+    
+    if (totalAssets >= nisabValue) {
+        statusEl.className = 'nisab-status reached';
+        statusText.innerHTML = '✅ ' + t.nisabReached + ' (' + totalAssets.toFixed(2) + ' ' + getText('currency') + ')';
+    } else {
+        statusEl.className = 'nisab-status not-reached';
+        statusText.innerHTML = '⚠️ ' + t.nisabNotReached + ' (' + totalAssets.toFixed(2) + ' ' + getText('currency') + ' / ' + nisabValue.toFixed(2) + ' ' + getText('currency') + ')';
     }
-
-    // السبائك: تضاف فقط إذا اكتمل حولها
-    if (bullionComplete) {
-        document.querySelectorAll('.bullion-item').forEach(item => {
-            const weight = parseFloat(item.querySelector('.b-weight').value) || 0;
-            const price = parseFloat(item.querySelector('.b-price').value) || 0;
-            total += weight * price;
-        });
-    }
-
-    // الاستثمارات: تضاف فقط إذا اكتمل حولها
-    if (investmentsComplete) {
-        document.querySelectorAll('.inv-value').forEach(input => {
-            total += parseFloat(input.value) || 0;
-        });
-    }
-
-    document.getElementById('totalAssets').textContent = total.toFixed(3) + ' د.ب';
-
-    const zakat = total / 40;
-    let zakatText = zakat.toFixed(3) + ' د.ب';
-    if (!allComplete) {
-        zakatText += ' <span style="font-size:0.8rem;color:var(--gold);">' + t.zakatEstimate + '</span>';
-    }
-    document.getElementById('zakatAmount').innerHTML = zakatText;
-    return total;
 }
 
 // ================================================================
@@ -1567,8 +2162,8 @@ function calculateAll() {
 function saveData() {
     const data = {
         bankTotal: document.getElementById('bankTotal').value,
-        banksStart: document.getElementById('banksStartMonth').value,
-        banksEnd: document.getElementById('banksEndMonth').value,
+        banksNisabType: document.getElementById('banksNisabType').value,
+        invNisabType: document.getElementById('invNisabType').value,
         gwStart: document.getElementById('gwStartMonth').value,
         gwEnd: document.getElementById('gwEndMonth').value,
         bullionStart: document.getElementById('bullionStartMonth').value,
@@ -1585,8 +2180,8 @@ function loadData() {
         if (saved) {
             const data = JSON.parse(saved);
             if (data.bankTotal) document.getElementById('bankTotal').value = data.bankTotal;
-            if (data.banksStart) document.getElementById('banksStartMonth').value = data.banksStart;
-            if (data.banksEnd) document.getElementById('banksEndMonth').value = data.banksEnd;
+            if (data.banksNisabType) document.getElementById('banksNisabType').value = data.banksNisabType;
+            if (data.invNisabType) document.getElementById('invNisabType').value = data.invNisabType;
             if (data.gwStart) document.getElementById('gwStartMonth').value = data.gwStart;
             if (data.gwEnd) document.getElementById('gwEndMonth').value = data.gwEnd;
             if (data.bullionStart) document.getElementById('bullionStartMonth').value = data.bullionStart;
@@ -1626,7 +2221,7 @@ function resetAll() {
     addBullionItem();
     addInvestment();
     
-    ['banks', 'gw', 'bullion', 'inv'].forEach(prefix => {
+    ['gw', 'bullion', 'inv'].forEach(prefix => {
         const start = document.getElementById(prefix + 'StartMonth');
         const end = document.getElementById(prefix + 'EndMonth');
         if (start) start.value = '';
@@ -1638,15 +2233,26 @@ function resetAll() {
     updateTotals();
     localStorage.removeItem('zakatCalculatorData');
     
-    ['banks', 'goldWear', 'bullion', 'investments'].forEach(section => {
+    hawlStates.banks = true;
+    ['goldWear', 'bullion', 'investments'].forEach(section => {
         checkHawl(section);
     });
     
     alert(t.resetSuccess);
+    calculateAll();
 }
 
 // ================================================================
-// 12. أدوات التحكم (اللغة، الثيم، حجم الخط)
+// 12. نافذة التعليمات
+// ================================================================
+
+function toggleHelp() {
+    const modal = document.getElementById('helpModal');
+    modal.classList.toggle('show');
+}
+
+// ================================================================
+// 13. أدوات التحكم
 // ================================================================
 
 function toggleLanguage() {
@@ -1659,9 +2265,15 @@ function applyLanguage() {
     
     document.getElementById('pageTitle').textContent = t.pageTitle;
     document.getElementById('langBtn').textContent = t.langBtn;
+    document.getElementById('helpBtnText').textContent = t.helpBtnText;
     document.getElementById('resetBtnText').textContent = t.resetBtnText;
+    document.getElementById('helpTitle').textContent = t.helpTitle;
+    document.getElementById('helpCloseBtn').textContent = t.helpCloseBtn;
     document.getElementById('titleBanks').innerHTML = '<i class="fas fa-university"></i> ' + t.titleBanks;
     document.getElementById('lblBanks').innerHTML = '<i class="fas fa-wallet"></i> ' + t.lblBanks;
+    document.getElementById('banksNisabLabel').textContent = t.banksNisabLabel;
+    document.getElementById('banksTooltipText').innerHTML = t.banksTooltipText.replace(/\n/g, '<br>');
+    document.getElementById('banksNisabNote').textContent = t.banksNisabNote;
     document.getElementById('titleGoldWear').innerHTML = '<i class="fas fa-ring"></i> ' + t.titleGoldWear;
     document.getElementById('btnAddGoldWear').textContent = t.btnAddGoldWear;
     document.getElementById('totalGoldWearText').textContent = t.totalGoldWearText;
@@ -1671,10 +2283,18 @@ function applyLanguage() {
     document.getElementById('titleInvestments').innerHTML = '<i class="fas fa-chart-pie"></i> ' + t.titleInvestments;
     document.getElementById('btnAddInvestment').textContent = t.btnAddInvestment;
     document.getElementById('noteInvestments').textContent = t.noteInvestments;
-    document.getElementById('totalAssetsLabel').textContent = t.totalAssetsLabel;
-    document.getElementById('zakatLabel').textContent = t.zakatLabel;
+    document.getElementById('invNisabLabel').textContent = t.invNisabLabel;
+    document.getElementById('invTooltipText').innerHTML = t.invTooltipText.replace(/\n/g, '<br>');
+    document.getElementById('invNisabNote').textContent = t.invNisabNote;
     document.getElementById('btnCalculate').textContent = t.btnCalculate;
     document.getElementById('themeText').textContent = appState.theme === 'dark' ? t.themeDay : t.themeNight;
+    
+    document.getElementById('thSection').textContent = t.thSection;
+    document.getElementById('thAmount').textContent = t.thAmount;
+    document.getElementById('thHawlStatus').textContent = t.thHawlStatus;
+    document.getElementById('thStatus').textContent = t.thStatus;
+    document.getElementById('thTotalLabel').textContent = t.thTotalLabel;
+    document.getElementById('thZakatStatus').textContent = t.thZakatStatus;
     
     document.getElementById('noteGoldWearTitle').textContent = t.noteGoldWearTitle;
     document.getElementById('noteGoldWearText').innerHTML = t.noteGoldWearText.replace(/\n/g, '<br>');
@@ -1687,6 +2307,8 @@ function applyLanguage() {
     document.getElementById('gwHawlLabel').textContent = t.gwHawlLabel;
     document.getElementById('bullionHawlLabel').textContent = t.bullionHawlLabel;
     document.getElementById('invHawlLabel').textContent = t.invHawlLabel;
+    
+    document.getElementById('nisabLabel').textContent = t.nisabLabel;
     
     document.querySelectorAll('.gold-carat-select option').forEach(opt => {
         const val = opt.value;
@@ -1731,9 +2353,13 @@ function applyLanguage() {
     document.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = currentLang;
     
-    ['banks', 'goldWear', 'bullion', 'investments'].forEach(section => {
+    hawlStates.banks = true;
+    ['goldWear', 'bullion', 'investments'].forEach(section => {
         checkHawl(section);
     });
+    
+    updateNisabBanner();
+    calculateAll();
 }
 
 function toggleTheme() {
@@ -1756,7 +2382,7 @@ function setFontSize(scale, btn) {
 }
 
 // ================================================================
-// 13. التهيئة
+// 14. التهيئة
 // ================================================================
 
 window.onload = function() {
@@ -1766,7 +2392,7 @@ window.onload = function() {
     const defaultStart = (currentYear - 1) + '-' + currentMonth;
     const defaultEnd = currentYear + '-' + currentMonth;
     
-    ['banks', 'gw', 'bullion', 'inv'].forEach(prefix => {
+    ['gw', 'bullion', 'inv'].forEach(prefix => {
         const start = document.getElementById(prefix + 'StartMonth');
         const end = document.getElementById(prefix + 'EndMonth');
         if (start) start.value = defaultStart;
@@ -1777,7 +2403,8 @@ window.onload = function() {
     addBullionItem();
     addInvestment();
     
-    ['banks', 'goldWear', 'bullion', 'investments'].forEach(section => {
+    hawlStates.banks = true;
+    ['goldWear', 'bullion', 'investments'].forEach(section => {
         checkHawl(section);
     });
     
@@ -1806,6 +2433,7 @@ window.updateTotals = updateTotals;
 window.resetAll = resetAll;
 window.saveData = saveData;
 window.loadData = loadData;
+window.toggleHelp = toggleHelp;
 </script>
 </body>
 </html>
