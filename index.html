@@ -63,7 +63,7 @@
         }
         body {
             background: var(--bg-body);
-            padding: 20px;
+            padding: 10px;
             display: flex;
             justify-content: center;
             min-height: 100vh;
@@ -74,18 +74,18 @@
             width: 100%;
             background: var(--bg-card);
             border-radius: 30px;
-            padding: 30px 25px;
+            padding: 20px 18px;
             box-shadow: var(--shadow);
         }
         
         .main-title {
             text-align: center;
-            padding: 10px 0 15px 0;
-            margin-bottom: 20px;
+            padding: 8px 0 12px 0;
+            margin-bottom: 15px;
             border-bottom: 3px solid var(--gold);
         }
         .main-title h1 {
-            font-size: calc(2.8rem * var(--font-scale));
+            font-size: calc(2.2rem * var(--font-scale));
             font-weight: 900;
             color: var(--green);
             margin: 0;
@@ -94,14 +94,14 @@
         }
         .main-title h1 i {
             color: var(--gold);
-            margin-left: 12px;
+            margin-left: 10px;
         }
         .main-title .gold-line {
-            width: 80px;
-            height: 4px;
+            width: 60px;
+            height: 3px;
             background: var(--gold);
-            margin: 10px auto 0;
-            border-radius: 4px;
+            margin: 8px auto 0;
+            border-radius: 3px;
         }
         [data-theme="dark"] .main-title h1 {
             text-shadow: 0 2px 8px rgba(88, 166, 255, 0.15);
@@ -110,30 +110,30 @@
         .header-tools {
             display: flex;
             flex-wrap: wrap;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
             border-bottom: 2px solid var(--gold);
         }
         .tools-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 5px;
             align-items: center;
         }
         .tools-group button {
-            padding: 8px 14px;
+            padding: 6px 12px;
             border-radius: 25px;
             border: 1px solid var(--border-color);
             background: var(--bg-card);
             color: var(--text-main);
             cursor: pointer;
             font-weight: bold;
-            font-size: calc(0.9rem * var(--font-scale));
+            font-size: calc(0.85rem * var(--font-scale));
             transition: 0.2s;
-            min-width: 40px;
+            min-width: 35px;
         }
         .tools-group button:hover {
             border-color: var(--gold);
@@ -150,15 +150,15 @@
             color: #0d1117 !important;
         }
         .font-btn {
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 25px;
             border: 1px solid var(--border-color);
             background: var(--bg-card);
             color: var(--text-main);
             cursor: pointer;
             font-weight: bold;
-            font-size: calc(0.9rem * var(--font-scale));
-            min-width: 40px;
+            font-size: calc(0.85rem * var(--font-scale));
+            min-width: 35px;
         }
         .font-btn.active {
             border-color: var(--gold);
@@ -172,84 +172,118 @@
             background: var(--green) !important;
             color: #ffffff !important;
             border: none !important;
-            min-width: 60px;
+            min-width: 55px;
+            font-size: calc(0.8rem * var(--font-scale));
         }
         .lang-btn:hover {
             background: var(--green-hover) !important;
         }
+        .reset-btn {
+            background: var(--danger) !important;
+            color: #ffffff !important;
+            border: none !important;
+            font-size: calc(0.8rem * var(--font-scale));
+        }
+        .reset-btn:hover {
+            opacity: 0.85 !important;
+        }
 
         h2 {
             color: var(--green);
-            font-size: calc(1.4rem * var(--font-scale));
-            margin: 25px 0 15px 0;
-            border-right: 5px solid var(--gold);
-            padding-right: 15px;
+            font-size: calc(1.2rem * var(--font-scale));
+            margin: 18px 0 12px 0;
+            border-right: 4px solid var(--gold);
+            padding-right: 12px;
         }
         .section {
             background: var(--bg-section);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
             border: 1px solid var(--border-color);
-            transition: opacity 0.4s, pointer-events 0.4s;
             position: relative;
         }
-        .section.disabled {
-            opacity: var(--disabled-opacity);
-            pointer-events: none;
-        }
-        .section.disabled::after {
-            content: "⚠️ الحول غير مكتمل";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--bg-card);
-            color: var(--gold);
-            padding: 15px 30px;
-            border-radius: 15px;
-            border: 2px solid var(--gold);
-            font-size: calc(1.2rem * var(--font-scale));
-            font-weight: bold;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            z-index: 10;
-            white-space: nowrap;
-        }
-        [data-theme="dark"] .section.disabled::after {
-            background: var(--bg-section);
-            color: var(--gold);
-        }
-        .section.disabled input,
-        .section.disabled select,
-        .section.disabled button:not(.disabled-exempt) {
+        .section.disabled .price-input-wrapper input,
+        .section.disabled .input-wrapper input,
+        .section.disabled .item-row input:not(.hawl-date-input),
+        .section.disabled .item-row select,
+        .section.disabled .add-btn,
+        .section.disabled .remove-btn,
+        .section.disabled .btn:not(.hawl-date-btn) {
             opacity: 0.5;
             pointer-events: none;
+        }
+        .section.disabled .hawl-mini,
+        .section.disabled .hawl-mini *,
+        .section.disabled .hawl-date-input,
+        .section.disabled input[type="month"] {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            background: var(--bg-input) !important;
+            border-color: var(--input-border) !important;
+            color: var(--text-main) !important;
+        }
+        [data-theme="dark"] .section.disabled .hawl-mini,
+        [data-theme="dark"] .section.disabled .hawl-date-input,
+        [data-theme="dark"] .section.disabled input[type="month"] {
+            background: var(--bg-input) !important;
+            border-color: var(--input-border) !important;
+            color: var(--text-main) !important;
+        }
+        .section.disabled .hawl-mini label,
+        .section.disabled .hawl-mini .hawl-status {
+            opacity: 1 !important;
+        }
+        
+        .hawl-message {
+            display: none;
+            font-size: calc(0.85rem * var(--font-scale));
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 8px;
+            margin-top: 8px;
+            text-align: center;
+            width: 100%;
+        }
+        .hawl-message.show {
+            display: block;
+        }
+        .hawl-message.incomplete {
+            background: var(--bg-status-loading);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+        }
+        .hawl-message.complete {
+            background: var(--success-bg);
+            color: var(--success);
+            border: 1px solid var(--success);
         }
         
         .flex-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
             align-items: end;
         }
         .flex-row .field {
-            flex: 1 1 200px;
+            flex: 1 1 180px;
+            min-width: 140px;
         }
         label {
             display: block;
             font-weight: 600;
             color: var(--text-sub);
-            margin-bottom: 5px;
-            font-size: calc(0.95rem * var(--font-scale));
+            margin-bottom: 4px;
+            font-size: calc(0.85rem * var(--font-scale));
         }
-        label i { width: 22px; color: var(--gold); }
+        label i { width: 20px; color: var(--gold); }
         input, select {
             width: 100%;
-            padding: 12px 14px;
+            padding: 10px 12px;
             border: 1px solid var(--input-border);
-            border-radius: 12px;
-            font-size: calc(1rem * var(--font-scale));
+            border-radius: 10px;
+            font-size: calc(0.95rem * var(--font-scale));
             background: var(--bg-input);
             color: var(--text-main);
             transition: 0.2s;
@@ -257,15 +291,66 @@
         input:focus, select:focus {
             border-color: var(--gold);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(184,134,11,0.2);
+            box-shadow: 0 0 0 3px rgba(184,134,11,0.15);
         }
         input::placeholder { color: var(--placeholder-color); }
         input:disabled, select:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
+        input[readonly] {
+            background-color: var(--bg-body);
+            cursor: not-allowed;
+        }
+        [data-theme="dark"] input[readonly] {
+            background-color: var(--bg-section);
+        }
         
-        /* ===== حقل مع ملصق جانبي ===== */
+        .hawl-mini {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            background: var(--bg-body);
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 5px;
+        }
+        .hawl-mini label {
+            font-size: calc(0.8rem * var(--font-scale));
+            margin: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .hawl-mini input[type="month"] {
+            width: auto;
+            padding: 6px 10px;
+            font-size: calc(0.85rem * var(--font-scale));
+            min-width: 130px;
+            flex: 0 1 auto;
+            background: var(--bg-input) !important;
+            border: 1px solid var(--input-border) !important;
+            border-radius: 10px !important;
+            color: var(--text-main) !important;
+        }
+        .hawl-mini input[type="month"]:focus {
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 0 3px rgba(184,134,11,0.15);
+        }
+        .hawl-mini .hawl-status {
+            font-weight: bold;
+            font-size: calc(0.85rem * var(--font-scale));
+            margin-right: auto;
+        }
+        .hawl-mini .hawl-status.complete {
+            color: var(--success);
+        }
+        .hawl-mini .hawl-status.incomplete {
+            color: var(--gold);
+        }
+        
         .input-wrapper {
             display: flex;
             align-items: center;
@@ -274,18 +359,18 @@
         }
         .input-wrapper input {
             flex: 1;
-            border-radius: 12px 0 0 12px;
+            border-radius: 10px 0 0 10px;
             border-right: none;
         }
         .input-wrapper .label-suffix {
-            padding: 12px 14px;
+            padding: 10px 12px;
             background: var(--bg-input);
             border: 1px solid var(--input-border);
-            border-radius: 0 12px 12px 0;
+            border-radius: 0 10px 10px 0;
             border-left: none;
             font-weight: bold;
             color: var(--text-sub);
-            font-size: calc(0.9rem * var(--font-scale));
+            font-size: calc(0.85rem * var(--font-scale));
             white-space: nowrap;
             background: var(--bg-body);
         }
@@ -299,7 +384,6 @@
             border-color: var(--gold);
         }
         
-        /* ===== حقل السعر مع د.ب ===== */
         .price-input-wrapper {
             display: flex;
             align-items: center;
@@ -308,18 +392,21 @@
         }
         .price-input-wrapper input {
             flex: 1;
-            border-radius: 12px 0 0 12px;
+            border-radius: 10px 0 0 10px;
             border-right: none;
         }
+        .price-input-wrapper input:disabled {
+            background-color: var(--bg-body);
+        }
         .price-input-wrapper .currency-label {
-            padding: 12px 14px;
+            padding: 10px 12px;
             background: var(--bg-input);
             border: 1px solid var(--input-border);
-            border-radius: 0 12px 12px 0;
+            border-radius: 0 10px 10px 0;
             border-left: none;
             font-weight: bold;
             color: var(--text-sub);
-            font-size: calc(0.9rem * var(--font-scale));
+            font-size: calc(0.85rem * var(--font-scale));
             white-space: nowrap;
             background: var(--bg-body);
         }
@@ -337,15 +424,15 @@
             background: var(--green);
             color: #ffffff;
             border: none;
-            padding: 12px 25px;
-            border-radius: 30px;
+            padding: 10px 20px;
+            border-radius: 25px;
             font-weight: bold;
-            font-size: calc(1rem * var(--font-scale));
+            font-size: calc(0.95rem * var(--font-scale));
             cursor: pointer;
             transition: 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         .btn:hover:not(:disabled) {
             background: var(--green-hover);
@@ -359,78 +446,78 @@
         .btn-gold { background: var(--gold); color: #1a1a1a; }
         .btn-gold:hover:not(:disabled) { background: var(--gold-hover); }
         [data-theme="dark"] .btn-gold { color: #0d1117; }
-        .btn-sm { padding: 8px 18px; font-size: calc(0.9rem * var(--font-scale)); }
+        .btn-sm { padding: 6px 14px; font-size: calc(0.85rem * var(--font-scale)); }
         .btn-danger { background: var(--danger); color: #ffffff; }
         .btn-danger:hover:not(:disabled) { background: #a93226; }
         
         .gold-price-row {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
             align-items: center;
         }
-        .gold-price-row .price-input-wrapper { flex: 2 1 150px; }
+        .gold-price-row .price-input-wrapper { flex: 2 1 130px; }
         .gold-price-row .btn { flex: 0 0 auto; }
         
         .result-box {
             background: var(--bg-section);
-            border-radius: 25px;
-            padding: 25px;
+            border-radius: 20px;
+            padding: 20px;
             text-align: center;
-            margin-top: 25px;
+            margin-top: 20px;
             border: 2px solid var(--green);
         }
         .result-box .big {
-            font-size: calc(2.2rem * var(--font-scale));
+            font-size: calc(2rem * var(--font-scale));
             font-weight: bold;
             color: var(--green);
         }
         .result-box .sub {
-            font-size: calc(1.2rem * var(--font-scale));
+            font-size: calc(1.1rem * var(--font-scale));
             color: var(--text-sub);
         }
         .alert-box {
             background: var(--bg-status-loading);
-            border-radius: 16px;
-            padding: 18px;
-            margin: 15px 0;
-            border-right: 6px solid var(--gold);
+            border-radius: 12px;
+            padding: 14px;
+            margin: 12px 0;
+            border-right: 5px solid var(--gold);
         }
         .alert-box .title { font-weight: bold; color: var(--gold); }
         .note {
             color: var(--text-sub);
-            font-size: calc(0.9rem * var(--font-scale));
-            margin-top: 5px;
+            font-size: calc(0.85rem * var(--font-scale));
+            margin-top: 4px;
         }
         
         .item-container {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .item-row {
             background: var(--bg-body);
-            border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 10px;
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 8px;
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
             border-right: 4px solid var(--gold);
         }
         .item-row input, .item-row select {
-            flex: 1 1 120px;
-            min-width: 100px;
+            flex: 1 1 100px;
+            min-width: 80px;
         }
         .item-row .input-wrapper {
-            flex: 1 1 120px;
-            min-width: 100px;
+            flex: 1 1 100px;
+            min-width: 80px;
         }
         .item-row .input-wrapper input {
             flex: 1;
         }
         .item-row .price-input-wrapper {
-            flex: 1 1 120px;
-            min-width: 100px;
+            flex: 1 1 100px;
+            min-width: 80px;
         }
         .item-row .price-input-wrapper input {
             flex: 1;
@@ -439,10 +526,10 @@
             background: var(--danger);
             color: #ffffff;
             border: none;
-            border-radius: 30px;
-            padding: 6px 14px;
+            border-radius: 25px;
+            padding: 5px 12px;
             cursor: pointer;
-            font-size: calc(0.8rem * var(--font-scale));
+            font-size: calc(0.75rem * var(--font-scale));
         }
         .item-row .remove-btn:hover:not(:disabled) { opacity: 0.8; }
         .item-row .remove-btn:disabled {
@@ -453,12 +540,12 @@
             background: var(--green);
             color: #ffffff;
             border: none;
-            border-radius: 30px;
-            padding: 10px 22px;
+            border-radius: 25px;
+            padding: 8px 18px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 8px;
-            font-size: calc(0.95rem * var(--font-scale));
+            margin-top: 6px;
+            font-size: calc(0.9rem * var(--font-scale));
         }
         .add-btn:hover:not(:disabled) { background: var(--green-hover); }
         .add-btn:disabled {
@@ -467,17 +554,17 @@
         }
         
         .status-bar {
-            padding: 8px 14px;
+            padding: 6px 12px;
             border-radius: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
             background: var(--bg-body);
             border: 1px solid var(--border-color);
-            font-size: calc(0.9rem * var(--font-scale));
+            font-size: calc(0.85rem * var(--font-scale));
             color: var(--text-main);
         }
         .status-bar.success { background: var(--success-bg); border-color: var(--success); color: var(--success); }
@@ -486,17 +573,17 @@
         
         .price-source-options {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin: 5px 0 10px 0;
+            margin: 3px 0 8px 0;
         }
         .price-source-options label {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             font-weight: normal;
             cursor: pointer;
-            font-size: calc(0.9rem * var(--font-scale));
+            font-size: calc(0.85rem * var(--font-scale));
             color: var(--text-main);
         }
         .price-source-options input[type="radio"] {
@@ -517,8 +604,8 @@
         
         .spinner {
             display: inline-block;
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             border: 3px solid var(--border-color);
             border-top: 3px solid var(--gold);
             border-radius: 50%;
@@ -530,15 +617,15 @@
         }
         
         .price-info {
-            font-size: calc(0.8rem * var(--font-scale));
+            font-size: calc(0.75rem * var(--font-scale));
             color: var(--text-sub);
-            margin-top: 5px;
+            margin-top: 4px;
         }
         .item-summary {
-            font-size: calc(0.9rem * var(--font-scale));
+            font-size: calc(0.85rem * var(--font-scale));
             color: var(--text-sub);
-            margin-top: 8px;
-            padding: 8px 12px;
+            margin-top: 6px;
+            padding: 6px 10px;
             background: var(--bg-body);
             border-radius: 8px;
             border: 1px solid var(--border-color);
@@ -547,22 +634,22 @@
         
         .important-note {
             background: var(--bg-status-loading);
-            border-radius: 12px;
-            padding: 14px 18px;
-            margin-top: 12px;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-top: 10px;
             border: 1px solid var(--gold);
             border-right: 4px solid var(--gold);
         }
         .important-note .note-title {
             font-weight: bold;
             color: var(--gold);
-            font-size: calc(0.95rem * var(--font-scale));
+            font-size: calc(0.9rem * var(--font-scale));
         }
         .important-note .note-text {
             color: var(--text-sub);
-            font-size: calc(0.9rem * var(--font-scale));
-            margin-top: 5px;
-            line-height: 1.6;
+            font-size: calc(0.85rem * var(--font-scale));
+            margin-top: 4px;
+            line-height: 1.5;
         }
         .important-note .note-text .highlight {
             color: var(--gold);
@@ -570,25 +657,25 @@
         }
         
         .footer {
-            margin-top: 35px;
-            padding-top: 20px;
+            margin-top: 25px;
+            padding-top: 15px;
             border-top: 2px solid var(--gold);
             text-align: center;
         }
         .footer .brand {
-            font-size: calc(1.2rem * var(--font-scale));
+            font-size: calc(1.1rem * var(--font-scale));
             font-weight: bold;
             color: var(--gold);
             letter-spacing: 2px;
         }
         .footer .brand i {
-            margin-left: 8px;
+            margin-left: 6px;
         }
         .footer .rights {
-            font-size: calc(0.85rem * var(--font-scale));
+            font-size: calc(0.8rem * var(--font-scale));
             color: var(--text-sub);
-            margin-top: 5px;
-            line-height: 1.8;
+            margin-top: 4px;
+            line-height: 1.6;
         }
         .footer .rights .heart {
             color: var(--danger);
@@ -598,53 +685,45 @@
             font-weight: bold;
         }
         .footer .divider {
-            width: 60px;
+            width: 50px;
             height: 2px;
             background: var(--gold);
-            margin: 10px auto;
+            margin: 8px auto;
             border-radius: 2px;
             opacity: 0.5;
         }
         
-        .auto-check-badge {
-            display: inline-block;
-            font-size: calc(0.75rem * var(--font-scale));
-            color: var(--text-sub);
-            background: var(--bg-body);
-            padding: 4px 12px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            margin-top: 5px;
-        }
-        .auto-check-badge i {
-            color: var(--gold);
-        }
-        
         @media (max-width: 600px) {
-            .container { padding: 15px; }
+            .container { padding: 12px; }
             .item-row { flex-direction: column; align-items: stretch; }
             .gold-price-row { flex-direction: column; }
             .gold-price-row .btn { width: 100%; justify-content: center; }
-            .header-tools { justify-content: center; }
-            .main-title h1 { font-size: calc(2rem * var(--font-scale)); }
-            .section.disabled::after {
-                font-size: calc(0.9rem * var(--font-scale));
-                padding: 10px 20px;
-                white-space: normal;
-                max-width: 90%;
-            }
+            .header-tools { flex-direction: column; align-items: stretch; }
+            .tools-group { justify-content: center; }
+            .main-title h1 { font-size: calc(1.8rem * var(--font-scale)); }
             .footer .brand { font-size: calc(1rem * var(--font-scale)); }
             .input-wrapper input {
-                border-radius: 12px 0 0 12px;
+                border-radius: 10px 0 0 10px;
             }
             .input-wrapper .label-suffix {
-                border-radius: 0 12px 12px 0;
+                border-radius: 0 10px 10px 0;
             }
             .price-input-wrapper input {
-                border-radius: 12px 0 0 12px;
+                border-radius: 10px 0 0 10px;
             }
             .price-input-wrapper .currency-label {
-                border-radius: 0 12px 12px 0;
+                border-radius: 0 10px 10px 0;
+            }
+            .hawl-mini {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .hawl-mini .hawl-status {
+                margin-right: 0;
+                text-align: center;
+            }
+            .hawl-mini input[type="month"] {
+                width: 100%;
             }
         }
     </style>
@@ -668,33 +747,25 @@
             <button class="btn-theme" onclick="toggleTheme()">
                 <span id="themeIcon">🌙</span> <span id="themeText">ليلي</span>
             </button>
+            <button class="reset-btn" onclick="resetAll()"><i class="fas fa-undo"></i> <span id="resetBtnText">إعادة ضبط</span></button>
         </div>
     </div>
 
-    <!-- ===================== 1. الحول والتاريخ ===================== -->
-    <div class="section" id="hawlSection">
-        <h2 id="titleHawl"><i class="fas fa-calendar-alt"></i> الحول (السنة القمرية)</h2>
-        <div class="flex-row">
-            <div class="field">
-                <label id="lblStartDate"><i class="fas fa-play"></i> شهر بداية الحول</label>
-                <input type="month" id="startMonth" />
-            </div>
-            <div class="field">
-                <label id="lblEndDate"><i class="fas fa-flag-checkered"></i> شهر نهاية الحول</label>
-                <input type="month" id="endMonth" />
-            </div>
-            <div class="field" style="flex:0 0 auto;">
-                <button class="btn btn-sm" onclick="checkHawl()" id="btnCheck"><i class="fas fa-check-circle"></i> <span id="btnCheckText">تحقق</span></button>
-            </div>
-        </div>
-        <div class="auto-check-badge"><i class="fas fa-sync-alt fa-fw"></i> <span id="autoCheckText">يتم التحقق تلقائياً عند تغيير الشهور</span></div>
-        <div id="hawlResult" class="alert-box" style="display:none;"></div>
-        <div class="note"><i class="fas fa-info-circle"></i> <span id="noteHawl">حدد شهر البداية وشهر النهاية، وسيتم التحقق تلقائياً.</span></div>
-    </div>
-
-    <!-- ===================== 2. المبلغ الموجود في جميع البنوك ===================== -->
+    <!-- ===================== 1. البنوك ===================== -->
     <div class="section" id="banksSection">
         <h2 id="titleBanks"><i class="fas fa-university"></i> المبلغ الموجود في جميع البنوك</h2>
+        
+        <!-- الحول الخاص بالبنوك -->
+        <div class="hawl-mini">
+            <label><i class="fas fa-calendar-alt"></i> <span id="banksHawlLabel">الحول:</span></label>
+            <input type="month" id="banksStartMonth" class="hawl-date-input" />
+            <span style="font-size:0.8rem;color:var(--text-sub);">→</span>
+            <input type="month" id="banksEndMonth" class="hawl-date-input" />
+            <span class="hawl-status" id="banksHawlStatus">⏳</span>
+        </div>
+        
+        <div class="hawl-message" id="banksHawlMessage"></div>
+        
         <div class="flex-row">
             <div class="field">
                 <label id="lblBanks"><i class="fas fa-wallet"></i> جميع البنوك</label>
@@ -706,9 +777,20 @@
         </div>
     </div>
 
-    <!-- ===================== 3. الذهب الملبوس ===================== -->
+    <!-- ===================== 2. الذهب الملبوس ===================== -->
     <div class="section" id="goldWearSection">
         <h2 id="titleGoldWear"><i class="fas fa-ring"></i> الذهب الملبوس</h2>
+        
+        <!-- الحول الخاص بالذهب الملبوس -->
+        <div class="hawl-mini">
+            <label><i class="fas fa-calendar-alt"></i> <span id="gwHawlLabel">الحول:</span></label>
+            <input type="month" id="gwStartMonth" class="hawl-date-input" />
+            <span style="font-size:0.8rem;color:var(--text-sub);">→</span>
+            <input type="month" id="gwEndMonth" class="hawl-date-input" />
+            <span class="hawl-status" id="gwHawlStatus">⏳</span>
+        </div>
+        
+        <div class="hawl-message" id="gwHawlMessage"></div>
         
         <div id="goldWearContainer">
             <!-- سيتم إضافة عناصر الذهب الملبوس ديناميكياً -->
@@ -722,15 +804,26 @@
                 يوجد <span class="highlight">اختلاف بين العلماء</span> في وجوب الزكاة على الذهب الملبوس (المستخدم للزينة). 
                 بعض العلماء يرون أنه <span class="highlight">لا زكاة</span> فيه لأنه للاستعمال الشخصي، 
                 والبعض الآخر يرون أنه <span class="highlight">تجب فيه الزكاة</span> إذا بلغ النصاب وحال عليه الحول.
-                <br><br>
-                <span style="font-size:0.9rem; opacity:0.8;">💡 <strong>ننصحك بالبحث والاستفسار من أهل العلم والثقة لتحديد الرأي الذي ترتاح له.</strong></span>
+                <br>
+                💡 <strong>ننصحك بالبحث والاستفسار من أهل العلم والثقة.</strong>
             </div>
         </div>
     </div>
 
-    <!-- ===================== 4. سبائك الذهب ===================== -->
+    <!-- ===================== 3. سبائك الذهب ===================== -->
     <div class="section" id="bullionSection">
         <h2 id="titleBullion"><i class="fas fa-cubes"></i> سبائك الذهب (عيار 24)</h2>
+        
+        <!-- الحول الخاص بالسبائك -->
+        <div class="hawl-mini">
+            <label><i class="fas fa-calendar-alt"></i> <span id="bullionHawlLabel">الحول:</span></label>
+            <input type="month" id="bullionStartMonth" class="hawl-date-input" />
+            <span style="font-size:0.8rem;color:var(--text-sub);">→</span>
+            <input type="month" id="bullionEndMonth" class="hawl-date-input" />
+            <span class="hawl-status" id="bullionHawlStatus">⏳</span>
+        </div>
+        
+        <div class="hawl-message" id="bullionHawlMessage"></div>
         
         <div id="bullionContainer">
             <!-- سيتم إضافة عناصر السبائك ديناميكياً -->
@@ -739,9 +832,21 @@
         <div class="item-summary" id="bullionSummary"><span id="totalBullionText">إجمالي قيمة السبائك:</span> <strong id="totalBullionValue">0.00</strong> د.ب</div>
     </div>
 
-    <!-- ===================== 5. استثمارات وعقارات ===================== -->
+    <!-- ===================== 4. استثمارات وعقارات ===================== -->
     <div class="section" id="investmentsSection">
         <h2 id="titleInvestments"><i class="fas fa-chart-pie"></i> استثمارات وعقارات</h2>
+        
+        <!-- الحول الخاص بالاستثمارات -->
+        <div class="hawl-mini">
+            <label><i class="fas fa-calendar-alt"></i> <span id="invHawlLabel">الحول:</span></label>
+            <input type="month" id="invStartMonth" class="hawl-date-input" />
+            <span style="font-size:0.8rem;color:var(--text-sub);">→</span>
+            <input type="month" id="invEndMonth" class="hawl-date-input" />
+            <span class="hawl-status" id="invHawlStatus">⏳</span>
+        </div>
+        
+        <div class="hawl-message" id="invHawlMessage"></div>
+        
         <div id="investmentsContainer">
             <!-- سيتم إضافة عناصر الاستثمار ديناميكياً -->
         </div>
@@ -749,18 +854,18 @@
         <div class="note"><i class="fas fa-info-circle"></i> <span id="noteInvestments">أدخل قيمة العقار، السيارة، الأسهم، أو أي أصل آخر.</span></div>
     </div>
 
-    <!-- ===================== 6. النتيجة النهائية ===================== -->
+    <!-- ===================== 5. النتيجة النهائية ===================== -->
     <div class="result-box" id="resultBox">
         <div class="sub"><i class="fas fa-calculator"></i> <span id="totalAssetsLabel">مجموع الأصول الخاضعة للزكاة</span></div>
         <div class="big" id="totalAssets">0.00</div>
-        <div class="sub" style="margin-top:10px;">
+        <div class="sub" style="margin-top:8px;">
             <i class="fas fa-hand-holding-usd"></i> <span id="zakatLabel">مقدار الزكاة (المجموع ÷ 40)</span>
         </div>
         <div class="big" id="zakatAmount" style="color:var(--gold);">0.00</div>
-        <button class="btn" id="calculateBtn" style="margin-top:20px;width:100%;" onclick="calculateAll()"><i class="fas fa-calculator"></i> <span id="btnCalculate">احسب الزكاة الآن</span></button>
+        <button class="btn" id="calculateBtn" style="margin-top:15px;width:100%;" onclick="calculateAll()"><i class="fas fa-calculator"></i> <span id="btnCalculate">احسب الزكاة الآن</span></button>
     </div>
 
-    <!-- ===================== 7. التذييل ===================== -->
+    <!-- ===================== 6. التذييل ===================== -->
     <div class="footer">
         <div class="divider"></div>
         <div class="brand">
@@ -788,12 +893,9 @@ const translations = {
     ar: {
         pageTitle: 'حاسبة الزكاة الشاملة',
         langBtn: '🇬🇧 English',
-        titleHawl: 'الحول (السنة القمرية)',
-        lblStartDate: 'شهر بداية الحول',
-        lblEndDate: 'شهر نهاية الحول',
-        btnCheck: 'تحقق',
-        noteHawl: 'حدد شهر البداية وشهر النهاية، وسيتم التحقق تلقائياً.',
-        autoCheckText: 'يتم التحقق تلقائياً عند تغيير الشهور',
+        resetBtnText: 'إعادة ضبط',
+        resetConfirm: '⚠️ هل أنت متأكد؟ سيتم مسح جميع البيانات التي أدخلتها.',
+        resetSuccess: '✅ تم إعادة ضبط جميع البيانات بنجاح',
         titleBanks: 'المبلغ الموجود في جميع البنوك',
         lblBanks: 'جميع البنوك',
         titleGoldWear: 'الذهب الملبوس',
@@ -813,7 +915,7 @@ const translations = {
         goldWeight: 'الوزن',
         goldPrice: 'سعر العيار',
         btnFetch: 'جلب السعر',
-        autoLabel: 'تلقائي (جلب من الإنترنت) 🌐',
+        autoLabel: 'تلقائي 🌐',
         manualLabel: 'يدوي ✍️',
         priceStatus: 'اضغط على "جلب السعر" للحصول على أحدث الأسعار',
         lastUpdate: 'آخر تحديث:',
@@ -822,40 +924,42 @@ const translations = {
         invName: 'الاسم (مثال: عقار، سيارة، أسهم...)',
         invValue: 'القيمة',
         bullionWeight: 'الوزن',
-        bullionPrice: 'سعر السبيكة',
-        hawlComplete: '✅ مكتمل الحول!',
+        bullionPrice: 'سعر السوق اليوم',
+        hawlComplete: '✅ مكتمل',
         hawlNotComplete: '⚠️ الحول غير مكتمل',
-        hawlChecking: '⏳ جاري التحقق...',
+        hawlMessageComplete: '✅ الحول مكتمل - يمكنك إدخال البيانات',
+        hawlMessageIncomplete: '⚠️ الحول غير مكتمل - عذراً لا يمكنك إدخال البيانات حالياً',
         fromMonth: 'من',
         toMonth: 'إلى',
-        zakatDue: 'موعد الزكاة المتوقع:',
-        noZakatYet: '⚠️ لم يكتمل الحول بعد، لا تجب الزكاة حالياً.',
-        zakatEstimate: '(حساب تقديري، الحول غير مكتمل)',
-        pleaseSelectDates: 'الرجاء اختيار شهر البداية وشهر النهاية',
+        noZakatYet: '⚠️ الحول غير مكتمل لبعض الأصول، لا تجب الزكاة على الأصول التي لم يكتمل حولها.',
+        zakatEstimate: '(حساب تقديري، بعض الأصول لم يكتمل حولها)',
         themeNight: 'ليلي',
         themeDay: 'نهاري',
         fetchSuccess: '✅ تم جلب الأسعار بنجاح من',
         fetchFail: '❌ فشل جلب الأسعار. يرجى الإدخال يدوياً.',
         fetchError: '❌ حدث خطأ:',
         noteGoldWearTitle: 'ملاحظة مهمة بخصوص الذهب الملبوس:',
-        noteGoldWearText: 'يوجد اختلاف بين العلماء في وجوب الزكاة على الذهب الملبوس (المستخدم للزينة). بعض العلماء يرون أنه لا زكاة فيه لأنه للاستعمال الشخصي، والبعض الآخر يرون أنه تجب فيه الزكاة إذا بلغ النصاب وحال عليه الحول.\n💡 ننصحك بالبحث والاستفسار من أهل العلم والثقة لتحديد الرأي الذي ترتاح له.',
+        noteGoldWearText: 'يوجد اختلاف بين العلماء في وجوب الزكاة على الذهب الملبوس (المستخدم للزينة). بعض العلماء يرون أنه لا زكاة فيه لأنه للاستعمال الشخصي، والبعض الآخر يرون أنه تجب فيه الزكاة إذا بلغ النصاب وحال عليه الحول.\n💡 ننصحك بالبحث والاستفسار من أهل العلم والثقة.',
         footerRights: 'جميع الحقوق محفوظة © 2026',
         footerDeveloped: 'تم التطوير بواسطة Muharraqi',
         footerPray: '🤲 أرجو الدعاء لي ولوالدي بالخير',
         months: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
         currency: 'د.ب',
         caratLabel: 'عيار',
-        gramLabel: 'غرام'
+        gramLabel: 'غرام',
+        banksHawlLabel: 'حول البنوك',
+        gwHawlLabel: 'حول الذهب الملبوس',
+        bullionHawlLabel: 'حول السبائك',
+        invHawlLabel: 'حول الاستثمارات',
+        hawlStatusComplete: '✅ مكتمل',
+        hawlStatusIncomplete: '⚠️ غير مكتمل'
     },
     en: {
         pageTitle: 'Comprehensive Zakat Calculator',
         langBtn: '🇸🇦 العربية',
-        titleHawl: 'Hawl (Lunar Year)',
-        lblStartDate: 'Start Month of Hawl',
-        lblEndDate: 'End Month of Hawl',
-        btnCheck: 'Check',
-        noteHawl: 'Select start month and end month, automatic check will be performed.',
-        autoCheckText: 'Automatically checks when months change',
+        resetBtnText: 'Reset',
+        resetConfirm: '⚠️ Are you sure? All entered data will be cleared.',
+        resetSuccess: '✅ All data has been reset successfully',
         titleBanks: 'Total Amount in All Banks',
         lblBanks: 'All Banks',
         titleGoldWear: 'Gold Jewelry',
@@ -875,7 +979,7 @@ const translations = {
         goldWeight: 'Weight',
         goldPrice: 'Carat Price',
         btnFetch: 'Fetch Price',
-        autoLabel: 'Auto (Fetch from Internet) 🌐',
+        autoLabel: 'Auto 🌐',
         manualLabel: 'Manual ✍️',
         priceStatus: 'Click "Fetch Price" to get latest prices',
         lastUpdate: 'Last Update:',
@@ -884,122 +988,109 @@ const translations = {
         invName: 'Name (e.g., Property, Car, Stocks...)',
         invValue: 'Value',
         bullionWeight: 'Weight',
-        bullionPrice: 'Bullion Price',
-        hawlComplete: '✅ Hawl Complete!',
+        bullionPrice: 'Market Price Today',
+        hawlComplete: '✅ Complete',
         hawlNotComplete: '⚠️ Hawl Not Complete',
-        hawlChecking: '⏳ Checking...',
+        hawlMessageComplete: '✅ Hawl complete - You can enter data',
+        hawlMessageIncomplete: '⚠️ Hawl not complete - You cannot enter data currently',
         fromMonth: 'From',
         toMonth: 'To',
-        zakatDue: 'Expected Zakat Date:',
-        noZakatYet: '⚠️ Hawl is not complete yet, zakat is not due.',
-        zakatEstimate: '(Estimated, Hawl not complete)',
-        pleaseSelectDates: 'Please select start month and end month',
+        noZakatYet: '⚠️ Hawl is not complete for some assets, zakat is not due on assets with incomplete Hawl.',
+        zakatEstimate: '(Estimated, some assets have incomplete Hawl)',
         themeNight: 'Night',
         themeDay: 'Day',
         fetchSuccess: '✅ Prices fetched successfully from',
         fetchFail: '❌ Failed to fetch prices. Please enter manually.',
         fetchError: '❌ Error:',
         noteGoldWearTitle: 'Important Note About Gold Jewelry:',
-        noteGoldWearText: 'There is a difference of opinion among scholars regarding the obligation of Zakat on gold jewelry (used for adornment). Some scholars view that there is no Zakat on it because it is for personal use, while others view that Zakat is due on it if it reaches the Nisab and a full Hawl has passed.\n💡 We advise you to research and consult with trusted scholars to determine the opinion you are comfortable with.',
+        noteGoldWearText: 'There is a difference of opinion among scholars regarding the obligation of Zakat on gold jewelry (used for adornment). Some scholars view that there is no Zakat on it because it is for personal use, while others view that Zakat is due on it if it reaches the Nisab and a full Hawl has passed.\n💡 We advise you to research and consult with trusted scholars.',
         footerRights: 'All Rights Reserved © 2026',
         footerDeveloped: 'Developed by Muharraqi',
         footerPray: '🤲 Please pray for me and my parents',
         months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         currency: 'BHD',
         caratLabel: 'Carat',
-        gramLabel: 'g'
+        gramLabel: 'g',
+        banksHawlLabel: 'Banks Hawl',
+        gwHawlLabel: 'Jewelry Hawl',
+        bullionHawlLabel: 'Bullion Hawl',
+        invHawlLabel: 'Investments Hawl',
+        hawlStatusComplete: '✅ Complete',
+        hawlStatusIncomplete: '⚠️ Not Complete'
     }
 };
 
 let currentLang = 'ar';
-let hawlComplete = false;
-
-// ================================================================
-// 2. حالة التطبيق
-// ================================================================
-
-let appState = {
-    theme: 'light',
-    fontSize: 1,
-    goldPrices: { '24': 0, '22': 0, '21': 0, '20': 0, '18': 0, lastUpdate: null, source: null }
+let hawlStates = {
+    banks: false,
+    goldWear: false,
+    bullion: false,
+    investments: false
 };
 
 // ================================================================
-// 3. جلب أسعار الذهب
+// 2. جلب أسعار الذهب - باستخدام API مفتوح
 // ================================================================
 
 async function fetchGoldPrices() {
-    updateAllStatus('loading', 'جاري جلب الأسعار...');
+    document.querySelectorAll('.price-status .status-text').forEach(el => {
+        const parent = el.closest('.status-bar');
+        if (parent) {
+            parent.className = 'status-bar loading';
+            el.textContent = '⏳ جاري جلب الأسعار...';
+        }
+    });
+    
+    document.querySelectorAll('.fetch-btn').forEach(btn => {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span>';
+    });
     
     try {
-        let price24 = null;
-        let source = '';
+        const response = await fetch('https://api.gold-api.com/price/XAU');
+        if (!response.ok) throw new Error('API Error');
+        const data = await response.json();
+        
+        const priceUSD_Ounce = data.price;
+        const pricePerGramUSD = priceUSD_Ounce / 31.1035;
+        const pricePerGramBHD = pricePerGramUSD * 0.377;
+        
+        appState.goldPrices['24'] = parseFloat(pricePerGramBHD.toFixed(4));
+        appState.goldPrices['22'] = parseFloat((pricePerGramBHD * (22/24)).toFixed(4));
+        appState.goldPrices['21'] = parseFloat((pricePerGramBHD * (21/24)).toFixed(4));
+        appState.goldPrices['20'] = parseFloat((pricePerGramBHD * (20/24)).toFixed(4));
+        appState.goldPrices['18'] = parseFloat((pricePerGramBHD * (18/24)).toFixed(4));
+        appState.goldPrices['lastUpdate'] = new Date().toLocaleString(currentLang === 'ar' ? 'ar-BH' : 'en-US');
+        appState.goldPrices['source'] = 'Gold-API.com';
 
-        try {
-            const response = await fetch('https://www.goldapi.io/api/XAU/USD', {
-                headers: { 'x-access-token': 'goldapi-4ce604c6334baceaab771f5a376ef4b4-io' }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                if (data && data.price) {
-                    price24 = parseFloat(data.price) / 31.1035;
-                    source = 'GoldAPI.io';
-                }
-            }
-        } catch (e) {}
-
-        if (!price24) {
-            try {
-                const response = await fetch('https://api.metals-api.com/v1/latest?access_key=metalsapi_4ce604c6334baceaab771f5a376ef4b4&base=USD&symbols=XAU');
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data && data.rates && data.rates.XAU) {
-                        price24 = parseFloat(data.rates.XAU) / 31.1035;
-                        source = 'Metals-API';
-                    }
-                }
-            } catch (e) {}
-        }
-
-        if (!price24) {
-            try {
-                const response = await fetch('https://goldprice.today/api.php?data=live&currency=USD');
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data && data.XAU && data.XAU.price) {
-                        price24 = parseFloat(data.XAU.price) / 31.1035;
-                        source = 'GoldPrice.Today';
-                    }
-                }
-            } catch (e) {}
-        }
-
-        if (price24 && price24 > 0) {
-            const bhdRate = 0.377;
-            const price24BHD = price24 * bhdRate;
-            
-            appState.goldPrices['24'] = parseFloat(price24BHD.toFixed(4));
-            appState.goldPrices['22'] = parseFloat((price24BHD * (22/24)).toFixed(4));
-            appState.goldPrices['21'] = parseFloat((price24BHD * (21/24)).toFixed(4));
-            appState.goldPrices['20'] = parseFloat((price24BHD * (20/24)).toFixed(4));
-            appState.goldPrices['18'] = parseFloat((price24BHD * (18/24)).toFixed(4));
-            appState.goldPrices['lastUpdate'] = new Date().toLocaleString(currentLang === 'ar' ? 'ar-BH' : 'en-US');
-            appState.goldPrices['source'] = source;
-
-            updateAllPriceFields();
-            const t = translations[currentLang];
-            const successMsg = t.fetchSuccess + ' ' + source + ' | سعر 24: ' + appState.goldPrices['24'] + ' ' + t.currency;
-            updateAllStatus('success', successMsg);
-            updateAllPriceInfo(appState.goldPrices['lastUpdate'] + ' (من ' + source + ')');
-            
-        } else {
-            const t = translations[currentLang];
-            updateAllStatus('error', t.fetchFail);
-        }
-
-    } catch (error) {
+        updateAllPriceFields();
+        
         const t = translations[currentLang];
-        updateAllStatus('error', t.fetchError + ' ' + error.message);
+        const successMsg = t.fetchSuccess + ' Gold-API.com | سعر 24: ' + appState.goldPrices['24'] + ' ' + t.currency;
+        
+        document.querySelectorAll('.price-status .status-text').forEach(el => {
+            const parent = el.closest('.status-bar');
+            if (parent) {
+                parent.className = 'status-bar success';
+                el.textContent = successMsg;
+            }
+        });
+        
+        const infoText = appState.goldPrices['lastUpdate'] + ' (من Gold-API.com)';
+        document.querySelectorAll('.price-info-text').forEach(el => {
+            el.textContent = infoText;
+        });
+        
+    } catch (error) {
+        console.error('Fetch error:', error);
+        const t = translations[currentLang];
+        document.querySelectorAll('.price-status .status-text').forEach(el => {
+            const parent = el.closest('.status-bar');
+            if (parent) {
+                parent.className = 'status-bar error';
+                el.textContent = t.fetchFail + ' ' + error.message;
+            }
+        });
     } finally {
         document.querySelectorAll('.fetch-btn').forEach(btn => {
             btn.disabled = false;
@@ -1013,14 +1104,6 @@ function getText(key) {
     return t[key] || key;
 }
 
-function updateAllStatus(type, message) {
-    document.querySelectorAll('.price-status .status-text').forEach(el => {
-        const parent = el.closest('.status-bar');
-        parent.className = 'status-bar ' + type;
-        el.textContent = message;
-    });
-}
-
 function updateAllPriceFields() {
     document.querySelectorAll('.gold-wear-item').forEach((item, index) => {
         const carat = item.querySelector('.gold-carat-select').value;
@@ -1031,7 +1114,8 @@ function updateAllPriceFields() {
             if (price > 0) {
                 priceInput.value = price;
                 priceInput.readOnly = true;
-                priceInput.style.backgroundColor = 'var(--bg-input)';
+                priceInput.disabled = false;
+                priceInput.style.backgroundColor = 'var(--bg-body)';
             }
         }
     });
@@ -1044,7 +1128,8 @@ function updateAllPriceFields() {
             if (price > 0) {
                 priceInput.value = price;
                 priceInput.readOnly = true;
-                priceInput.style.backgroundColor = 'var(--bg-input)';
+                priceInput.disabled = false;
+                priceInput.style.backgroundColor = 'var(--bg-body)';
             }
         }
     });
@@ -1052,20 +1137,112 @@ function updateAllPriceFields() {
     updateTotals();
 }
 
-function updateAllPriceInfo(info) {
-    document.querySelectorAll('.price-info-text').forEach(el => {
-        el.textContent = info || getText('notUpdated');
-    });
-}
+// ================================================================
+// 3. حالة التطبيق
+// ================================================================
+
+let appState = {
+    theme: 'light',
+    fontSize: 1,
+    goldPrices: { '24': 0, '22': 0, '21': 0, '20': 0, '18': 0, lastUpdate: null, source: null }
+};
 
 // ================================================================
-// 4. إدارة عناصر الذهب الملبوس
+// 4. دوال الحول لكل قسم
+// ================================================================
+
+function checkHawl(section) {
+    const prefixMap = {
+        'banks': 'banks',
+        'goldWear': 'gw',
+        'bullion': 'bullion',
+        'investments': 'inv'
+    };
+    const prefix = prefixMap[section] || section;
+    const startInput = document.getElementById(prefix + 'StartMonth');
+    const endInput = document.getElementById(prefix + 'EndMonth');
+    const statusEl = document.getElementById(prefix + 'HawlStatus');
+    const messageEl = document.getElementById(prefix + 'HawlMessage');
+    const sectionEl = document.getElementById(section + 'Section');
+    const t = translations[currentLang];
+    
+    if (!startInput || !endInput || !statusEl || !messageEl) return;
+    
+    const startVal = startInput.value;
+    const endVal = endInput.value;
+    
+    if (!startVal || !endVal) {
+        statusEl.textContent = '⏳';
+        statusEl.className = 'hawl-status';
+        messageEl.className = 'hawl-message';
+        messageEl.textContent = '';
+        if (sectionEl) sectionEl.classList.add('disabled');
+        hawlStates[section] = false;
+        return;
+    }
+    
+    const [startYear, startMonth] = startVal.split('-').map(Number);
+    const [endYear, endMonth] = endVal.split('-').map(Number);
+    const monthsDiff = (endYear - startYear) * 12 + (endMonth - startMonth);
+    
+    const isComplete = monthsDiff >= 12;
+    hawlStates[section] = isComplete;
+    
+    if (isComplete) {
+        statusEl.textContent = t.hawlStatusComplete;
+        statusEl.className = 'hawl-status complete';
+        messageEl.className = 'hawl-message complete show';
+        messageEl.textContent = t.hawlMessageComplete;
+        if (sectionEl) sectionEl.classList.remove('disabled');
+    } else {
+        statusEl.textContent = t.hawlStatusIncomplete;
+        statusEl.className = 'hawl-status incomplete';
+        messageEl.className = 'hawl-message incomplete show';
+        messageEl.textContent = t.hawlMessageIncomplete;
+        if (sectionEl) sectionEl.classList.add('disabled');
+    }
+    
+    const addBtnMap = {
+        'banks': 'addBanksBtn',
+        'goldWear': 'addGoldWearBtn',
+        'bullion': 'addBullionBtn',
+        'investments': 'addInvestmentBtn'
+    };
+    const addBtn = document.getElementById(addBtnMap[section]);
+    if (addBtn) addBtn.disabled = !isComplete;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const sections = ['banks', 'gw', 'bullion', 'inv'];
+    const sectionMap = {
+        'banks': 'banks',
+        'gw': 'goldWear',
+        'bullion': 'bullion',
+        'inv': 'investments'
+    };
+    
+    sections.forEach(prefix => {
+        const start = document.getElementById(prefix + 'StartMonth');
+        const end = document.getElementById(prefix + 'EndMonth');
+        if (start && end) {
+            start.addEventListener('change', function() {
+                checkHawl(sectionMap[prefix]);
+            });
+            end.addEventListener('change', function() {
+                checkHawl(sectionMap[prefix]);
+            });
+        }
+    });
+});
+
+// ================================================================
+// 5. إدارة عناصر الذهب الملبوس
 // ================================================================
 
 let goldWearCounter = 0;
 
 function addGoldWearItem() {
-    if (!hawlComplete) return;
+    if (!hawlStates.goldWear) return;
     const container = document.getElementById('goldWearContainer');
     const id = goldWearCounter++;
     const t = translations[currentLang];
@@ -1073,24 +1250,24 @@ function addGoldWearItem() {
     div.className = 'item-row gold-wear-item';
     div.dataset.id = id;
     div.innerHTML = `
-        <input type="text" placeholder="${getText('goldName')}" class="gw-name" style="flex:1.2;" />
-        <select class="gold-carat-select" onchange="updateGoldWearPrice(${id})" style="flex:0.8;">
+        <input type="text" placeholder="${getText('goldName')}" class="gw-name" style="flex:1.2;min-width:80px;" />
+        <select class="gold-carat-select" onchange="updateGoldWearPrice(${id})" style="flex:0.7;min-width:70px;">
             <option value="18">18 ${getText('caratLabel')}</option>
             <option value="20">20 ${getText('caratLabel')}</option>
             <option value="21" selected>21 ${getText('caratLabel')}</option>
             <option value="22">22 ${getText('caratLabel')}</option>
         </select>
-        <div class="input-wrapper" style="flex:0.8; min-width:100px;">
+        <div class="input-wrapper" style="flex:0.7;min-width:80px;">
             <input type="number" placeholder="${getText('goldWeight')}" step="0.01" class="gw-weight" style="flex:1;" />
             <span class="label-suffix">${getText('gramLabel')}</span>
         </div>
-        <div style="flex:2; min-width:150px;">
-            <div class="price-source-options" style="margin:0;">
-                <label style="font-size:calc(0.8rem * var(--font-scale));">
+        <div style="flex:2;min-width:140px;">
+            <div class="price-source-options" style="margin:2px 0 5px 0;">
+                <label style="font-size:calc(0.75rem * var(--font-scale));">
                     <input type="radio" name="goldSource_${id}" value="auto" checked onchange="toggleGoldWearSource(${id})">
                     ${getText('autoLabel')}
                 </label>
-                <label style="font-size:calc(0.8rem * var(--font-scale));">
+                <label style="font-size:calc(0.75rem * var(--font-scale));">
                     <input type="radio" name="goldSource_${id}" value="manual" onchange="toggleGoldWearSource(${id})">
                     ${getText('manualLabel')}
                 </label>
@@ -1100,7 +1277,7 @@ function addGoldWearItem() {
                     <input type="number" placeholder="${getText('goldPrice')}" step="0.001" class="gw-price gold-price-input" style="flex:1;" />
                     <span class="currency-label">${getText('currency')}</span>
                 </div>
-                <button class="btn btn-gold btn-sm fetch-btn" onclick="fetchGoldPrices()" style="flex:0 0 auto; padding:8px 12px; font-size:calc(0.8rem * var(--font-scale));">
+                <button class="btn btn-gold btn-sm fetch-btn" onclick="fetchGoldPrices()" style="flex:0 0 auto;padding:5px 10px;font-size:calc(0.75rem * var(--font-scale));">
                     <i class="fas fa-sync-alt"></i> ${getText('btnFetch')}
                 </button>
             </div>
@@ -1113,6 +1290,11 @@ function addGoldWearItem() {
         el.addEventListener('input', updateTotals);
         el.addEventListener('change', updateTotals);
     });
+    
+    const priceInput = div.querySelector('.gw-price');
+    priceInput.readOnly = true;
+    priceInput.disabled = false;
+    priceInput.style.backgroundColor = 'var(--bg-body)';
     
     updateTotals();
 }
@@ -1134,13 +1316,16 @@ function toggleGoldWearSource(id) {
         if (price > 0) {
             priceInput.value = price;
             priceInput.readOnly = true;
-            priceInput.style.backgroundColor = 'var(--bg-input)';
+            priceInput.disabled = false;
+            priceInput.style.backgroundColor = 'var(--bg-body)';
+            priceInput.placeholder = getText('goldPrice');
             updateTotals();
         } else {
             fetchGoldPrices();
         }
     } else {
         priceInput.readOnly = false;
+        priceInput.disabled = false;
         priceInput.style.backgroundColor = 'var(--bg-input)';
         priceInput.placeholder = getText('goldPrice');
         priceInput.value = '';
@@ -1160,20 +1345,21 @@ function updateGoldWearPrice(id) {
         if (price > 0) {
             priceInput.value = price;
             priceInput.readOnly = true;
-            priceInput.style.backgroundColor = 'var(--bg-input)';
+            priceInput.disabled = false;
+            priceInput.style.backgroundColor = 'var(--bg-body)';
         }
     }
     updateTotals();
 }
 
 // ================================================================
-// 5. إدارة عناصر السبائك
+// 6. إدارة عناصر السبائك
 // ================================================================
 
 let bullionCounter = 0;
 
 function addBullionItem() {
-    if (!hawlComplete) return;
+    if (!hawlStates.bullion) return;
     const container = document.getElementById('bullionContainer');
     const id = bullionCounter++;
     const t = translations[currentLang];
@@ -1181,17 +1367,17 @@ function addBullionItem() {
     div.className = 'item-row bullion-item';
     div.dataset.id = id;
     div.innerHTML = `
-        <div class="input-wrapper" style="flex:0.8; min-width:100px;">
+        <div class="input-wrapper" style="flex:0.7;min-width:80px;">
             <input type="number" placeholder="${getText('bullionWeight')}" step="0.01" class="b-weight" style="flex:1;" />
             <span class="label-suffix">${getText('gramLabel')}</span>
         </div>
-        <div style="flex:2; min-width:150px;">
-            <div class="price-source-options" style="margin:0;">
-                <label style="font-size:calc(0.8rem * var(--font-scale));">
+        <div style="flex:2;min-width:140px;">
+            <div class="price-source-options" style="margin:2px 0 5px 0;">
+                <label style="font-size:calc(0.75rem * var(--font-scale));">
                     <input type="radio" name="bullionSource_${id}" value="auto" checked onchange="toggleBullionSource(${id})">
                     ${getText('autoLabel')}
                 </label>
-                <label style="font-size:calc(0.8rem * var(--font-scale));">
+                <label style="font-size:calc(0.75rem * var(--font-scale));">
                     <input type="radio" name="bullionSource_${id}" value="manual" onchange="toggleBullionSource(${id})">
                     ${getText('manualLabel')}
                 </label>
@@ -1201,7 +1387,7 @@ function addBullionItem() {
                     <input type="number" placeholder="${getText('bullionPrice')}" step="0.001" class="b-price bullion-price-input" style="flex:1;" />
                     <span class="currency-label">${getText('currency')}</span>
                 </div>
-                <button class="btn btn-gold btn-sm fetch-btn" onclick="fetchGoldPrices()" style="flex:0 0 auto; padding:8px 12px; font-size:calc(0.8rem * var(--font-scale));">
+                <button class="btn btn-gold btn-sm fetch-btn" onclick="fetchGoldPrices()" style="flex:0 0 auto;padding:5px 10px;font-size:calc(0.75rem * var(--font-scale));">
                     <i class="fas fa-sync-alt"></i> ${getText('btnFetch')}
                 </button>
             </div>
@@ -1214,6 +1400,11 @@ function addBullionItem() {
         el.addEventListener('input', updateTotals);
         el.addEventListener('change', updateTotals);
     });
+    
+    const priceInput = div.querySelector('.b-price');
+    priceInput.readOnly = true;
+    priceInput.disabled = false;
+    priceInput.style.backgroundColor = 'var(--bg-body)';
     
     updateTotals();
 }
@@ -1234,13 +1425,16 @@ function toggleBullionSource(id) {
         if (price > 0) {
             priceInput.value = price;
             priceInput.readOnly = true;
-            priceInput.style.backgroundColor = 'var(--bg-input)';
+            priceInput.disabled = false;
+            priceInput.style.backgroundColor = 'var(--bg-body)';
+            priceInput.placeholder = getText('bullionPrice');
             updateTotals();
         } else {
             fetchGoldPrices();
         }
     } else {
         priceInput.readOnly = false;
+        priceInput.disabled = false;
         priceInput.style.backgroundColor = 'var(--bg-input)';
         priceInput.placeholder = getText('bullionPrice');
         priceInput.value = '';
@@ -1249,18 +1443,18 @@ function toggleBullionSource(id) {
 }
 
 // ================================================================
-// 6. إدارة الاستثمارات
+// 7. إدارة الاستثمارات
 // ================================================================
 
 function addInvestment() {
-    if (!hawlComplete) return;
+    if (!hawlStates.investments) return;
     const container = document.getElementById('investmentsContainer');
     const t = translations[currentLang];
     const div = document.createElement('div');
     div.className = 'item-row';
     div.innerHTML = `
-        <input type="text" placeholder="${getText('invName')}" class="inv-name" style="flex:2;" />
-        <div class="price-input-wrapper" style="flex:1; min-width:100px;">
+        <input type="text" placeholder="${getText('invName')}" class="inv-name" style="flex:2;min-width:80px;" />
+        <div class="price-input-wrapper" style="flex:1;min-width:80px;">
             <input type="number" placeholder="${getText('invValue')}" class="inv-value" step="0.01" style="flex:1;" />
             <span class="currency-label">${getText('currency')}</span>
         </div>
@@ -1277,11 +1471,10 @@ function addInvestment() {
 }
 
 // ================================================================
-// 7. تحديث المجاميع (تلقائياً)
+// 8. تحديث المجاميع
 // ================================================================
 
 function updateTotals() {
-    // الذهب الملبوس
     let goldTotal = 0;
     document.querySelectorAll('.gold-wear-item').forEach(item => {
         const weight = parseFloat(item.querySelector('.gw-weight').value) || 0;
@@ -1290,7 +1483,6 @@ function updateTotals() {
     });
     document.getElementById('totalGoldWearValue').textContent = goldTotal.toFixed(3);
     
-    // السبائك
     let bullionTotal = 0;
     document.querySelectorAll('.bullion-item').forEach(item => {
         const weight = parseFloat(item.querySelector('.b-weight').value) || 0;
@@ -1307,136 +1499,61 @@ document.addEventListener('input', function(e) {
 });
 
 // ================================================================
-// 8. دوال الحول - التحقق التلقائي
-// ================================================================
-
-function checkHawl() {
-    const startMonth = document.getElementById('startMonth').value;
-    const endMonth = document.getElementById('endMonth').value;
-    const resultDiv = document.getElementById('hawlResult');
-    const t = translations[currentLang];
-    
-    if (!startMonth || !endMonth) {
-        resultDiv.style.display = 'block';
-        resultDiv.innerHTML = `<span class="title"><i class="fas fa-exclamation-triangle"></i> ${t.pleaseSelectDates}</span>`;
-        setSectionsDisabled(true);
-        hawlComplete = false;
-        window._hawlComplete = false;
-        return;
-    }
-    
-    const [startYear, startMonthNum] = startMonth.split('-').map(Number);
-    const [endYear, endMonthNum] = endMonth.split('-').map(Number);
-    
-    let monthsDiff = (endYear - startYear) * 12 + (endMonthNum - startMonthNum);
-    
-    let msg = '';
-    let isComplete = false;
-    
-    const monthNames = translations[currentLang].months;
-    
-    const startDisplay = monthNames[startMonthNum - 1] + ' ' + startYear;
-    const endDisplay = monthNames[endMonthNum - 1] + ' ' + endYear;
-    
-    if (monthsDiff >= 12) {
-        isComplete = true;
-        msg = `<span class="title" style="color:var(--success);"><i class="fas fa-check-circle"></i> ${t.hawlComplete}</span><br>
-               ${t.fromMonth} ${startDisplay} ${t.toMonth} ${endDisplay} (${monthsDiff} شهر)`;
-    } else {
-        isComplete = false;
-        msg = `<span class="title" style="color:var(--gold);"><i class="fas fa-hourglass-half"></i> ${t.hawlNotComplete}</span><br>
-               ${t.fromMonth} ${startDisplay} ${t.toMonth} ${endDisplay} (${monthsDiff} شهر فقط، تحتاج 12 شهر كاملة)`;
-    }
-    
-    resultDiv.style.display = 'block';
-    resultDiv.innerHTML = msg;
-    
-    hawlComplete = isComplete;
-    window._hawlComplete = isComplete;
-    
-    setSectionsDisabled(!isComplete);
-    
-    return isComplete;
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const startMonth = document.getElementById('startMonth');
-    const endMonth = document.getElementById('endMonth');
-    
-    startMonth.addEventListener('change', checkHawl);
-    endMonth.addEventListener('change', checkHawl);
-    startMonth.addEventListener('input', checkHawl);
-    endMonth.addEventListener('input', checkHawl);
-});
-
-function setSectionsDisabled(disabled) {
-    const sections = ['banksSection', 'goldWearSection', 'bullionSection', 'investmentsSection'];
-    
-    sections.forEach(id => {
-        const section = document.getElementById(id);
-        if (section) {
-            if (disabled) {
-                section.classList.add('disabled');
-                section.querySelectorAll('input, select, button').forEach(el => {
-                    if (!el.classList.contains('disabled-exempt')) {
-                        el.disabled = true;
-                    }
-                });
-            } else {
-                section.classList.remove('disabled');
-                section.querySelectorAll('input, select, button').forEach(el => {
-                    el.disabled = false;
-                });
-            }
-        }
-    });
-    
-    const addBtns = ['addGoldWearBtn', 'addBullionBtn', 'addInvestmentBtn'];
-    addBtns.forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) btn.disabled = disabled;
-    });
-    
-    const calcBtn = document.getElementById('calculateBtn');
-    if (calcBtn) calcBtn.disabled = disabled;
-}
-
-// ================================================================
 // 9. الحساب النهائي
 // ================================================================
 
 function calculateAll() {
     const t = translations[currentLang];
-    const isComplete = window._hawlComplete || false;
     
-    if (!isComplete) {
+    // التحقق من حالة الحول لكل قسم
+    const banksComplete = hawlStates.banks;
+    const goldWearComplete = hawlStates.goldWear;
+    const bullionComplete = hawlStates.bullion;
+    const investmentsComplete = hawlStates.investments;
+    
+    const allComplete = banksComplete && goldWearComplete && bullionComplete && investmentsComplete;
+    
+    if (!allComplete) {
         alert(t.noZakatYet + '\n' + t.zakatEstimate);
     }
 
     let total = 0;
-    total += parseFloat(document.getElementById('bankTotal').value) || 0;
+    
+    // البنوك: تضاف فقط إذا اكتمل حولها
+    if (banksComplete) {
+        total += parseFloat(document.getElementById('bankTotal').value) || 0;
+    }
 
-    document.querySelectorAll('.gold-wear-item').forEach(item => {
-        const weight = parseFloat(item.querySelector('.gw-weight').value) || 0;
-        const price = parseFloat(item.querySelector('.gw-price').value) || 0;
-        total += weight * price;
-    });
+    // الذهب الملبوس: يضاف فقط إذا اكتمل حوله
+    if (goldWearComplete) {
+        document.querySelectorAll('.gold-wear-item').forEach(item => {
+            const weight = parseFloat(item.querySelector('.gw-weight').value) || 0;
+            const price = parseFloat(item.querySelector('.gw-price').value) || 0;
+            total += weight * price;
+        });
+    }
 
-    document.querySelectorAll('.bullion-item').forEach(item => {
-        const weight = parseFloat(item.querySelector('.b-weight').value) || 0;
-        const price = parseFloat(item.querySelector('.b-price').value) || 0;
-        total += weight * price;
-    });
+    // السبائك: تضاف فقط إذا اكتمل حولها
+    if (bullionComplete) {
+        document.querySelectorAll('.bullion-item').forEach(item => {
+            const weight = parseFloat(item.querySelector('.b-weight').value) || 0;
+            const price = parseFloat(item.querySelector('.b-price').value) || 0;
+            total += weight * price;
+        });
+    }
 
-    document.querySelectorAll('.inv-value').forEach(input => {
-        total += parseFloat(input.value) || 0;
-    });
+    // الاستثمارات: تضاف فقط إذا اكتمل حولها
+    if (investmentsComplete) {
+        document.querySelectorAll('.inv-value').forEach(input => {
+            total += parseFloat(input.value) || 0;
+        });
+    }
 
     document.getElementById('totalAssets').textContent = total.toFixed(3) + ' د.ب';
 
     const zakat = total / 40;
     let zakatText = zakat.toFixed(3) + ' د.ب';
-    if (!isComplete) {
+    if (!allComplete) {
         zakatText += ' <span style="font-size:0.8rem;color:var(--gold);">' + t.zakatEstimate + '</span>';
     }
     document.getElementById('zakatAmount').innerHTML = zakatText;
@@ -1444,7 +1561,92 @@ function calculateAll() {
 }
 
 // ================================================================
-// 10. أدوات التحكم (اللغة، الثيم، حجم الخط)
+// 10. حفظ واستعادة البيانات
+// ================================================================
+
+function saveData() {
+    const data = {
+        bankTotal: document.getElementById('bankTotal').value,
+        banksStart: document.getElementById('banksStartMonth').value,
+        banksEnd: document.getElementById('banksEndMonth').value,
+        gwStart: document.getElementById('gwStartMonth').value,
+        gwEnd: document.getElementById('gwEndMonth').value,
+        bullionStart: document.getElementById('bullionStartMonth').value,
+        bullionEnd: document.getElementById('bullionEndMonth').value,
+        invStart: document.getElementById('invStartMonth').value,
+        invEnd: document.getElementById('invEndMonth').value,
+    };
+    localStorage.setItem('zakatCalculatorData', JSON.stringify(data));
+}
+
+function loadData() {
+    try {
+        const saved = localStorage.getItem('zakatCalculatorData');
+        if (saved) {
+            const data = JSON.parse(saved);
+            if (data.bankTotal) document.getElementById('bankTotal').value = data.bankTotal;
+            if (data.banksStart) document.getElementById('banksStartMonth').value = data.banksStart;
+            if (data.banksEnd) document.getElementById('banksEndMonth').value = data.banksEnd;
+            if (data.gwStart) document.getElementById('gwStartMonth').value = data.gwStart;
+            if (data.gwEnd) document.getElementById('gwEndMonth').value = data.gwEnd;
+            if (data.bullionStart) document.getElementById('bullionStartMonth').value = data.bullionStart;
+            if (data.bullionEnd) document.getElementById('bullionEndMonth').value = data.bullionEnd;
+            if (data.invStart) document.getElementById('invStartMonth').value = data.invStart;
+            if (data.invEnd) document.getElementById('invEndMonth').value = data.invEnd;
+        }
+    } catch(e) {}
+}
+
+document.addEventListener('input', function(e) {
+    if (e.target.closest('input') || e.target.closest('select')) {
+        saveData();
+    }
+});
+
+// ================================================================
+// 11. إعادة ضبط جميع البيانات
+// ================================================================
+
+function resetAll() {
+    const t = translations[currentLang];
+    if (!confirm(t.resetConfirm)) return;
+    
+    document.querySelectorAll('input[type="number"], input[type="text"], input[type="month"]').forEach(el => {
+        el.value = '';
+    });
+    
+    document.getElementById('goldWearContainer').innerHTML = '';
+    document.getElementById('bullionContainer').innerHTML = '';
+    document.getElementById('investmentsContainer').innerHTML = '';
+    
+    goldWearCounter = 0;
+    bullionCounter = 0;
+    
+    addGoldWearItem();
+    addBullionItem();
+    addInvestment();
+    
+    ['banks', 'gw', 'bullion', 'inv'].forEach(prefix => {
+        const start = document.getElementById(prefix + 'StartMonth');
+        const end = document.getElementById(prefix + 'EndMonth');
+        if (start) start.value = '';
+        if (end) end.value = '';
+    });
+    
+    appState.goldPrices = { '24': 0, '22': 0, '21': 0, '20': 0, '18': 0, lastUpdate: null, source: null };
+    
+    updateTotals();
+    localStorage.removeItem('zakatCalculatorData');
+    
+    ['banks', 'goldWear', 'bullion', 'investments'].forEach(section => {
+        checkHawl(section);
+    });
+    
+    alert(t.resetSuccess);
+}
+
+// ================================================================
+// 12. أدوات التحكم (اللغة، الثيم، حجم الخط)
 // ================================================================
 
 function toggleLanguage() {
@@ -1457,12 +1659,7 @@ function applyLanguage() {
     
     document.getElementById('pageTitle').textContent = t.pageTitle;
     document.getElementById('langBtn').textContent = t.langBtn;
-    document.getElementById('titleHawl').innerHTML = '<i class="fas fa-calendar-alt"></i> ' + t.titleHawl;
-    document.getElementById('lblStartDate').innerHTML = '<i class="fas fa-play"></i> ' + t.lblStartDate;
-    document.getElementById('lblEndDate').innerHTML = '<i class="fas fa-flag-checkered"></i> ' + t.lblEndDate;
-    document.getElementById('btnCheckText').textContent = t.btnCheck;
-    document.getElementById('autoCheckText').textContent = t.autoCheckText;
-    document.getElementById('noteHawl').textContent = t.noteHawl;
+    document.getElementById('resetBtnText').textContent = t.resetBtnText;
     document.getElementById('titleBanks').innerHTML = '<i class="fas fa-university"></i> ' + t.titleBanks;
     document.getElementById('lblBanks').innerHTML = '<i class="fas fa-wallet"></i> ' + t.lblBanks;
     document.getElementById('titleGoldWear').innerHTML = '<i class="fas fa-ring"></i> ' + t.titleGoldWear;
@@ -1486,31 +1683,32 @@ function applyLanguage() {
     document.getElementById('footerDeveloped').innerHTML = 'تم التطوير بواسطة <span class="highlight-gold">Muharraqi</span>';
     document.getElementById('footerPray').textContent = t.footerPray;
     
-    // تحديث خيارات العيار
+    document.getElementById('banksHawlLabel').textContent = t.banksHawlLabel;
+    document.getElementById('gwHawlLabel').textContent = t.gwHawlLabel;
+    document.getElementById('bullionHawlLabel').textContent = t.bullionHawlLabel;
+    document.getElementById('invHawlLabel').textContent = t.invHawlLabel;
+    
     document.querySelectorAll('.gold-carat-select option').forEach(opt => {
         const val = opt.value;
         opt.textContent = val + ' ' + t.caratLabel;
     });
     
-    // تحديث ملصقات الغرام
     document.querySelectorAll('.label-suffix').forEach(el => {
         el.textContent = t.gramLabel;
     });
     
-    // تحديث عملة جميع حقول السعر
     document.querySelectorAll('.currency-label').forEach(el => {
         el.textContent = t.currency;
     });
     
-    // تحديث الـ placeholders
     document.querySelectorAll('.gw-name').forEach(el => el.placeholder = t.goldName);
     document.querySelectorAll('.gw-weight').forEach(el => el.placeholder = t.goldWeight);
     document.querySelectorAll('.gw-price').forEach(el => {
-        if (el.readOnly === false) el.placeholder = t.goldPrice;
+        if (!el.readOnly) el.placeholder = t.goldPrice;
     });
     document.querySelectorAll('.b-weight').forEach(el => el.placeholder = t.bullionWeight);
     document.querySelectorAll('.b-price').forEach(el => {
-        if (el.readOnly === false) el.placeholder = t.bullionPrice;
+        if (!el.readOnly) el.placeholder = t.bullionPrice;
     });
     document.querySelectorAll('.inv-name').forEach(el => el.placeholder = t.invName);
     document.querySelectorAll('.inv-value').forEach(el => el.placeholder = t.invValue);
@@ -1533,7 +1731,9 @@ function applyLanguage() {
     document.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = currentLang;
     
-    checkHawl();
+    ['banks', 'goldWear', 'bullion', 'investments'].forEach(section => {
+        checkHawl(section);
+    });
 }
 
 function toggleTheme() {
@@ -1556,24 +1756,38 @@ function setFontSize(scale, btn) {
 }
 
 // ================================================================
-// 11. التهيئة
+// 13. التهيئة
 // ================================================================
 
 window.onload = function() {
+    const today = new Date();
+    const currentMonth = String(today.getMonth() + 1).padStart(2, '0');
+    const currentYear = today.getFullYear();
+    const defaultStart = (currentYear - 1) + '-' + currentMonth;
+    const defaultEnd = currentYear + '-' + currentMonth;
+    
+    ['banks', 'gw', 'bullion', 'inv'].forEach(prefix => {
+        const start = document.getElementById(prefix + 'StartMonth');
+        const end = document.getElementById(prefix + 'EndMonth');
+        if (start) start.value = defaultStart;
+        if (end) end.value = defaultEnd;
+    });
+    
     addGoldWearItem();
     addBullionItem();
     addInvestment();
     
-    document.getElementById('startMonth').value = '2025-05';
-    document.getElementById('endMonth').value = '2026-05';
-    checkHawl();
+    ['banks', 'goldWear', 'bullion', 'investments'].forEach(section => {
+        checkHawl(section);
+    });
+    
+    loadData();
     
     setTimeout(() => {
         fetchGoldPrices();
     }, 500);
 };
 
-// ربط الدوال للنطاق العام
 window.addGoldWearItem = addGoldWearItem;
 window.removeGoldWearItem = removeGoldWearItem;
 window.toggleGoldWearSource = toggleGoldWearSource;
@@ -1589,6 +1803,9 @@ window.toggleLanguage = toggleLanguage;
 window.toggleTheme = toggleTheme;
 window.setFontSize = setFontSize;
 window.updateTotals = updateTotals;
+window.resetAll = resetAll;
+window.saveData = saveData;
+window.loadData = loadData;
 </script>
 </body>
 </html>
