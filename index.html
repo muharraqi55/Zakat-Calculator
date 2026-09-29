@@ -1316,7 +1316,6 @@ function renderHelp(){
     updateHelpTotal();
 }
 
-// دالة منفصلة لتحديث إجمالي المساعدة بدون إعادة رسم الجدول
 function updateHelpTotal(){
     const sel = document.getElementById('helpPayerSelect');
     const filterId = sel && sel.value ? Number(sel.value) : null;
@@ -1510,17 +1509,15 @@ function printHelp(){
     openPrint(html);
 }
 
-function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV4', JSON.stringify(recData)); }catch(e){} }
+function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV5', JSON.stringify(recData)); }catch(e){} }
+// لا يتم إضافة أي أسماء افتراضية - تبدأ القائمة فارغة
 function seedRecord(){
     recData = {names:[], metals:[], banks:[], distributions:[], help:[], seq:1};
-    const y = new Date().getFullYear();
-    recData.names.push({id: recData.seq++, name:'عبدالله', years:[y, y-1], nisabType:'silver'});
-    recData.names.push({id: recData.seq++, name:'محمد', years:[y], nisabType:'silver'});
 }
 function loadRecord(){
     let loaded = false;
     try{
-        const raw = localStorage.getItem('zakatRecordDataV4');
+        const raw = localStorage.getItem('zakatRecordDataV5');
         if(raw){
             const d = JSON.parse(raw);
             if(d && Array.isArray(d.names)){
@@ -1552,7 +1549,7 @@ function loadRecord(){
 function resetRecord(){
     if(!confirm(getText('recResetConfirm'))) return;
     recData = {names:[], metals:[], banks:[], distributions:[], help:[], seq:1};
-    seedRecord(); refreshRecord(); saveRecord();
+    refreshRecord(); saveRecord();
 }
 
 (function bindRecordEvents(){
@@ -1639,7 +1636,6 @@ function resetRecord(){
         };
         db.addEventListener('input', h); db.addEventListener('change', h);
     }
-    // مساعدة - تم إصلاح المشكلة: لا نعيد رسم الجدول أثناء الكتابة
     const hb = document.getElementById('helpBody');
     if(hb){
         const h = function(ev){
@@ -1652,7 +1648,6 @@ function resetRecord(){
             else if(t.classList.contains('hp-amount')) x.amount = t.value;
             else if(t.classList.contains('hp-received')) x.received = t.checked;
             else if(t.classList.contains('hp-note')) x.note = t.value;
-            // فقط تحديث الإجمالي، بدون renderHelp() لتفادي فقدان التركيز
             updateHelpTotal();
             saveRecord();
         };
