@@ -139,6 +139,8 @@ input::placeholder{color:var(--placeholder-color)}
 .rec-del:hover{opacity:.8}
 .btn-print{background:var(--green)!important;color:#fff!important;border:none!important;padding:6px 14px!important;border-radius:20px!important;cursor:pointer;font-weight:bold;font-size:calc(.8rem*var(--font-scale))!important;display:inline-flex;align-items:center;gap:4px}
 .btn-print:hover{background:var(--green-hover)!important}
+.btn-whatsapp{background:#25D366!important;color:#fff!important;border:none!important;padding:6px 14px!important;border-radius:20px!important;cursor:pointer;font-weight:bold;font-size:calc(.8rem*var(--font-scale))!important;display:inline-flex;align-items:center;gap:4px}
+.btn-whatsapp:hover{background:#128C7E!important}
 .name-card{background:var(--bg-body);border:1px solid var(--border-color);border-radius:12px;padding:12px;margin-bottom:10px;border-right:4px solid var(--gold)}
 .name-card-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
 .name-card-head .name-input{flex:1 1 200px;padding:8px 12px;font-weight:bold;font-size:calc(1rem*var(--font-scale))}
@@ -154,6 +156,7 @@ input::placeholder{color:var(--placeholder-color)}
 .badge-status{display:inline-block;padding:3px 10px;border-radius:12px;font-size:calc(.75rem*var(--font-scale));font-weight:bold;white-space:nowrap}
 .badge-status.ok{background:var(--success-bg);color:var(--success);border:1px solid var(--success)}
 .badge-status.no{background:var(--bg-status-loading);color:var(--gold);border:1px solid var(--gold)}
+.share-loading{opacity:.6;pointer-events:none}
 @media (max-width:600px){.container{padding:12px}.item-row{flex-direction:column;align-items:stretch}.header-tools{flex-direction:column;align-items:stretch}.main-title h1{font-size:calc(1.8rem*var(--font-scale))}.hawl-mini{flex-direction:column;align-items:stretch}.hawl-mini input[type="month"]{width:100%}.nisab-banner{flex-direction:column;align-items:stretch;text-align:center}.zakat-details-table{font-size:calc(.7rem*var(--font-scale))}.tabs-nav{justify-content:center}.name-card-head .nisab-select{flex:1 1 100%}}
 </style>
 </head>
@@ -185,7 +188,6 @@ input::placeholder{color:var(--placeholder-color)}
 <button class="tab-btn" data-tab="record" onclick="switchTab('record',this)">📒 <span id="tabRecordText">سجل الزكاة السنوي</span></button>
 </div>
 
-<!-- تبويب الحاسبة -->
 <div class="tab-panel active" id="tab-calc">
 
 <div class="nisab-banner">
@@ -293,9 +295,8 @@ input::placeholder{color:var(--placeholder-color)}
 <button class="btn" style="margin-top:15px;width:100%;" onclick="calculateAll()"><i class="fas fa-calculator"></i> <span id="btnCalculate">احسب الزكاة الآن</span></button>
 </div>
 
-</div><!-- /tab-calc -->
+</div>
 
-<!-- تبويب السجل -->
 <div class="tab-panel" id="tab-record">
 
 <div class="section">
@@ -393,7 +394,6 @@ input::placeholder{color:var(--placeholder-color)}
 </div>
 </div>
 
-<!-- توزيع الزكاة -->
 <div class="section">
 <h2 id="recTitleDist"><i class="fas fa-hand-holding-heart"></i> توزيع الزكاة</h2>
 <div class="flex-row" style="margin-bottom:10px;">
@@ -401,9 +401,12 @@ input::placeholder{color:var(--placeholder-color)}
 <label id="lblPrintPerson"><i class="fas fa-user"></i> طباعة تقرير كامل لشخص</label>
 <select id="printPersonSelect"></select>
 </div>
-<div class="field" style="flex:0 0 auto;">
+<div class="field" style="flex:0 0 auto;display:flex;gap:6px;flex-wrap:wrap;">
 <button class="btn-print" onclick="printFullReport()" style="padding:10px 18px!important;font-size:.85rem!important;">
 <i class="fas fa-print"></i> <span id="btnPrintReport">طباعة التقرير الكامل</span>
+</button>
+<button class="btn-whatsapp" onclick="shareFullReportWhatsApp()" style="padding:10px 18px!important;font-size:.85rem!important;">
+<i class="fab fa-whatsapp"></i> <span id="btnShareDist">مشاركة واتساب PDF</span>
 </button>
 </div>
 </div>
@@ -425,7 +428,6 @@ input::placeholder{color:var(--placeholder-color)}
 <button class="add-btn" onclick="addDistribution()"><i class="fas fa-plus-circle"></i> <span id="btnAddDistribution">إضافة مستفيد</span></button>
 </div>
 
-<!-- مساعدة -->
 <div class="section" style="border:2px solid var(--gold);">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
 <h2 id="recTitleHelp" style="margin:0;border-right:4px solid var(--gold);padding-right:12px;"><i class="fas fa-hand-holding-heart"></i> مساعدة</h2>
@@ -435,6 +437,9 @@ input::placeholder{color:var(--placeholder-color)}
 </span>
 <button class="btn-print" onclick="printHelp()" style="padding:8px 18px!important;font-size:.85rem!important;">
 <i class="fas fa-print"></i> <span id="btnPrintHelp">طباعة</span>
+</button>
+<button class="btn-whatsapp" onclick="shareHelpWhatsApp()" style="padding:8px 18px!important;font-size:.85rem!important;">
+<i class="fab fa-whatsapp"></i> <span id="btnShareHelp">مشاركة واتساب PDF</span>
 </button>
 </div>
 </div>
@@ -462,7 +467,7 @@ input::placeholder{color:var(--placeholder-color)}
 <button class="add-btn" onclick="addHelp()"><i class="fas fa-plus-circle"></i> <span id="btnAddHelp">إضافة مستفيد</span></button>
 </div>
 
-</div><!-- /tab-record -->
+</div>
 
 <div class="footer">
 <div class="divider"></div>
@@ -501,6 +506,7 @@ input::placeholder{color:var(--placeholder-color)}
 </div>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
 const translations = {
@@ -549,12 +555,14 @@ thSmPerson:'الشخص',thSmNisab:'النصاب',thSmMetals:'إجمالي الم
 thSmReached:'بلغ النصاب؟',thSmZakat:'الزكاة (÷40)',tfSmTotal:'المجموع',
 thDsPerson:'الشخص',thDsDate:'التاريخ',thDsRecipient:'المستفيد',thDsRegion:'الجهة',thDsAmount:'المبلغ',thDsReceived:'استلم؟',thDsNote:'ملاحظات',
 lblPrintPerson:'طباعة تقرير كامل لشخص',btnPrintReport:'طباعة التقرير الكامل',
+btnShareDist:'مشاركة واتساب PDF',btnShareHelp:'مشاركة واتساب PDF',
 personName:'اسم الشخص',addYearPlaceholder:'سنة',yearLabel:'السنوات:',
 noNames:'لا توجد أسماء. اضغط "إضافة اسم".',addNameFirst:'أضف اسماً أولاً في قسم "إضافة الأسماء"',
 nisabSilver:'فضة',nisabGold:'ذهب',deletePersonConfirm:'حذف هذا الاسم وكل بياناته؟',
 noYears:'لا توجد سنوات - أضف سنة من الأعلى',recipient:'المستفيد',
 reachedYes:'✅ بلغ النصاب',reachedNo:'⚠️ لم يبلغ النصاب',allOption:'-- الكل --',
-noDate:'بدون تاريخ'
+noDate:'بدون تاريخ',
+pdfGenerating:'⏳ جاري إنشاء PDF...',pdfError:'❌ حدث خطأ أثناء إنشاء PDF',selectPersonFirst:'اختر شخصاً أولاً'
 },
 en:{
 pageTitle:'Zakat Calculator',langBtn:'🇸🇦 العربية',helpBtnText:'Guide',resetBtnText:'Reset',
@@ -599,12 +607,14 @@ thSmPerson:'Person',thSmNisab:'Nisab',thSmMetals:'Metals',thSmBank:'Banks',thSmT
 thSmReached:'Nisab Reached?',thSmZakat:'Zakat (÷40)',tfSmTotal:'Total',
 thDsPerson:'Person',thDsDate:'Date',thDsRecipient:'Recipient',thDsRegion:'Region',thDsAmount:'Amount',thDsReceived:'Received?',thDsNote:'Notes',
 lblPrintPerson:'Print full report for a person',btnPrintReport:'Print Full Report',
+btnShareDist:'Share PDF via WhatsApp',btnShareHelp:'Share PDF via WhatsApp',
 personName:'Person name',addYearPlaceholder:'Year',yearLabel:'Years:',
 noNames:'No names. Click "Add Name".',addNameFirst:'Add a name first',
 nisabSilver:'Silver',nisabGold:'Gold',deletePersonConfirm:'Delete this name and all its data?',
 noYears:'No years - add a year from above',recipient:'Recipient',
 reachedYes:'✅ Reached',reachedNo:'⚠️ Not Reached',allOption:'-- All --',
-noDate:'No date'
+noDate:'No date',
+pdfGenerating:'⏳ Generating PDF...',pdfError:'❌ Failed to generate PDF',selectPersonFirst:'Select a person first'
 }};
 
 let currentLang = 'ar';
@@ -1032,6 +1042,7 @@ function applyLanguage(){
     setHtml('recTitleDist','<i class="fas fa-hand-holding-heart"></i> '+t.recTitleDist);
     setHtml('recTitleHelp','<i class="fas fa-hand-holding-heart"></i> '+t.recTitleHelp);
     set('btnPrintHelp',t.btnPrintHelp);
+    set('btnShareDist',t.btnShareDist); set('btnShareHelp',t.btnShareHelp);
     set('lblHelpTotal',t.lblHelpTotal); set('noteHelp',t.noteHelp); set('btnAddHelp',t.btnAddHelp);
     setHtml('lblHelpPayer','<i class="fas fa-user"></i> '+t.lblHelpPayer);
     set('thHpDate',t.thHpDate); set('thHpRecipient',t.thHpRecipient); set('thHpRegion',t.thHpRegion); set('thHpAmount',t.thHpAmount); set('thHpReceived',t.thHpReceived); set('thHpNote',t.thHpNote);
@@ -1315,7 +1326,6 @@ function renderHelp(){
     });
     updateHelpTotal();
 }
-
 function updateHelpTotal(){
     const sel = document.getElementById('helpPayerSelect');
     const filterId = sel && sel.value ? Number(sel.value) : null;
@@ -1380,7 +1390,7 @@ function refreshRecord(){
     renderHelpPayerSelect(); renderHelp(); renderSummary(); renderPrintDropdown();
 }
 
-function buildReportHead(title){ return '<div class="header"><h1>'+title+'</h1><div class="brand">MUHARRAQI</div></div>'; }
+/* ================== أدوات الطباعة والمشاركة ================== */
 const REPORT_STYLES =
 'body{font-family:"Segoe UI",Tahoma,sans-serif;padding:30px;color:#1a1a1a;background:#fff;line-height:1.6;}'+
 '.header{text-align:center;border-bottom:4px double #b8860b;padding-bottom:20px;margin-bottom:25px;}'+
@@ -1401,27 +1411,164 @@ const REPORT_STYLES =
 '.sum-card .val{font-size:22px;font-weight:bold;color:#2d4b2c;}'+
 '.sum-card.gold .val{color:#b8860b;}'+
 '.sum-card.danger .val{color:#c62828;}'+
-'.zakat-final{grid-column:span 2;background:linear-gradient(135deg,#2d4b2c 0%,#1f3a1e 100%);color:#fff;border-radius:14px;padding:25px;text-align:center;margin-top:10px;}'+
+'.zakat-final{grid-column:span 2;background:#2d4b2c;color:#fff;border-radius:14px;padding:25px;text-align:center;margin-top:10px;}'+
 '.zakat-final .lbl{color:#d4a843;font-size:14px;letter-spacing:1px;}'+
 '.zakat-final .val{color:#fff;font-size:40px;font-weight:900;margin-top:8px;}'+
-'.footer{margin-top:35px;text-align:center;color:#888;font-size:11px;border-top:2px solid #b8860b;padding-top:15px;}'+
-'@media print{body{padding:10px;} .zakat-final{-webkit-print-color-adjust:exact;print-color-adjust:exact;} .sum-card{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}';
+'.footer{margin-top:35px;text-align:center;color:#888;font-size:11px;border-top:2px solid #b8860b;padding-top:15px;}';
 
-function openPrint(html){
-    const w = window.open('','_blank','width=900,height=1000');
-    w.document.write(html); w.document.close();
+function buildReportHead(title){ return '<div class="header"><h1>'+title+'</h1><div class="brand">MUHARRAQI</div></div>'; }
+
+/* الطباعة عبر iframe مخفي - بدون فتح نافذة جديدة */
+function printHtml(html){
+    // إزالة سكربت الطباعة التلقائي إن وجد
+    const cleanHtml = html.replace(/<scr[\s\S]*?<\/scr[^>]*>/gi, '');
+
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute('aria-hidden','true');
+    iframe.style.position = 'fixed';
+    iframe.style.right = '0';
+    iframe.style.bottom = '0';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.style.border = '0';
+    iframe.style.opacity = '0';
+    iframe.style.pointerEvents = 'none';
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(cleanHtml);
+    doc.close();
+
+    // انتظر تحميل المحتوى ثم اطبع
+    const doPrint = function(){
+        try{
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+        }catch(e){ console.error(e); }
+        // إزالة iframe بعد فترة
+        setTimeout(function(){
+            if(document.body.contains(iframe)) document.body.removeChild(iframe);
+        }, 3000);
+    };
+
+    // انتظر تحميل الموارد
+    if(iframe.contentWindow.document.readyState === 'complete'){
+        setTimeout(doPrint, 400);
+    } else {
+        iframe.onload = function(){ setTimeout(doPrint, 400); };
+    }
 }
 
-function printFullReport(){
-    const sel = document.getElementById('printPersonSelect');
-    const nameId = Number(sel.value);
+/* إنشاء PDF كـ Blob من HTML */
+async function generatePdfBlob(html, filename){
+    if(!window.html2pdf){
+        await new Promise(function(resolve, reject){
+            const s = document.createElement('script');
+            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+            s.onload = resolve;
+            s.onerror = reject;
+            document.head.appendChild(s);
+        });
+    }
+
+    // إذا كان الملف على شكل صورة كاملة (whole HTML doc) - نحتاج فقط الـ body content + styles
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const styles = Array.from(doc.querySelectorAll('style')).map(s=>s.textContent).join('\n');
+    const bodyContent = doc.body.innerHTML.replace(/<script[\s\S]*?<\/script>/gi, '');
+
+    // حاوية مؤقتة
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'fixed';
+    wrapper.style.left = '-99999px';
+    wrapper.style.top = '0';
+    wrapper.style.width = '780px';
+    wrapper.style.background = '#fff';
+    wrapper.style.direction = 'rtl';
+
+    const styleEl = document.createElement('style');
+    styleEl.textContent = styles;
+    wrapper.appendChild(styleEl);
+
+    const content = document.createElement('div');
+    content.innerHTML = bodyContent;
+    wrapper.appendChild(content);
+
+    document.body.appendChild(wrapper);
+
+    try{
+        const blob = await html2pdf().set({
+            margin: [8, 8, 8, 8],
+            filename: filename || 'zakat-report.pdf',
+            image: { type: 'jpeg', quality: 0.95 },
+            html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        }).from(wrapper).outputPdf('blob');
+        return blob;
+    } finally {
+        if(document.body.contains(wrapper)) document.body.removeChild(wrapper);
+    }
+}
+
+/* مشاركة PDF عبر واتساب */
+async function sharePdfViaWhatsApp(html, filename, shareText){
+    const btn = event && event.currentTarget ? event.currentTarget : null;
+    const originalHtml = btn ? btn.innerHTML : null;
+    if(btn){ btn.classList.add('share-loading'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> '+getText('pdfGenerating'); }
+    try{
+        const blob = await generatePdfBlob(html, filename);
+        const file = new File([blob], filename || 'zakat-report.pdf', { type: 'application/pdf' });
+
+        // جرّب Web Share API (يعمل على الجوال - يفتح قائمة المشاركة بما فيها واتساب)
+        if(navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share){
+            try{
+                await navigator.share({
+                    files: [file],
+                    title: filename || 'تقرير الزكاة',
+                    text: shareText || 'تقرير الزكاة'
+                });
+                return;
+            }catch(err){
+                // المستخدم ألغى المشاركة
+                if(err && err.name === 'AbortError') return;
+                console.warn('Web Share failed, falling back', err);
+            }
+        }
+
+        // Fallback: تنزيل الملف + فتح واتساب
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename || 'zakat-report.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        setTimeout(function(){
+            URL.revokeObjectURL(url);
+            const text = encodeURIComponent(shareText || 'تقرير الزكاة - تم تنزيل الملف، يرجى إرفاقه');
+            window.open('https://wa.me/?text=' + text, '_blank');
+        }, 800);
+    }catch(e){
+        console.error(e);
+        alert(getText('pdfError'));
+    }finally{
+        if(btn){ btn.classList.remove('share-loading'); btn.innerHTML = originalHtml; }
+    }
+}
+
+/* ================== بناء تقرير الشخص الكامل ================== */
+function buildFullReportHtml(nameId){
     const n = recData.names.find(x=>x.id===nameId);
-    if(!n){ alert(currentLang==='ar'?'اختر شخصاً':'Select a person'); return; }
+    if(!n) return '';
     const currency = getText('currency');
     const metals = recData.metals.filter(m=>m.nameId===nameId);
     const banks = recData.banks.filter(b=>b.nameId===nameId);
     const dists = recData.distributions.filter(d=>d.nameId===nameId);
-    const {metalsTotal, bankTotal, grand, zakat, reached, nisabType, personNisab} = computeNameTotals(nameId);
+    const totals = computeNameTotals(nameId);
+    const {metalsTotal, bankTotal, grand, zakat, reached, nisabType, personNisab} = totals;
     const totalAlloc = dists.reduce((s,d)=>s+(parseFloat(d.amount)||0),0);
     const totalRecv = dists.reduce((s,d)=>s+(d.received?(parseFloat(d.amount)||0):0),0);
     const remaining = zakat - totalAlloc;
@@ -1448,7 +1595,7 @@ function printFullReport(){
         ? '<span style="background:#e8f5e9;color:#2e7d32;border:1px solid #2e7d32;padding:3px 12px;border-radius:12px;font-weight:bold;">'+getText('reachedYes')+'</span>'
         : '<span style="background:#fff8e1;color:#b8860b;border:1px solid #b8860b;padding:3px 12px;border-radius:12px;font-weight:bold;">'+getText('reachedNo')+'</span>';
 
-    const html = '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>تقرير الزكاة - '+escapeAttr(n.name)+'</title>'+
+    return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>تقرير الزكاة - '+escapeAttr(n.name)+'</title>'+
     '<style>'+REPORT_STYLES+'</style></head><body>'+
     buildReportHead('تقرير الزكاة السنوي الشامل')+
     '<div class="info-bar"><div><strong>الاسم:</strong> '+escapeAttr(n.name||'—')+'</div>'+
@@ -1474,12 +1621,11 @@ function printFullReport(){
     '<div class="zakat-final"><div class="lbl">الزكاة الواجبة (المجموع ÷ 40)</div><div class="val">'+zakat.toFixed(3)+' '+currency+'</div></div>'+
     '</div>'+
     '<div class="footer">تم إنشاؤه بواسطة حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div>'+
-    '<scr'+'ipt>window.onload=function(){setTimeout(function(){window.print();},400);};</scr'+'ipt>'+
     '</body></html>';
-    openPrint(html);
 }
 
-function printHelp(){
+/* ================== بناء تقرير المساعدة ================== */
+function buildHelpReportHtml(){
     const currency = getText('currency');
     const sel = document.getElementById('helpPayerSelect');
     const filterId = sel && sel.value ? Number(sel.value) : null;
@@ -1492,7 +1638,7 @@ function printHelp(){
     const total = list.reduce((s,h)=>s+(parseFloat(h.amount)||0),0);
     const totalRecv = list.reduce((s,h)=>s+(h.received?(parseFloat(h.amount)||0):0),0);
 
-    const html = '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>تقرير زكاة</title>'+
+    return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>تقرير زكاة</title>'+
     '<style>'+REPORT_STYLES+'</style></head><body>'+
     buildReportHead('زكاة')+
     '<div class="info-bar">'+(payerLabel?'<div><strong>المزكي:</strong> '+escapeAttr(payerLabel)+'</div>':'')+
@@ -1504,13 +1650,36 @@ function printHelp(){
     '<div class="zakat-final"><div class="lbl">إجمالي الزكاة الموزّعة</div><div class="val">'+total.toFixed(3)+' '+currency+'</div></div>'+
     '</div>'+
     '<div class="footer">تم إنشاؤه بواسطة حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div>'+
-    '<scr'+'ipt>window.onload=function(){setTimeout(function(){window.print();},400);};</scr'+'ipt>'+
     '</body></html>';
-    openPrint(html);
 }
 
+/* ================== أزرار التوزيع ================== */
+function printFullReport(){
+    const sel = document.getElementById('printPersonSelect');
+    const nameId = Number(sel.value);
+    const n = recData.names.find(x=>x.id===nameId);
+    if(!n){ alert(getText('selectPersonFirst')); return; }
+    printHtml(buildFullReportHtml(nameId));
+}
+function shareFullReportWhatsApp(){
+    const sel = document.getElementById('printPersonSelect');
+    const nameId = Number(sel.value);
+    const n = recData.names.find(x=>x.id===nameId);
+    if(!n){ alert(getText('selectPersonFirst')); return; }
+    const safeName = (n.name || 'report').replace(/[^\u0600-\u06FF\w\-]+/g,'_');
+    sharePdfViaWhatsApp(buildFullReportHtml(nameId), 'zakat-'+safeName+'.pdf', 'تقرير زكاة '+(n.name||''));
+}
+
+/* ================== أزرار المساعدة ================== */
+function printHelp(){
+    printHtml(buildHelpReportHtml());
+}
+function shareHelpWhatsApp(){
+    sharePdfViaWhatsApp(buildHelpReportHtml(), 'zakat-help.pdf', 'تقرير زكاة');
+}
+
+/* ================== حفظ / استعادة ================== */
 function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV5', JSON.stringify(recData)); }catch(e){} }
-// لا يتم إضافة أي أسماء افتراضية - تبدأ القائمة فارغة
 function seedRecord(){
     recData = {names:[], metals:[], banks:[], distributions:[], help:[], seq:1};
 }
@@ -1705,6 +1874,8 @@ window.addHelp = addHelp;
 window.removeHelp = removeHelp;
 window.printFullReport = printFullReport;
 window.printHelp = printHelp;
+window.shareFullReportWhatsApp = shareFullReportWhatsApp;
+window.shareHelpWhatsApp = shareHelpWhatsApp;
 window.refreshRecord = refreshRecord;
 window.resetRecord = resetRecord;
 window.exportAllData = exportAllData;
