@@ -354,22 +354,17 @@ input::placeholder{color:var(--placeholder-color)}
 <th id="thYrYear">السنة</th>
 <th id="thYrBank">المبلغ في البنك</th>
 <th id="thYrZakat">الزكاة (÷40)</th>
+<th id="thYrReached">بلغ النصاب؟</th>
 <th></th>
 </tr></thead>
 <tbody id="banksBody"></tbody>
-<tfoot><tr>
-<td colspan="2" id="tfYrTotal">المجموع</td>
-<td id="recTotalBankFoot">0.000</td>
-<td id="recTotalZakatFoot">0.000</td>
-<td></td>
-</tr></tfoot>
 </table>
 </div>
 <button class="add-btn" onclick="addBank()"><i class="fas fa-plus-circle"></i> <span id="btnAddBank">إضافة سنة</span></button>
 </div>
 
 <div class="section">
-<h2 id="recTitleSummary"><i class="fas fa-file-invoice-dollar"></i> ملخص الزكاة لكل شخص</h2>
+<h2 id="recTitleSummary"><i class="fas fa-file-invoice-dollar"></i> ملخص الزكاة لكل شخص لجميع السنوات</h2>
 <div style="overflow-x:auto;">
 <table class="rec-table">
 <thead><tr>
@@ -378,18 +373,9 @@ input::placeholder{color:var(--placeholder-color)}
 <th id="thSmMetals">إجمالي المعادن</th>
 <th id="thSmBank">إجمالي البنوك</th>
 <th id="thSmTotal">المجموع</th>
-<th id="thSmReached">بلغ النصاب؟</th>
 <th id="thSmZakat">الزكاة (÷40)</th>
 </tr></thead>
 <tbody id="summaryBody"></tbody>
-<tfoot><tr>
-<td colspan="2" id="tfSmTotal">المجموع</td>
-<td id="smMetalsFoot">0.000</td>
-<td id="smBankFoot">0.000</td>
-<td id="smTotalFoot">0.000</td>
-<td></td>
-<td id="smZakatFoot">0.000</td>
-</tr></tfoot>
 </table>
 </div>
 </div>
@@ -543,16 +529,16 @@ recResetBtnText:'إعادة ضبط السجل',recResetConfirm:'⚠️ سيتم 
 rcBankLbl:'إجمالي أرصدة البنوك',rcMetalLbl:'إجمالي المعادن',rcZakatLbl:'إجمالي الزكاة',rcRcvLbl:'تم استلامه',
 recTitleNames:'إضافة الأسماء والسنوات',btnAddName:'إضافة اسم',
 recTitleMetals:'موجود المعادن',recTitleYears:'زكاة السنوات - أرصدة البنوك',
-recTitleSummary:'ملخص الزكاة لكل شخص',recTitleDist:'توزيع الزكاة',recTitleHelp:'مساعدة',
+recTitleSummary:'ملخص الزكاة لكل شخص لجميع السنوات',recTitleDist:'توزيع الزكاة',recTitleHelp:'مساعدة',
 btnPrintHelp:'طباعة',lblHelpTotal:'إجمالي المساعدة:',
 lblHelpPayer:'المزكي',noteHelp:'قسم مستقل - يعتمد على الأسماء من قسم "إضافة الأسماء والسنوات". عند الطباعة يظهر بعنوان "زكاة".',
 btnAddHelp:'إضافة مستفيد',thHpDate:'التاريخ',thHpRecipient:'المستفيد',thHpRegion:'الجهة',thHpAmount:'المبلغ',thHpReceived:'استلم؟',thHpNote:'ملاحظات',
 thMtPerson:'الشخص',thMtYear:'السنة',thMtType:'النوع',thMtCarat:'العيار',thMtWeight:'الوزن (جرام)',
 thMtPrice:'السعر (د.ب/جرام)',thMtTotal:'الإجمالي',tfMtTotal:'المجموع',
 btnAddMetal:'إضافة معدن',btnAddBank:'إضافة سنة',btnAddDistribution:'إضافة مستفيد',
-thYrPerson:'الشخص',thYrYear:'السنة',thYrBank:'المبلغ في البنك',thYrZakat:'الزكاة (÷40)',tfYrTotal:'المجموع',
+thYrPerson:'الشخص',thYrYear:'السنة',thYrBank:'المبلغ في البنك',thYrZakat:'الزكاة (÷40)',thYrReached:'بلغ النصاب؟',
 thSmPerson:'الشخص',thSmNisab:'النصاب',thSmMetals:'إجمالي المعادن',thSmBank:'إجمالي البنوك',thSmTotal:'المجموع',
-thSmReached:'بلغ النصاب؟',thSmZakat:'الزكاة (÷40)',tfSmTotal:'المجموع',
+thSmZakat:'الزكاة (÷40)',
 thDsPerson:'الشخص',thDsDate:'التاريخ',thDsRecipient:'المستفيد',thDsRegion:'الجهة',thDsAmount:'المبلغ',thDsReceived:'استلم؟',thDsNote:'ملاحظات',
 lblPrintPerson:'طباعة تقرير كامل لشخص',btnPrintReport:'طباعة التقرير الكامل',
 btnShareDist:'مشاركة واتساب PDF',btnShareHelp:'مشاركة واتساب PDF',
@@ -562,7 +548,8 @@ nisabSilver:'فضة',nisabGold:'ذهب',deletePersonConfirm:'حذف هذا ال�
 noYears:'لا توجد سنوات - أضف سنة من الأعلى',recipient:'المستفيد',
 reachedYes:'✅ بلغ النصاب',reachedNo:'⚠️ لم يبلغ النصاب',allOption:'-- الكل --',
 noDate:'بدون تاريخ',
-pdfGenerating:'⏳ جاري إنشاء PDF...',pdfError:'❌ حدث خطأ أثناء إنشاء PDF',selectPersonFirst:'اختر شخصاً أولاً'
+pdfGenerating:'⏳ جاري إنشاء PDF...',pdfError:'❌ حدث خطأ أثناء إنشاء PDF',selectPersonFirst:'اختر شخصاً أولاً',
+invalidYear:'⚠️ الرجاء إدخال سنة من 4 أرقام بين 1900 و 2200'
 },
 en:{
 pageTitle:'Zakat Calculator',langBtn:'🇸🇦 العربية',helpBtnText:'Guide',resetBtnText:'Reset',
@@ -595,16 +582,16 @@ recResetBtnText:'Reset',recResetConfirm:'Clear entire record?',
 rcBankLbl:'Bank Total',rcMetalLbl:'Metals Total',rcZakatLbl:'Zakat Total',rcRcvLbl:'Received',
 recTitleNames:'Names & Years',btnAddName:'Add Name',
 recTitleMetals:'Metals',recTitleYears:'Yearly Bank Balances',
-recTitleSummary:'Per-Person Summary',recTitleDist:'Distribution',recTitleHelp:'Help',
+recTitleSummary:'Per-Person Zakat Summary for All Years',recTitleDist:'Distribution',recTitleHelp:'Help',
 btnPrintHelp:'Print',lblHelpTotal:'Help Total:',
 lblHelpPayer:'Payer',noteHelp:'Independent section - uses names from "Names" section. Prints as "Zakat".',
 btnAddHelp:'Add Recipient',thHpDate:'Date',thHpRecipient:'Recipient',thHpRegion:'Region',thHpAmount:'Amount',thHpReceived:'Received?',thHpNote:'Notes',
 thMtPerson:'Person',thMtYear:'Year',thMtType:'Type',thMtCarat:'Carat',thMtWeight:'Weight (g)',
 thMtPrice:'Price (BHD/g)',thMtTotal:'Total',tfMtTotal:'Total',
 btnAddMetal:'Add Metal',btnAddBank:'Add Year',btnAddDistribution:'Add Recipient',
-thYrPerson:'Person',thYrYear:'Year',thYrBank:'Bank Amount',thYrZakat:'Zakat (÷40)',tfYrTotal:'Total',
+thYrPerson:'Person',thYrYear:'Year',thYrBank:'Bank Amount',thYrZakat:'Zakat (÷40)',thYrReached:'Nisab Reached?',
 thSmPerson:'Person',thSmNisab:'Nisab',thSmMetals:'Metals',thSmBank:'Banks',thSmTotal:'Grand',
-thSmReached:'Nisab Reached?',thSmZakat:'Zakat (÷40)',tfSmTotal:'Total',
+thSmZakat:'Zakat (÷40)',
 thDsPerson:'Person',thDsDate:'Date',thDsRecipient:'Recipient',thDsRegion:'Region',thDsAmount:'Amount',thDsReceived:'Received?',thDsNote:'Notes',
 lblPrintPerson:'Print full report for a person',btnPrintReport:'Print Full Report',
 btnShareDist:'Share PDF via WhatsApp',btnShareHelp:'Share PDF via WhatsApp',
@@ -614,7 +601,8 @@ nisabSilver:'Silver',nisabGold:'Gold',deletePersonConfirm:'Delete this name and 
 noYears:'No years - add a year from above',recipient:'Recipient',
 reachedYes:'✅ Reached',reachedNo:'⚠️ Not Reached',allOption:'-- All --',
 noDate:'No date',
-pdfGenerating:'⏳ Generating PDF...',pdfError:'❌ Failed to generate PDF',selectPersonFirst:'Select a person first'
+pdfGenerating:'⏳ Generating PDF...',pdfError:'❌ Failed to generate PDF',selectPersonFirst:'Select a person first',
+invalidYear:'⚠️ Please enter a 4-digit year between 1900 and 2200'
 }};
 
 let currentLang = 'ar';
@@ -1049,9 +1037,9 @@ function applyLanguage(){
     set('thMtPerson',t.thMtPerson); set('thMtYear',t.thMtYear); set('thMtType',t.thMtType); set('thMtCarat',t.thMtCarat);
     set('thMtWeight',t.thMtWeight); set('thMtPrice',t.thMtPrice); set('thMtTotal',t.thMtTotal); set('tfMtTotal',t.tfMtTotal);
     set('btnAddMetal',t.btnAddMetal); set('btnAddBank',t.btnAddBank); set('btnAddDistribution',t.btnAddDistribution);
-    set('thYrPerson',t.thYrPerson); set('thYrYear',t.thYrYear); set('thYrBank',t.thYrBank); set('thYrZakat',t.thYrZakat); set('tfYrTotal',t.tfYrTotal);
+    set('thYrPerson',t.thYrPerson); set('thYrYear',t.thYrYear); set('thYrBank',t.thYrBank); set('thYrZakat',t.thYrZakat); set('thYrReached',t.thYrReached);
     set('thSmPerson',t.thSmPerson); set('thSmNisab',t.thSmNisab); set('thSmMetals',t.thSmMetals); set('thSmBank',t.thSmBank);
-    set('thSmTotal',t.thSmTotal); set('thSmReached',t.thSmReached); set('thSmZakat',t.thSmZakat); set('tfSmTotal',t.tfSmTotal);
+    set('thSmTotal',t.thSmTotal); set('thSmZakat',t.thSmZakat);
     set('thDsPerson',t.thDsPerson); set('thDsDate',t.thDsDate); set('thDsRecipient',t.thDsRecipient); set('thDsRegion',t.thDsRegion);
     set('thDsAmount',t.thDsAmount); set('thDsReceived',t.thDsReceived); set('thDsNote',t.thDsNote);
     setHtml('lblPrintPerson','<i class="fas fa-user"></i> '+t.lblPrintPerson); set('btnPrintReport',t.btnPrintReport);
@@ -1092,9 +1080,14 @@ function removeName(id){
     recData.help = recData.help.filter(h=>h.nameId!==id);
     refreshRecord(); saveRecord();
 }
+
 function addYearToName(nameId, year){
     const n = recData.names.find(x=>x.id===nameId); if(!n) return;
-    const y = parseInt(year)||new Date().getFullYear();
+    let y = parseInt(year);
+    if(isNaN(y) || y < 1900 || y > 2200 || String(year).length !== 4){
+        alert(getText('invalidYear'));
+        return;
+    }
     if(n.years.includes(y)) return;
     n.years.push(y); n.years.sort((a,b)=>b-a);
     refreshRecord(); saveRecord();
@@ -1109,7 +1102,16 @@ function removeYearFromName(nameId, year){
 function addYearFromInput(nameId, btn){
     const card = btn.closest('.name-card');
     const inp = card.querySelector('.add-year-input');
-    const y = inp.value; if(!y){ inp.focus(); return; }
+    const raw = String(inp.value).trim();
+    if(!raw){ inp.focus(); return; }
+    const y = parseInt(raw);
+    if(isNaN(y) || y < 1900 || y > 2200 || raw.length !== 4){
+        alert(getText('invalidYear'));
+        inp.value = '';
+        inp.focus();
+        return;
+    }
+    inp.value = '';
     addYearToName(nameId, y);
 }
 
@@ -1138,7 +1140,7 @@ function renderNames(){
             '<div class="name-years">'+
                 '<span class="years-label">'+getText('yearLabel')+'</span>'+
                 (yearChips || '<span style="color:var(--text-sub);font-size:.82rem;">'+getText('noYears')+'</span>')+
-                '<input type="number" class="add-year-input" placeholder="'+getText('addYearPlaceholder')+'" min="1900" max="2200"/>'+
+                '<input type="number" class="add-year-input" placeholder="'+getText('addYearPlaceholder')+'" min="1900" max="2200" step="1" oninput="if(this.value.length>4)this.value=this.value.slice(0,4);" />'+
                 '<button class="btn-add-year" onclick="addYearFromInput('+n.id+',this)" title="+">+</button>'+
             '</div>';
         el.appendChild(card);
@@ -1212,8 +1214,8 @@ function renderBanks(){
     const tbody = document.getElementById('banksBody'); if(!tbody) return;
     tbody.innerHTML='';
     if(recData.names.length===0){
-        tbody.innerHTML = '<tr><td colspan="5" style="color:var(--text-sub);padding:14px;">'+getText('addNameFirst')+'</td></tr>';
-        recalcBanks(); return;
+        tbody.innerHTML = '<tr><td colspan="6" style="color:var(--text-sub);padding:14px;">'+getText('addNameFirst')+'</td></tr>';
+        return;
     }
     recData.banks.forEach(b=>{
         const n = recData.names.find(x=>x.id===b.nameId);
@@ -1222,6 +1224,13 @@ function renderBanks(){
         if(b.year && !years.includes(Number(b.year))) yearOpts = '<option value="'+b.year+'" selected>'+b.year+'</option>'+yearOpts;
         if(!yearOpts) yearOpts = '<option value="">-</option>';
         const nameOpts = recData.names.map(nn=>'<option value="'+nn.id+'"'+(nn.id===b.nameId?' selected':'')+'>'+escapeAttr(nn.name||'—')+'</option>').join('');
+        const nisabType = n ? n.nisabType : 'silver';
+        const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
+        const amt = parseFloat(b.amount)||0;
+        const reached = amt >= personNisab && amt > 0;
+        const badge = reached
+            ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
+            : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
         const tr = document.createElement('tr');
         tr.className='bank-row'; tr.dataset.id=b.id;
         tr.innerHTML =
@@ -1229,21 +1238,29 @@ function renderBanks(){
             '<td><select class="bn-year">'+yearOpts+'</select></td>'+
             '<td><input type="number" step="0.001" class="bn-amount" value="'+escapeAttr(b.amount)+'" placeholder="0.000"/></td>'+
             '<td class="bn-zakat" style="font-weight:bold;color:var(--gold);">0.000</td>'+
+            '<td class="bn-reached">'+badge+'</td>'+
             '<td><button class="rec-del" onclick="removeBank('+b.id+')">✕</button></td>';
         tbody.appendChild(tr);
     });
     recalcBanks();
 }
 function recalcBanks(){
-    let total=0, totalZ=0;
     document.querySelectorAll('#banksBody tr.bank-row').forEach(tr=>{
         const b = recData.banks.find(x=>x.id===Number(tr.dataset.id)); if(!b) return;
-        const amt = parseFloat(b.amount)||0; const z = amt/40;
-        total += amt; totalZ += z;
+        const amt = parseFloat(b.amount)||0;
+        const z = amt/40;
         const zEl = tr.querySelector('.bn-zakat'); if(zEl) zEl.textContent = z.toFixed(3);
+        const n = recData.names.find(x=>x.id===b.nameId);
+        const nisabType = n ? n.nisabType : 'silver';
+        const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
+        const reached = amt >= personNisab && amt > 0;
+        const reachedCell = tr.querySelector('.bn-reached');
+        if(reachedCell){
+            reachedCell.innerHTML = reached
+                ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
+                : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+        }
     });
-    const f1 = document.getElementById('recTotalBankFoot'); if(f1) f1.textContent = total.toFixed(3);
-    const f2 = document.getElementById('recTotalZakatFoot'); if(f2) f2.textContent = totalZ.toFixed(3);
     renderSummary();
 }
 
@@ -1351,13 +1368,10 @@ function computeNameTotals(nameId){
 function renderSummary(){
     const tbody = document.getElementById('summaryBody'); if(!tbody) return;
     tbody.innerHTML='';
-    let tM=0, tB=0, tG=0, tZ=0;
+    let tM=0, tB=0, tZ=0;
     recData.names.forEach(n=>{
-        const {metalsTotal, bankTotal, grand, zakat, reached, nisabType} = computeNameTotals(n.id);
-        tM+=metalsTotal; tB+=bankTotal; tG+=grand; tZ+=zakat;
-        const badge = reached
-            ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
-            : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+        const {metalsTotal, bankTotal, grand, zakat, nisabType} = computeNameTotals(n.id);
+        tM += metalsTotal; tB += bankTotal; tZ += zakat;
         const tr = document.createElement('tr');
         tr.innerHTML =
             '<td style="font-weight:bold;">'+escapeAttr(n.name||'—')+'</td>'+
@@ -1365,14 +1379,12 @@ function renderSummary(){
             '<td>'+metalsTotal.toFixed(3)+'</td>'+
             '<td>'+bankTotal.toFixed(3)+'</td>'+
             '<td style="font-weight:bold;">'+grand.toFixed(3)+'</td>'+
-            '<td>'+badge+'</td>'+
             '<td style="font-weight:bold;color:var(--gold);">'+zakat.toFixed(3)+'</td>';
         tbody.appendChild(tr);
     });
     const set = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
-    set('smMetalsFoot', tM.toFixed(3)); set('smBankFoot', tB.toFixed(3));
-    set('smTotalFoot', tG.toFixed(3)); set('smZakatFoot', tZ.toFixed(3));
-    set('recTotalBank', tB.toFixed(3)); set('recTotalZakat', tZ.toFixed(3));
+    set('recTotalBank', tB.toFixed(3));
+    set('recTotalZakat', tZ.toFixed(3));
     let received = 0;
     recData.distributions.forEach(d=>{ if(d.received) received += parseFloat(d.amount)||0; });
     set('recTotalReceived', received.toFixed(3));
@@ -1418,11 +1430,8 @@ const REPORT_STYLES =
 
 function buildReportHead(title){ return '<div class="header"><h1>'+title+'</h1><div class="brand">MUHARRAQI</div></div>'; }
 
-/* الطباعة عبر iframe مخفي - بدون فتح نافذة جديدة */
 function printHtml(html){
-    // إزالة سكربت الطباعة التلقائي إن وجد
     const cleanHtml = html.replace(/<scr[\s\S]*?<\/scr[^>]*>/gi, '');
-
     const iframe = document.createElement('iframe');
     iframe.setAttribute('aria-hidden','true');
     iframe.style.position = 'fixed';
@@ -1434,25 +1443,17 @@ function printHtml(html){
     iframe.style.opacity = '0';
     iframe.style.pointerEvents = 'none';
     document.body.appendChild(iframe);
-
     const doc = iframe.contentWindow.document;
-    doc.open();
-    doc.write(cleanHtml);
-    doc.close();
-
-    // انتظر تحميل المحتوى ثم اطبع
+    doc.open(); doc.write(cleanHtml); doc.close();
     const doPrint = function(){
         try{
             iframe.contentWindow.focus();
             iframe.contentWindow.print();
         }catch(e){ console.error(e); }
-        // إزالة iframe بعد فترة
         setTimeout(function(){
             if(document.body.contains(iframe)) document.body.removeChild(iframe);
         }, 3000);
     };
-
-    // انتظر تحميل الموارد
     if(iframe.contentWindow.document.readyState === 'complete'){
         setTimeout(doPrint, 400);
     } else {
@@ -1460,7 +1461,6 @@ function printHtml(html){
     }
 }
 
-/* إنشاء PDF كـ Blob من HTML */
 async function generatePdfBlob(html, filename){
     if(!window.html2pdf){
         await new Promise(function(resolve, reject){
@@ -1471,14 +1471,10 @@ async function generatePdfBlob(html, filename){
             document.head.appendChild(s);
         });
     }
-
-    // إذا كان الملف على شكل صورة كاملة (whole HTML doc) - نحتاج فقط الـ body content + styles
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
     const styles = Array.from(doc.querySelectorAll('style')).map(s=>s.textContent).join('\n');
     const bodyContent = doc.body.innerHTML.replace(/<script[\s\S]*?<\/script>/gi, '');
-
-    // حاوية مؤقتة
     const wrapper = document.createElement('div');
     wrapper.style.position = 'fixed';
     wrapper.style.left = '-99999px';
@@ -1486,17 +1482,13 @@ async function generatePdfBlob(html, filename){
     wrapper.style.width = '780px';
     wrapper.style.background = '#fff';
     wrapper.style.direction = 'rtl';
-
     const styleEl = document.createElement('style');
     styleEl.textContent = styles;
     wrapper.appendChild(styleEl);
-
     const content = document.createElement('div');
     content.innerHTML = bodyContent;
     wrapper.appendChild(content);
-
     document.body.appendChild(wrapper);
-
     try{
         const blob = await html2pdf().set({
             margin: [8, 8, 8, 8],
@@ -1512,7 +1504,6 @@ async function generatePdfBlob(html, filename){
     }
 }
 
-/* مشاركة PDF عبر واتساب */
 async function sharePdfViaWhatsApp(html, filename, shareText){
     const btn = event && event.currentTarget ? event.currentTarget : null;
     const originalHtml = btn ? btn.innerHTML : null;
@@ -1520,8 +1511,6 @@ async function sharePdfViaWhatsApp(html, filename, shareText){
     try{
         const blob = await generatePdfBlob(html, filename);
         const file = new File([blob], filename || 'zakat-report.pdf', { type: 'application/pdf' });
-
-        // جرّب Web Share API (يعمل على الجوال - يفتح قائمة المشاركة بما فيها واتساب)
         if(navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share){
             try{
                 await navigator.share({
@@ -1531,13 +1520,10 @@ async function sharePdfViaWhatsApp(html, filename, shareText){
                 });
                 return;
             }catch(err){
-                // المستخدم ألغى المشاركة
                 if(err && err.name === 'AbortError') return;
                 console.warn('Web Share failed, falling back', err);
             }
         }
-
-        // Fallback: تنزيل الملف + فتح واتساب
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -1545,7 +1531,6 @@ async function sharePdfViaWhatsApp(html, filename, shareText){
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-
         setTimeout(function(){
             URL.revokeObjectURL(url);
             const text = encodeURIComponent(shareText || 'تقرير الزكاة - تم تنزيل الملف، يرجى إرفاقه');
@@ -1559,7 +1544,6 @@ async function sharePdfViaWhatsApp(html, filename, shareText){
     }
 }
 
-/* ================== بناء تقرير الشخص الكامل ================== */
 function buildFullReportHtml(nameId){
     const n = recData.names.find(x=>x.id===nameId);
     if(!n) return '';
@@ -1624,7 +1608,6 @@ function buildFullReportHtml(nameId){
     '</body></html>';
 }
 
-/* ================== بناء تقرير المساعدة ================== */
 function buildHelpReportHtml(){
     const currency = getText('currency');
     const sel = document.getElementById('helpPayerSelect');
@@ -1653,7 +1636,6 @@ function buildHelpReportHtml(){
     '</body></html>';
 }
 
-/* ================== أزرار التوزيع ================== */
 function printFullReport(){
     const sel = document.getElementById('printPersonSelect');
     const nameId = Number(sel.value);
@@ -1669,24 +1651,15 @@ function shareFullReportWhatsApp(){
     const safeName = (n.name || 'report').replace(/[^\u0600-\u06FF\w\-]+/g,'_');
     sharePdfViaWhatsApp(buildFullReportHtml(nameId), 'zakat-'+safeName+'.pdf', 'تقرير زكاة '+(n.name||''));
 }
+function printHelp(){ printHtml(buildHelpReportHtml()); }
+function shareHelpWhatsApp(){ sharePdfViaWhatsApp(buildHelpReportHtml(), 'zakat-help.pdf', 'تقرير زكاة'); }
 
-/* ================== أزرار المساعدة ================== */
-function printHelp(){
-    printHtml(buildHelpReportHtml());
-}
-function shareHelpWhatsApp(){
-    sharePdfViaWhatsApp(buildHelpReportHtml(), 'zakat-help.pdf', 'تقرير زكاة');
-}
-
-/* ================== حفظ / استعادة ================== */
-function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV5', JSON.stringify(recData)); }catch(e){} }
-function seedRecord(){
-    recData = {names:[], metals:[], banks:[], distributions:[], help:[], seq:1};
-}
+function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV6', JSON.stringify(recData)); }catch(e){} }
+function seedRecord(){ recData = {names:[], metals:[], banks:[], distributions:[], help:[], seq:1}; }
 function loadRecord(){
     let loaded = false;
     try{
-        const raw = localStorage.getItem('zakatRecordDataV5');
+        const raw = localStorage.getItem('zakatRecordDataV6');
         if(raw){
             const d = JSON.parse(raw);
             if(d && Array.isArray(d.names)){
