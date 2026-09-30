@@ -477,17 +477,14 @@ input::placeholder{color:var(--placeholder-color)}
 <button class="import-btn" onclick="document.getElementById('importFileInput').click()" id="btnImportAll"><i class="fas fa-upload"></i> <span id="importBtnText">استيراد</span></button>
 <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importAllData(event)"/>
 <button class="help-btn" onclick="toggleHelp()"><i class="fas fa-question-circle"></i> <span id="helpBtnText">تعليمات</span></button>
-<button class="reset-btn" onclick="resetAll()"><i class="fas fa-undo"></i> <span id="resetBtnText">إعادة ضبط</span></button>
+<button class="reset-btn" onclick="resetRecord()"><i class="fas fa-undo"></i> <span id="recResetBtnText">إعادة ضبط السجل</span></button>
 </div>
 </div>
 
 <div class="tab-panel active" id="tab-record">
 
 <div class="section">
-<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
 <h2 style="margin:0;border-right:none;padding-right:0;" id="recMainTitle"><i class="fas fa-book"></i> سجل الزكاة السنوي</h2>
-<button class="reset-btn" onclick="resetRecord()"><i class="fas fa-undo"></i> <span id="recResetBtnText">إعادة ضبط السجل</span></button>
-</div>
 <div class="note" id="recMainNote">أضف الأسماء وسنواتهم، ثم سجّل المعادن والأرصدة، ووزّع الزكاة.</div>
 </div>
 
@@ -906,7 +903,7 @@ zakatDue:'✅ Due',zakatNotDue:'⚠️ Not due (Nisab)',zakatNotDueHawl:'⚠️ 
 eligible:'✅ Eligible',notEligible:'⚠️ Not eligible',notEligibleHawl:'⚠️ Incomplete Hawl',
 tabCalc:'Calculator',tabRecord:'Annual Record',
 recMainTitle:'Annual Zakat Record',recMainNote:'Add names and years, then log metals and balances.',
-recResetBtnText:'Reset',recResetConfirm:'Clear entire record?',
+recResetBtnText:'Reset Record',recResetConfirm:'Clear entire record?',
 rcBankLbl:'Bank Total',rcMetalLbl:'Metals Total',rcZakatLbl:'Zakat Total',rcRcvLbl:'Received',
 recTitleNames:'Names & Years',btnAddName:'Add Name',
 recTitleMetals:'Metals',recTitleGoldWear:'Gold Jewelry',recTitleYears:'Total in All Banks',
@@ -2616,7 +2613,6 @@ function backupYearBeforeDelete(){
     const ar = currentLang === 'ar';
 
     try{
-        // تصدير البيانات الكاملة لكل شيء
         const backup = {
             type: 'zakat-full-backup',
             version: 4,
@@ -2802,11 +2798,11 @@ function applyLanguage(){
     const set = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
     const setHtml = (id,v)=>{ const el=document.getElementById(id); if(el) el.innerHTML=v; };
     set('pageTitle',t.pageTitle); set('langBtn',t.langBtn); set('helpBtnText',t.helpBtnText);
-    set('resetBtnText',t.resetBtnText); set('helpTitle',t.helpTitle); set('helpCloseBtn',t.helpCloseBtn);
+    set('recResetBtnText',t.recResetBtnText); set('helpTitle',t.helpTitle); set('helpCloseBtn',t.helpCloseBtn);
     set('saveBtnText',t.saveBtnText); set('importBtnText',t.importBtnText);
     set('footerRights',t.footerRights); set('footerPray',t.footerPray);
     setHtml('recMainTitle','<i class="fas fa-book"></i> '+t.recMainTitle);
-    set('recMainNote',t.recMainNote); set('recResetBtnText',t.recResetBtnText);
+    set('recMainNote',t.recMainNote);
     set('rcBankLbl',t.rcBankLbl); set('rcMetalLbl',t.rcMetalLbl); set('rcZakatLbl',t.rcZakatLbl); set('rcRcvLbl',t.rcRcvLbl);
     setHtml('recTitleNames','<i class="fas fa-users"></i> '+t.recTitleNames); set('btnAddName',t.btnAddName);
     setHtml('recTitleMetals','<i class="fas fa-gem"></i> '+t.recTitleMetals);
@@ -2855,14 +2851,12 @@ function applyLanguage(){
 }
 window.applyLanguage = applyLanguage;
 
-// إغلاق نافذة حذف السنة عند الضغط على الخلفية
 document.addEventListener('click', function(e){
     const modal = document.getElementById('yearDeleteModal');
     if(modal && modal.classList.contains('show') && e.target === modal){
         cancelYearDelete();
     }
 });
-// إغلاق نافذة حذف السنة بمفتاح ESC
 document.addEventListener('keydown', function(e){
     if(e.key === 'Escape'){
         const modal = document.getElementById('yearDeleteModal');
