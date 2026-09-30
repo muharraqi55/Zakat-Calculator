@@ -294,7 +294,7 @@ input::placeholder{color:var(--placeholder-color)}
 /* ===== تصغير قوائم الاختيار ===== */
 .compact-select{max-width:220px}
 .compact-field{flex:0 0 220px;max-width:220px;min-width:0}
-/* ===== نافذة تحذير حذف السنة ===== */
+/* ===== نافذة تحذير حذف السنة / إعادة ضبط السجل ===== */
 .year-del-modal{
     display:none;
     position:fixed;
@@ -755,6 +755,42 @@ input::placeholder{color:var(--placeholder-color)}
 </div>
 </div>
 
+<!-- ===== نافذة تأكيد إعادة ضبط السجل ===== -->
+<div class="year-del-modal" id="resetRecordModal">
+    <div class="ydm-box">
+        <div class="ydm-head">
+            <div class="ydm-icon">🔄</div>
+            <div>
+                <h3 id="rrmTitle">تأكيد إعادة ضبط السجل</h3>
+                <div class="ydm-sub" id="rrmSubtitle">—</div>
+            </div>
+        </div>
+        <div class="ydm-msg" id="rrmMessage">—</div>
+        <ul class="ydm-list" id="rrmList"></ul>
+        <div class="ydm-total" id="rrmTotal" style="display:none;">
+            <span id="rrmTotalLabel">الإجمالي</span>
+            <span class="ydm-count" id="rrmTotalCount">0</span>
+        </div>
+        <div class="ydm-actions">
+            <button class="ydm-btn-backup" id="rrmBtnBackup" onclick="backupBeforeReset()">
+                <i class="fas fa-download"></i>
+                <span id="rrmBackupText">حفظ نسخة احتياطية كاملة</span>
+            </button>
+            <button class="ydm-btn-delete" id="rrmBtnReset" onclick="confirmResetRecord()">
+                <i class="fas fa-trash-alt"></i>
+                <span id="rrmResetText">تأكيد إعادة الضبط</span>
+            </button>
+            <button class="ydm-btn-cancel" onclick="cancelResetRecord()">
+                <i class="fas fa-times"></i>
+                <span id="rrmCancelText">إلغاء</span>
+            </button>
+        </div>
+        <div class="ydm-hint" id="rrmHint">
+            💡 يُنصح بحفظ نسخة احتياطية كاملة قبل إعادة الضبط للرجوع إليها لاحقاً
+        </div>
+    </div>
+</div>
+
 <!-- ===== نافذة تحذير حذف السنة ===== -->
 <div class="year-del-modal" id="yearDeleteModal">
     <div class="ydm-box">
@@ -975,6 +1011,7 @@ let expandedHelpPersons = {};
 let expandedHelpYears = {};
 let silverEqEnabled = true;
 let pendingYearDelete = null;
+let resetBackupSaved = false;
 function getText(k){ return (translations[currentLang]||translations.ar)[k]||k; }
 
 function fmtMoney(n){
@@ -2202,8 +2239,137 @@ function loadRecord(){
     if(!loaded) seedRecord();
     refreshRecord();
 }
+
+/* فتح نافذة تأكيد إعادة ضبط السجل */
 function resetRecord(){
-    if(!confirm(getText('recResetConfirm'))) return;
+    resetBackupSaved = false;
+
+    const ar = currentLang === 'ar';
+
+    const namesCount = recData.names.length;
+    const metalsCount = recData.metals.length;
+    const goldWearCount = recData.goldWearRec.length;
+    const banksCount = recData.banks.length;
+    const invCount = recData.investments.length;
+    const distCount = recData.distributions.length;
+    const helpCount = recData.help.length;
+    const totalRecords = namesCount + metalsCount + goldWearCount + banksCount + invCount + distCount + helpCount;
+
+    const titleEl = document.getElementById('rrmTitle');
+    const subEl   = document.getElementById('rrmSubtitle');
+    const msgEl   = document.getElementById('rrmMessage');
+    const listEl  = document.getElementById('rrmList');
+    const totalEl = document.getElementById('rrmTotal');
+    const totalCountEl = document.getElementById('rrmTotalCount');
+    const totalLabelEl = document.getElementById('rrmTotalLabel');
+    const backupBtn = document.getElementById('rrmBtnBackup');
+    const backupTxt = document.getElementById('rrmBackupText');
+    const resetTxt = document.getElementById('rrmResetText');
+    const cancelTxt = document.getElementById('rrmCancelText');
+    const hintEl = document.getElementById('rrmHint');
+
+    if(titleEl) titleEl.textContent = ar ? '🔄 تأكيد إعادة ضبط السجل' : '🔄 Confirm Record Reset';
+    if(subEl) subEl.textContent = ar
+        ? 'سيتم مسح جميع البيانات الموجودة في السجل'
+        : 'All data in the record will be erased';
+    if(msgEl) msgEl.innerHTML = ar
+        ? 'سيتم مسح <strong>جميع الأسماء والسنوات والبيانات</strong> نهائياً. لا يمكن التراجع عن هذه العملية.'
+        : 'All <strong>names, years and data</strong> will be permanently deleted. This action cannot be undone.';
+
+    const rows = [
+        { label: ar?'الأسماء والسنوات':'Names & Years',  count: namesCount },
+        { label: ar?'المعادن':'Metals',                  count: metalsCount },
+        { label: ar?'الذهب الملبوس':'Gold Jewelry',      count: goldWearCount },
+        { label: ar?'البنوك':'Banks',                    count: banksCount },
+        { label: ar?'الاستثمارات':'Investments',          count: invCount },
+        { label: ar?'التوزيعات':'Distributions',          count: distCount },
+        { label: ar?'المساعدات':'Help',                  count: helpCount }
+    ];
+
+    if(listEl){
+        listEl.innerHTML = '';
+        if(totalRecords === 0){
+            listEl.innerHTML = '<li class="ydm-empty">' +
+                (ar?'✅ السجل فارغ بالفعل':'✅ Record is already empty') +
+                '</li>';
+        } else {
+            rows.filter(r=>r.count > 0).forEach(r=>{
+                listEl.innerHTML += '<li><span>'+r.label+'</span><span class="ydm-count">'+r.count+'</span></li>';
+            });
+        }
+    }
+
+    if(totalEl && totalCountEl && totalLabelEl){
+        if(totalRecords > 0){
+            totalEl.style.display = 'flex';
+            totalLabelEl.textContent = ar?'إجمالي السجلات':'Total records';
+            totalCountEl.textContent = totalRecords;
+        } else {
+            totalEl.style.display = 'none';
+        }
+    }
+
+    if(backupBtn) backupBtn.classList.remove('saved');
+    if(backupTxt) backupTxt.textContent = ar?'حفظ نسخة احتياطية كاملة':'Save Full Backup';
+    if(resetTxt) resetTxt.textContent = ar?'تأكيد إعادة الضبط':'Confirm Reset';
+    if(cancelTxt) cancelTxt.textContent = ar?'إلغاء':'Cancel';
+    if(hintEl){
+        hintEl.style.color = '';
+        hintEl.textContent = ar
+            ? '💡 يُنصح بحفظ نسخة احتياطية كاملة قبل إعادة الضبط للرجوع إليها لاحقاً'
+            : '💡 It is recommended to save a full backup before resetting';
+    }
+
+    const modal = document.getElementById('resetRecordModal');
+    if(modal) modal.classList.add('show');
+}
+
+/* حفظ نسخة احتياطية كاملة قبل إعادة الضبط */
+function backupBeforeReset(){
+    const ar = currentLang === 'ar';
+    try{
+        const backup = {
+            type: 'zakat-full-backup',
+            version: 4,
+            exportedAt: new Date().toISOString(),
+            note: ar ? 'نسخة احتياطية كاملة قبل إعادة ضبط السجل' : 'Full backup before record reset',
+            record: recData
+        };
+
+        const json = JSON.stringify(backup, null, 2);
+        const blob = new Blob([json], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const dateStr = new Date().toISOString().slice(0,10);
+        a.download = 'zakat-FULL-backup-before-reset-' + dateStr + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        resetBackupSaved = true;
+
+        const backupBtn = document.getElementById('rrmBtnBackup');
+        const backupTxt = document.getElementById('rrmBackupText');
+        const hintEl = document.getElementById('rrmHint');
+
+        if(backupBtn) backupBtn.classList.add('saved');
+        if(backupTxt) backupTxt.textContent = ar ? '✅ تم الحفظ' : '✅ Saved';
+        if(hintEl){
+            hintEl.innerHTML = ar
+                ? '✅ تم حفظ نسخة احتياطية كاملة بنجاح — يمكنك الآن تأكيد إعادة الضبط أو الإلغاء'
+                : '✅ Full backup saved successfully — you can now confirm reset or cancel';
+            hintEl.style.color = 'var(--success)';
+        }
+    }catch(e){
+        console.error(e);
+        alert(ar ? '❌ فشل حفظ النسخة الاحتياطية' : '❌ Failed to save backup');
+    }
+}
+
+/* تأكيد إعادة الضبط */
+function confirmResetRecord(){
     recData = {names:[], metals:[], goldWearRec:[], banks:[], investments:[], distributions:[], help:[], seq:1};
     expandedPersons = {};
     expandedYears = {};
@@ -2211,7 +2377,300 @@ function resetRecord(){
     expandedDistYears = {};
     expandedHelpPersons = {};
     expandedHelpYears = {};
+    closeResetModal();
+    refreshRecord();
+    saveRecord();
+}
+
+/* إلغاء إعادة الضبط */
+function cancelResetRecord(){
+    closeResetModal();
+}
+
+/* إغلاق نافذة إعادة الضبط */
+function closeResetModal(){
+    const modal = document.getElementById('resetRecordModal');
+    if(modal) modal.classList.remove('show');
+    const hintEl = document.getElementById('rrmHint');
+    if(hintEl){
+        hintEl.style.color = '';
+        hintEl.textContent = currentLang==='ar'
+            ? '💡 يُنصح بحفظ نسخة احتياطية كاملة قبل إعادة الضبط للرجوع إليها لاحقاً'
+            : '💡 It is recommended to save a full backup before resetting';
+    }
+    resetBackupSaved = false;
+}
+
+/* ============== حذف سنة ============== */
+function removeYearFromName(nameId, year){
+    const n = recData.names.find(x=>x.id===nameId); if(!n) return;
+    const yearNum = Number(year);
+
+    const metalCount    = recData.metals.filter(m=>m.nameId===nameId && Number(m.year)===yearNum).length;
+    const goldWearCount = recData.goldWearRec.filter(g=>g.nameId===nameId && Number(g.year)===yearNum).length;
+    const bankCount     = recData.banks.filter(b=>b.nameId===nameId && Number(b.year)===yearNum).length;
+    const invCount      = recData.investments.filter(x=>x.nameId===nameId && Number(x.year)===yearNum).length;
+    const distCount     = recData.distributions.filter(d=>d.nameId===nameId && Number(d.year)===yearNum).length;
+    const helpCount     = recData.help.filter(h=>h.nameId===nameId && Number(h.year)===yearNum).length;
+    const totalRelated  = metalCount + goldWearCount + bankCount + invCount + distCount + helpCount;
+
+    pendingYearDelete = {
+        nameId: nameId,
+        year: yearNum,
+        personName: n.name || '—',
+        backupSaved: false
+    };
+
+    const titleEl = document.getElementById('ydmTitle');
+    const subEl   = document.getElementById('ydmSubtitle');
+    const msgEl   = document.getElementById('ydmMessage');
+    const listEl  = document.getElementById('ydmList');
+    const totalEl = document.getElementById('ydmTotal');
+    const totalCountEl = document.getElementById('ydmTotalCount');
+    const totalLabelEl = document.getElementById('ydmTotalLabel');
+    const backupBtn = document.getElementById('ydmBtnBackup');
+    const backupTxt = document.getElementById('ydmBackupText');
+    const deleteTxt = document.getElementById('ydmDeleteText');
+    const cancelTxt = document.getElementById('ydmCancelText');
+    const hintEl = document.getElementById('ydmHint');
+
+    const ar = currentLang === 'ar';
+
+    if(titleEl) titleEl.textContent = ar ? '⚠️ تأكيد حذف السنة' : '⚠️ Confirm Year Deletion';
+    if(subEl) subEl.textContent = (ar?'الشخص: ':'Person: ') + (n.name||'—') + ' — ' + (ar?'السنة: ':'Year: ') + year;
+    if(msgEl) msgEl.innerHTML = ar
+        ? 'سيتم حذف هذه السنة من السجل <strong>نهائياً</strong> ولا يمكن التراجع عن العملية.'
+        : 'This year will be <strong>permanently</strong> deleted from the record. This action cannot be undone.';
+
+    const rows = [
+        { label: ar?'المعادن':'Metals',           count: metalCount },
+        { label: ar?'الذهب الملبوس':'Gold Jewelry', count: goldWearCount },
+        { label: ar?'البنوك':'Banks',             count: bankCount },
+        { label: ar?'الاستثمارات':'Investments',   count: invCount },
+        { label: ar?'التوزيعات':'Distributions',   count: distCount },
+        { label: ar?'المساعدات':'Help',           count: helpCount }
+    ];
+
+    if(listEl){
+        listEl.innerHTML = '';
+        if(totalRelated === 0){
+            listEl.innerHTML = '<li class="ydm-empty">' +
+                (ar?'✅ لا توجد بيانات مرتبطة بهذه السنة':'✅ No data linked to this year') +
+                '</li>';
+        } else {
+            rows.filter(r=>r.count > 0).forEach(r=>{
+                listEl.innerHTML += '<li><span>'+r.label+'</span><span class="ydm-count">'+r.count+'</span></li>';
+            });
+        }
+    }
+
+    if(totalEl && totalCountEl && totalLabelEl){
+        if(totalRelated > 0){
+            totalEl.style.display = 'flex';
+            totalLabelEl.textContent = ar?'إجمالي السجلات':'Total records';
+            totalCountEl.textContent = totalRelated;
+        } else {
+            totalEl.style.display = 'none';
+        }
+    }
+
+    if(backupBtn) backupBtn.classList.remove('saved');
+    if(backupTxt) backupTxt.textContent = ar?'حفظ نسخة احتياطية':'Save Backup';
+    if(deleteTxt) deleteTxt.textContent = ar?'تأكيد الحذف':'Confirm Delete';
+    if(cancelTxt) cancelTxt.textContent = ar?'إلغاء':'Cancel';
+    if(hintEl){
+        hintEl.style.color = '';
+        hintEl.textContent = ar
+            ? '💡 يُنصح بحفظ نسخة احتياطية قبل الحذف للرجوع إليها لاحقاً'
+            : '💡 It is recommended to save a backup before deleting';
+    }
+
+    const modal = document.getElementById('yearDeleteModal');
+    if(modal) modal.classList.add('show');
+}
+
+function backupYearBeforeDelete(){
+    if(!pendingYearDelete) return;
+    const ar = currentLang === 'ar';
+    try{
+        const backup = {
+            type: 'zakat-full-backup',
+            version: 4,
+            exportedAt: new Date().toISOString(),
+            note: (ar?'نسخة احتياطية كاملة قبل حذف سنة ':'Full backup before deleting year ') + pendingYearDelete.year +
+                  ' — ' + (pendingYearDelete.personName || '—'),
+            deletedYearContext: {
+                personId: pendingYearDelete.nameId,
+                personName: pendingYearDelete.personName,
+                year: pendingYearDelete.year
+            },
+            record: recData
+        };
+
+        const json = JSON.stringify(backup, null, 2);
+        const blob = new Blob([json], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const dateStr = new Date().toISOString().slice(0,10);
+        a.download = 'zakat-FULL-backup-' + dateStr + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        pendingYearDelete.backupSaved = true;
+
+        const backupBtn = document.getElementById('ydmBtnBackup');
+        const backupTxt = document.getElementById('ydmBackupText');
+        const hintEl = document.getElementById('ydmHint');
+
+        if(backupBtn) backupBtn.classList.add('saved');
+        if(backupTxt) backupTxt.textContent = ar ? '✅ تم الحفظ' : '✅ Saved';
+        if(hintEl){
+            hintEl.innerHTML = ar
+                ? '✅ تم حفظ نسخة احتياطية كاملة بنجاح — يمكنك الآن تأكيد الحذف أو الإلغاء'
+                : '✅ Full backup saved successfully — you can now confirm delete or cancel';
+            hintEl.style.color = 'var(--success)';
+        }
+    }catch(e){
+        console.error(e);
+        alert(ar ? '❌ فشل حفظ النسخة الاحتياطية' : '❌ Failed to save backup');
+    }
+}
+
+function confirmYearDelete(){
+    if(!pendingYearDelete) return;
+    const { nameId, year } = pendingYearDelete;
+    const n = recData.names.find(x=>x.id===nameId);
+    const yearNum = Number(year);
+
+    if(n){
+        n.years = n.years.filter(y=>y!==yearNum);
+        recData.metals       = recData.metals.filter(m=>!(m.nameId===nameId && Number(m.year)===yearNum));
+        recData.goldWearRec  = recData.goldWearRec.filter(g=>!(g.nameId===nameId && Number(g.year)===yearNum));
+        recData.banks        = recData.banks.filter(b=>!(b.nameId===nameId && Number(b.year)===yearNum));
+        recData.investments  = recData.investments.filter(x=>!(x.nameId===nameId && Number(x.year)===yearNum));
+        recData.distributions= recData.distributions.filter(d=>!(d.nameId===nameId && Number(d.year)===yearNum));
+        recData.help         = recData.help.filter(h=>!(h.nameId===nameId && Number(h.year)===yearNum));
+    }
+
+    closeYearDeleteModal();
+    refreshRecord();
+    saveRecord();
+}
+
+function cancelYearDelete(){
+    closeYearDeleteModal();
+    renderNames();
+}
+
+function closeYearDeleteModal(){
+    const modal = document.getElementById('yearDeleteModal');
+    if(modal) modal.classList.remove('show');
+    const hintEl = document.getElementById('ydmHint');
+    if(hintEl){
+        hintEl.style.color = '';
+        hintEl.textContent = currentLang==='ar'
+            ? '💡 يُنصح بحفظ نسخة احتياطية قبل الحذف للرجوع إليها لاحقاً'
+            : '💡 It is recommended to save a backup before deleting';
+    }
+    pendingYearDelete = null;
+}
+
+function editYearFromName(nameId, oldYear, newYearRaw){
+    const n = recData.names.find(x=>x.id===nameId); if(!n) return;
+    const oldYearNum = Number(oldYear);
+    const newYearRawTrim = String(newYearRaw).trim();
+    const newYear = parseInt(newYearRawTrim);
+
+    if(isNaN(newYear) || newYearRawTrim.length !== 4 || newYear < 1900 || newYear > 2200){
+        alert(getText('invalidYear'));
+        renderNames();
+        return;
+    }
+    if(newYear === oldYearNum) return;
+    if(n.years.includes(newYear)){
+        alert(currentLang==='ar'
+            ? '⚠️ هذه السنة موجودة مسبقاً لهذا الشخص.'
+            : '⚠️ This year already exists for this person.');
+        renderNames();
+        return;
+    }
+
+    n.years = n.years.map(y => y === oldYearNum ? newYear : y);
+    n.years.sort((a,b)=>b-a);
+
+    recData.metals.forEach(m=>{ if(m.nameId===nameId && Number(m.year)===oldYearNum) m.year = newYear; });
+    recData.goldWearRec.forEach(g=>{ if(g.nameId===nameId && Number(g.year)===oldYearNum) g.year = newYear; });
+    recData.banks.forEach(b=>{ if(b.nameId===nameId && Number(b.year)===oldYearNum) b.year = newYear; });
+    recData.investments.forEach(x=>{ if(x.nameId===nameId && Number(x.year)===oldYearNum) x.year = newYear; });
+    recData.distributions.forEach(d=>{ if(d.nameId===nameId && Number(d.year)===oldYearNum) d.year = newYear; });
+    recData.help.forEach(h=>{ if(h.nameId===nameId && Number(h.year)===oldYearNum) h.year = newYear; });
+
     refreshRecord(); saveRecord();
+}
+
+function addYearFromInput(nameId, btn){
+    const card = btn.closest('.name-card');
+    const inp = card.querySelector('.add-year-input');
+    const sel = card.querySelector('.add-year-select');
+    let raw = String(inp.value).trim();
+    if(!raw && sel && sel.value) raw = String(sel.value).trim();
+    if(!raw){ alert(getText('invalidYear')); inp.focus(); return; }
+    if(raw.length !== 4){ alert(getText('invalidYear')); inp.value=''; inp.focus(); return; }
+    const y = parseInt(raw);
+    if(isNaN(y) || y < 1900 || y > 2200){ alert(getText('invalidYear')); inp.value=''; inp.focus(); return; }
+    inp.value = ''; if(sel) sel.value = '';
+    addYearToName(nameId, y);
+}
+
+function renderNames(){
+    const el = document.getElementById('namesList'); if(!el) return;
+    el.innerHTML = '';
+    if(recData.names.length === 0){
+        el.innerHTML = '<div style="color:var(--text-sub);padding:10px;text-align:center;">'+getText('noNames')+'</div>';
+        return;
+    }
+    const nowY = new Date().getFullYear();
+    const yTop = 2050, yBottom = 1950;
+    recData.names.forEach(n=>{
+        const card = document.createElement('div');
+        card.className='name-card'; card.dataset.id=n.id;
+        const yearChips = n.years.map(y=>
+            '<span class="year-chip" data-year="'+y+'">'+
+                '<input type="number" class="year-chip-input" value="'+y+'" min="1900" max="2200" '+
+                    'onchange="editYearFromName('+n.id+','+y+',this.value)" '+
+                    'onkeydown="if(event.key===\'Enter\'){this.blur();}" '+
+                    'oninput="if(this.value.length>4)this.value=this.value.slice(0,4);" '+
+                    'title="'+(currentLang==='ar'?'اضغط لتعديل السنة':'Click to edit')+'" />'+
+                '<button onclick="removeYearFromName('+n.id+','+y+')" title="'+(currentLang==='ar'?'حذف':'Delete')+'">×</button>'+
+            '</span>'
+        ).join('');
+        let yearOpts = '<option value="">'+getText('selectYear')+'</option>';
+        for(let y = yTop; y >= yBottom; y--){
+            const selected = (y === nowY) ? ' selected' : '';
+            yearOpts += '<option value="'+y+'"'+selected+'>'+y+'</option>';
+        }
+        card.innerHTML =
+            '<div class="name-card-head">'+
+                '<input type="text" class="name-input" value="'+escapeAttr(n.name)+'" placeholder="'+getText('personName')+'"/>'+
+                '<select class="nisab-select">'+
+                    '<option value="silver"'+(n.nisabType==='silver'?' selected':'')+'>'+getText('nisabSilver')+' (595 جم)</option>'+
+                    '<option value="gold"'+(n.nisabType==='gold'?' selected':'')+'>'+getText('nisabGold')+' (85 جم)</option>'+
+                '</select>'+
+                '<button class="rec-del" onclick="removeName('+n.id+')">✕</button>'+
+            '</div>'+
+            '<div class="name-years">'+
+                '<span class="years-label">'+getText('yearLabel')+'</span>'+
+                (yearChips || '<span style="color:var(--text-sub);font-size:.82rem;">'+getText('noYears')+'</span>')+
+                '<select class="add-year-select">'+yearOpts+'</select>'+
+                '<span class="year-sep">أو</span>'+
+                '<input type="number" class="add-year-input" placeholder="'+getText('addYearPlaceholder')+'" min="1900" max="2200" oninput="if(this.value.length>4)this.value=this.value.slice(0,4);" />'+
+                '<button class="btn-add-year" onclick="addYearFromInput('+n.id+',this)">+</button>'+
+            '</div>';
+        el.appendChild(card);
+    });
 }
 
 (function bindRecordEvents(){
@@ -2408,6 +2867,10 @@ window.backupYearBeforeDelete = backupYearBeforeDelete;
 window.confirmYearDelete = confirmYearDelete;
 window.cancelYearDelete = cancelYearDelete;
 window.closeYearDeleteModal = closeYearDeleteModal;
+window.backupBeforeReset = backupBeforeReset;
+window.confirmResetRecord = confirmResetRecord;
+window.cancelResetRecord = cancelResetRecord;
+window.closeResetModal = closeResetModal;
 
 /* ============== إضافات للتوافق ============== */
 function addGoldWearItem(){}
@@ -2519,280 +2982,6 @@ function addYearToName(nameId, year){
     refreshRecord(); saveRecord();
 }
 
-/* حذف سنة - يفتح نافذة تحذير مخصصة */
-function removeYearFromName(nameId, year){
-    const n = recData.names.find(x=>x.id===nameId); if(!n) return;
-    const yearNum = Number(year);
-
-    const metalCount    = recData.metals.filter(m=>m.nameId===nameId && Number(m.year)===yearNum).length;
-    const goldWearCount = recData.goldWearRec.filter(g=>g.nameId===nameId && Number(g.year)===yearNum).length;
-    const bankCount     = recData.banks.filter(b=>b.nameId===nameId && Number(b.year)===yearNum).length;
-    const invCount      = recData.investments.filter(x=>x.nameId===nameId && Number(x.year)===yearNum).length;
-    const distCount     = recData.distributions.filter(d=>d.nameId===nameId && Number(d.year)===yearNum).length;
-    const helpCount     = recData.help.filter(h=>h.nameId===nameId && Number(h.year)===yearNum).length;
-    const totalRelated  = metalCount + goldWearCount + bankCount + invCount + distCount + helpCount;
-
-    pendingYearDelete = {
-        nameId: nameId,
-        year: yearNum,
-        personName: n.name || '—',
-        backupSaved: false
-    };
-
-    const titleEl = document.getElementById('ydmTitle');
-    const subEl   = document.getElementById('ydmSubtitle');
-    const msgEl   = document.getElementById('ydmMessage');
-    const listEl  = document.getElementById('ydmList');
-    const totalEl = document.getElementById('ydmTotal');
-    const totalCountEl = document.getElementById('ydmTotalCount');
-    const totalLabelEl = document.getElementById('ydmTotalLabel');
-    const backupBtn = document.getElementById('ydmBtnBackup');
-    const backupTxt = document.getElementById('ydmBackupText');
-    const deleteTxt = document.getElementById('ydmDeleteText');
-    const cancelTxt = document.getElementById('ydmCancelText');
-    const hintEl = document.getElementById('ydmHint');
-
-    const ar = currentLang === 'ar';
-
-    if(titleEl) titleEl.textContent = ar ? '⚠️ تأكيد حذف السنة' : '⚠️ Confirm Year Deletion';
-    if(subEl) subEl.textContent = (ar?'الشخص: ':'Person: ') + (n.name||'—') + ' — ' + (ar?'السنة: ':'Year: ') + year;
-    if(msgEl) msgEl.innerHTML = ar
-        ? 'سيتم حذف هذه السنة من السجل <strong>نهائياً</strong> ولا يمكن التراجع عن العملية.'
-        : 'This year will be <strong>permanently</strong> deleted from the record. This action cannot be undone.';
-
-    const rows = [
-        { label: ar?'المعادن':'Metals',           count: metalCount },
-        { label: ar?'الذهب الملبوس':'Gold Jewelry', count: goldWearCount },
-        { label: ar?'البنوك':'Banks',             count: bankCount },
-        { label: ar?'الاستثمارات':'Investments',   count: invCount },
-        { label: ar?'التوزيعات':'Distributions',   count: distCount },
-        { label: ar?'المساعدات':'Help',           count: helpCount }
-    ];
-
-    if(listEl){
-        listEl.innerHTML = '';
-        if(totalRelated === 0){
-            listEl.innerHTML = '<li class="ydm-empty">' +
-                (ar?'✅ لا توجد بيانات مرتبطة بهذه السنة':'✅ No data linked to this year') +
-                '</li>';
-        } else {
-            rows.filter(r=>r.count > 0).forEach(r=>{
-                listEl.innerHTML += '<li><span>'+r.label+'</span><span class="ydm-count">'+r.count+'</span></li>';
-            });
-        }
-    }
-
-    if(totalEl && totalCountEl && totalLabelEl){
-        if(totalRelated > 0){
-            totalEl.style.display = 'flex';
-            totalLabelEl.textContent = ar?'إجمالي السجلات':'Total records';
-            totalCountEl.textContent = totalRelated;
-        } else {
-            totalEl.style.display = 'none';
-        }
-    }
-
-    if(backupBtn) backupBtn.classList.remove('saved');
-    if(backupTxt) backupTxt.textContent = ar?'حفظ نسخة احتياطية':'Save Backup';
-    if(deleteTxt) deleteTxt.textContent = ar?'تأكيد الحذف':'Confirm Delete';
-    if(cancelTxt) cancelTxt.textContent = ar?'إلغاء':'Cancel';
-    if(hintEl){
-        hintEl.style.color = '';
-        hintEl.textContent = ar
-            ? '💡 يُنصح بحفظ نسخة احتياطية قبل الحذف للرجوع إليها لاحقاً'
-            : '💡 It is recommended to save a backup before deleting';
-    }
-
-    const modal = document.getElementById('yearDeleteModal');
-    if(modal) modal.classList.add('show');
-}
-
-/* حفظ نسخة احتياطية كاملة لكل البيانات */
-function backupYearBeforeDelete(){
-    if(!pendingYearDelete) return;
-    const ar = currentLang === 'ar';
-
-    try{
-        const backup = {
-            type: 'zakat-full-backup',
-            version: 4,
-            exportedAt: new Date().toISOString(),
-            note: (ar?'نسخة احتياطية كاملة قبل حذف سنة ':'Full backup before deleting year ') + pendingYearDelete.year +
-                  ' — ' + (pendingYearDelete.personName || '—'),
-            deletedYearContext: {
-                personId: pendingYearDelete.nameId,
-                personName: pendingYearDelete.personName,
-                year: pendingYearDelete.year
-            },
-            record: recData
-        };
-
-        const json = JSON.stringify(backup, null, 2);
-        const blob = new Blob([json], {type:'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        const dateStr = new Date().toISOString().slice(0,10);
-        a.download = 'zakat-FULL-backup-' + dateStr + '.json';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-
-        pendingYearDelete.backupSaved = true;
-
-        const backupBtn = document.getElementById('ydmBtnBackup');
-        const backupTxt = document.getElementById('ydmBackupText');
-        const hintEl = document.getElementById('ydmHint');
-
-        if(backupBtn) backupBtn.classList.add('saved');
-        if(backupTxt) backupTxt.textContent = ar ? '✅ تم الحفظ' : '✅ Saved';
-        if(hintEl){
-            hintEl.innerHTML = ar
-                ? '✅ تم حفظ نسخة احتياطية كاملة بنجاح — يمكنك الآن تأكيد الحذف أو الإلغاء'
-                : '✅ Full backup saved successfully — you can now confirm delete or cancel';
-            hintEl.style.color = 'var(--success)';
-        }
-    }catch(e){
-        console.error(e);
-        alert(ar ? '❌ فشل حفظ النسخة الاحتياطية' : '❌ Failed to save backup');
-    }
-}
-
-function confirmYearDelete(){
-    if(!pendingYearDelete) return;
-    const { nameId, year } = pendingYearDelete;
-    const n = recData.names.find(x=>x.id===nameId);
-    const yearNum = Number(year);
-
-    if(n){
-        n.years = n.years.filter(y=>y!==yearNum);
-        recData.metals       = recData.metals.filter(m=>!(m.nameId===nameId && Number(m.year)===yearNum));
-        recData.goldWearRec  = recData.goldWearRec.filter(g=>!(g.nameId===nameId && Number(g.year)===yearNum));
-        recData.banks        = recData.banks.filter(b=>!(b.nameId===nameId && Number(b.year)===yearNum));
-        recData.investments  = recData.investments.filter(x=>!(x.nameId===nameId && Number(x.year)===yearNum));
-        recData.distributions= recData.distributions.filter(d=>!(d.nameId===nameId && Number(d.year)===yearNum));
-        recData.help         = recData.help.filter(h=>!(h.nameId===nameId && Number(h.year)===yearNum));
-    }
-
-    closeYearDeleteModal();
-    refreshRecord();
-    saveRecord();
-}
-
-function cancelYearDelete(){
-    closeYearDeleteModal();
-    renderNames();
-}
-
-function closeYearDeleteModal(){
-    const modal = document.getElementById('yearDeleteModal');
-    if(modal) modal.classList.remove('show');
-    const hintEl = document.getElementById('ydmHint');
-    if(hintEl){
-        hintEl.style.color = '';
-        hintEl.textContent = currentLang==='ar'
-            ? '💡 يُنصح بحفظ نسخة احتياطية قبل الحذف للرجوع إليها لاحقاً'
-            : '💡 It is recommended to save a backup before deleting';
-    }
-    pendingYearDelete = null;
-}
-
-/* تعديل السنة */
-function editYearFromName(nameId, oldYear, newYearRaw){
-    const n = recData.names.find(x=>x.id===nameId); if(!n) return;
-    const oldYearNum = Number(oldYear);
-    const newYearRawTrim = String(newYearRaw).trim();
-    const newYear = parseInt(newYearRawTrim);
-
-    if(isNaN(newYear) || newYearRawTrim.length !== 4 || newYear < 1900 || newYear > 2200){
-        alert(getText('invalidYear'));
-        renderNames();
-        return;
-    }
-    if(newYear === oldYearNum) return;
-    if(n.years.includes(newYear)){
-        alert(currentLang==='ar'
-            ? '⚠️ هذه السنة موجودة مسبقاً لهذا الشخص.'
-            : '⚠️ This year already exists for this person.');
-        renderNames();
-        return;
-    }
-
-    n.years = n.years.map(y => y === oldYearNum ? newYear : y);
-    n.years.sort((a,b)=>b-a);
-
-    recData.metals.forEach(m=>{ if(m.nameId===nameId && Number(m.year)===oldYearNum) m.year = newYear; });
-    recData.goldWearRec.forEach(g=>{ if(g.nameId===nameId && Number(g.year)===oldYearNum) g.year = newYear; });
-    recData.banks.forEach(b=>{ if(b.nameId===nameId && Number(b.year)===oldYearNum) b.year = newYear; });
-    recData.investments.forEach(x=>{ if(x.nameId===nameId && Number(x.year)===oldYearNum) x.year = newYear; });
-    recData.distributions.forEach(d=>{ if(d.nameId===nameId && Number(d.year)===oldYearNum) d.year = newYear; });
-    recData.help.forEach(h=>{ if(h.nameId===nameId && Number(h.year)===oldYearNum) h.year = newYear; });
-
-    refreshRecord(); saveRecord();
-}
-
-function addYearFromInput(nameId, btn){
-    const card = btn.closest('.name-card');
-    const inp = card.querySelector('.add-year-input');
-    const sel = card.querySelector('.add-year-select');
-    let raw = String(inp.value).trim();
-    if(!raw && sel && sel.value) raw = String(sel.value).trim();
-    if(!raw){ alert(getText('invalidYear')); inp.focus(); return; }
-    if(raw.length !== 4){ alert(getText('invalidYear')); inp.value=''; inp.focus(); return; }
-    const y = parseInt(raw);
-    if(isNaN(y) || y < 1900 || y > 2200){ alert(getText('invalidYear')); inp.value=''; inp.focus(); return; }
-    inp.value = ''; if(sel) sel.value = '';
-    addYearToName(nameId, y);
-}
-function renderNames(){
-    const el = document.getElementById('namesList'); if(!el) return;
-    el.innerHTML = '';
-    if(recData.names.length === 0){
-        el.innerHTML = '<div style="color:var(--text-sub);padding:10px;text-align:center;">'+getText('noNames')+'</div>';
-        return;
-    }
-    const nowY = new Date().getFullYear();
-    const yTop = 2050, yBottom = 1950;
-    recData.names.forEach(n=>{
-        const card = document.createElement('div');
-        card.className='name-card'; card.dataset.id=n.id;
-        const yearChips = n.years.map(y=>
-            '<span class="year-chip" data-year="'+y+'">'+
-                '<input type="number" class="year-chip-input" value="'+y+'" min="1900" max="2200" '+
-                    'onchange="editYearFromName('+n.id+','+y+',this.value)" '+
-                    'onkeydown="if(event.key===\'Enter\'){this.blur();}" '+
-                    'oninput="if(this.value.length>4)this.value=this.value.slice(0,4);" '+
-                    'title="'+(currentLang==='ar'?'اضغط لتعديل السنة':'Click to edit')+'" />'+
-                '<button onclick="removeYearFromName('+n.id+','+y+')" title="'+(currentLang==='ar'?'حذف':'Delete')+'">×</button>'+
-            '</span>'
-        ).join('');
-        let yearOpts = '<option value="">'+getText('selectYear')+'</option>';
-        for(let y = yTop; y >= yBottom; y--){
-            const selected = (y === nowY) ? ' selected' : '';
-            yearOpts += '<option value="'+y+'"'+selected+'>'+y+'</option>';
-        }
-        card.innerHTML =
-            '<div class="name-card-head">'+
-                '<input type="text" class="name-input" value="'+escapeAttr(n.name)+'" placeholder="'+getText('personName')+'"/>'+
-                '<select class="nisab-select">'+
-                    '<option value="silver"'+(n.nisabType==='silver'?' selected':'')+'>'+getText('nisabSilver')+' (595 جم)</option>'+
-                    '<option value="gold"'+(n.nisabType==='gold'?' selected':'')+'>'+getText('nisabGold')+' (85 جم)</option>'+
-                '</select>'+
-                '<button class="rec-del" onclick="removeName('+n.id+')">✕</button>'+
-            '</div>'+
-            '<div class="name-years">'+
-                '<span class="years-label">'+getText('yearLabel')+'</span>'+
-                (yearChips || '<span style="color:var(--text-sub);font-size:.82rem;">'+getText('noYears')+'</span>')+
-                '<select class="add-year-select">'+yearOpts+'</select>'+
-                '<span class="year-sep">أو</span>'+
-                '<input type="number" class="add-year-input" placeholder="'+getText('addYearPlaceholder')+'" min="1900" max="2200" oninput="if(this.value.length>4)this.value=this.value.slice(0,4);" />'+
-                '<button class="btn-add-year" onclick="addYearFromInput('+n.id+',this)">+</button>'+
-            '</div>';
-        el.appendChild(card);
-    });
-}
-
 function applyLanguage(){
     const t = translations[currentLang];
     const set = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
@@ -2852,15 +3041,17 @@ function applyLanguage(){
 window.applyLanguage = applyLanguage;
 
 document.addEventListener('click', function(e){
-    const modal = document.getElementById('yearDeleteModal');
-    if(modal && modal.classList.contains('show') && e.target === modal){
-        cancelYearDelete();
-    }
+    const ydm = document.getElementById('yearDeleteModal');
+    if(ydm && ydm.classList.contains('show') && e.target === ydm){ cancelYearDelete(); return; }
+    const rrm = document.getElementById('resetRecordModal');
+    if(rrm && rrm.classList.contains('show') && e.target === rrm){ cancelResetRecord(); }
 });
 document.addEventListener('keydown', function(e){
     if(e.key === 'Escape'){
-        const modal = document.getElementById('yearDeleteModal');
-        if(modal && modal.classList.contains('show')) cancelYearDelete();
+        const ydm = document.getElementById('yearDeleteModal');
+        if(ydm && ydm.classList.contains('show')){ cancelYearDelete(); return; }
+        const rrm = document.getElementById('resetRecordModal');
+        if(rrm && rrm.classList.contains('show')){ cancelResetRecord(); }
     }
 });
 </script>
