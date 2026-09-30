@@ -266,6 +266,11 @@ input::placeholder{color:var(--placeholder-color)}
     transition:background-color .2s;
 }
 .year-row-collapsible:hover{background:var(--bg-hover);}
+.year-row-collapsible.year-latest{
+    border-right-color:var(--green);
+    background:linear-gradient(90deg, var(--success-bg) 0%, var(--bg-card) 100%);
+    box-shadow:0 2px 8px rgba(45,75,44,.15);
+}
 .year-row-collapsible .year-title{
     font-weight:bold;
     font-size:calc(1rem*var(--font-scale));
@@ -282,6 +287,22 @@ input::placeholder{color:var(--placeholder-color)}
     padding:4px 14px;
     border-radius:20px;
     border:1px solid var(--badge-border);
+}
+.year-row-collapsible.year-latest .year-total-mini{
+    background:var(--success-bg);
+    color:var(--success);
+    border-color:var(--success);
+}
+.latest-badge{
+    background:var(--success);
+    color:#fff;
+    font-size:calc(.7rem*var(--font-scale));
+    padding:2px 10px;
+    border-radius:12px;
+    font-weight:bold;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
 }
 .year-expanded-content{
     padding:10px 14px;
@@ -620,22 +641,20 @@ input::placeholder{color:var(--placeholder-color)}
 <span class="lbl-text" id="silverEqToggleText">احتساب نصاب الفضة</span>
 </label>
 </div>
+<div class="note" id="summaryNote" style="margin-bottom:10px;padding:8px 14px;background:var(--badge-bg);border-radius:8px;border-right:3px solid var(--gold);">💡 يعرض الجدول بيانات <strong>آخر سنة مسجّلة</strong> لكل شخص. اضغط على زر التفاصيل لعرض السنوات السابقة.</div>
 <div style="overflow-x:auto;">
 <table class="rec-table">
 <thead><tr>
 <th id="thSmPerson">الشخص</th>
 <th id="thSmNisab">النصاب</th>
-<th id="thSmMetals">إجمالي المعادن</th>
-<th id="thSmGoldWear">الذهب الملبوس</th>
-<th id="thSmBank">إجمالي البنوك</th>
-<th id="thSmInv">الاستثمارات</th>
+<th id="thSmLastYear">آخر سنة</th>
 <th id="thSmTotal">المجموع</th>
-<th id="thSmZakat">مجموع الزكاة</th>
+<th id="thSmZakat">الزكاة</th>
 <th id="thSmExpand">التفاصيل</th>
 </tr></thead>
 <tbody id="summaryBody"></tbody>
 <tfoot><tr>
-<td colspan="7" style="text-align:right;font-weight:bold;">المجموع الكلي</td>
+<td colspan="4" style="text-align:right;font-weight:bold;">المجموع الكلي (آخر سنة لكل شخص)</td>
 <td id="smZakatFoot" style="font-weight:bold;color:var(--gold);">0.000</td>
 <td></td>
 </tr></tfoot>
@@ -888,6 +907,7 @@ recTitleSummary:'ملخص الزكاة لكل شخص لجميع السنوات',
 btnPrintHelp:'طباعة',lblHelpTotal:'إجمالي المساعدة:',
 lblHelpPayer:'المزكي',lblHelpYear:'السنة',noteHelp:'قسم مستقل - يعتمد على الأسماء من قسم "إضافة الأسماء والسنوات". عند الطباعة يظهر بعنوان "زكاة".',
 helpSectionMalMustafad:'📅 مسألة المال المستفاد أثناء الحول',
+summaryNote:'💡 يعرض الجدول بيانات <strong>آخر سنة مسجّلة</strong> لكل شخص. اضغط على زر التفاصيل لعرض السنوات السابقة.',
 btnAddHelp:'إضافة مستفيد',thHpDate:'التاريخ',thHpRecipient:'المستفيد',thHpRegion:'الجهة',thHpAmount:'المبلغ',thHpReceived:'استلم؟',thHpNote:'ملاحظات',
 lblDistPerson:'الشخص',lblDistYear:'السنة',
 thMtPerson:'الشخص',thMtYear:'السنة',thMtType:'النوع',thMtCarat:'العيار',thMtWeight:'الوزن (جرام)',
@@ -901,6 +921,10 @@ thIvHawl:'الحول (من → إلى)',thIvPerson:'الشخص',thIvYear:'الس
 thYrPerson:'الشخص',thYrYear:'السنة',thYrBank:'المبلغ في البنك',thYrZakat:'الزكاة (÷40)',thYrReached:'بلغ النصاب؟',tfYrTotal:'المجموع الكلي للزكاة',
 thSmPerson:'الشخص',thSmNisab:'النصاب',thSmMetals:'المعادن',thSmGoldWear:'الذهب الملبوس',thSmBank:'البنوك',thSmInv:'الاستثمارات',thSmTotal:'المجموع',
 thSmZakat:'مجموع الزكاة',tfSmTotal:'المجموع الكلي',thSmExpand:'التفاصيل',
+thSmLastYear:'آخر سنة',
+summaryTotalLabel:'المجموع الكلي (آخر سنة لكل شخص)',
+latestBadge:'⭐ آخر سنة',
+previousYearsLabel:'السنوات السابقة',
 expandYearsTitle:'سنوات الزكاة لهذا الشخص',
 expandYearCol:'السنة',
 expandBankCol:'المبلغ في البنك',
@@ -967,6 +991,7 @@ recTitleSummary:'Per-Person Zakat Summary for All Years',recTitleDist:'Distribut
 btnPrintHelp:'Print',lblHelpTotal:'Help Total:',
 lblHelpPayer:'Payer',lblHelpYear:'Year',noteHelp:'Independent section - uses names from "Names" section. Prints as "Zakat".',
 helpSectionMalMustafad:'📅 Money Acquired During the Hawl',
+summaryNote:'💡 The table shows data for the <strong>latest recorded year</strong> per person. Click Details to view previous years.',
 btnAddHelp:'Add Recipient',thHpDate:'Date',thHpRecipient:'Recipient',thHpRegion:'Region',thHpAmount:'Amount',thHpReceived:'Received?',thHpNote:'Notes',
 lblDistPerson:'Person',lblDistYear:'Year',
 thMtPerson:'Person',thMtYear:'Year',thMtType:'Type',thMtCarat:'Carat',thMtWeight:'Weight (g)',
@@ -978,8 +1003,12 @@ btnAddBank:'Add Year',btnAddDistribution:'Add Recipient',
 thYrHawl:'Hawl (From → To)',
 thIvHawl:'Hawl (From → To)',thIvPerson:'Person',thIvYear:'Year',thIvName:'Name / Description',thIvValue:'Value',thIvZakat:'Zakat (÷40)',thIvReached:'Nisab Reached?',tfIvTotal:'Total',
 thYrPerson:'Person',thYrYear:'Year',thYrBank:'Bank Amount',thYrZakat:'Zakat (÷40)',thYrReached:'Nisab Reached?',tfYrTotal:'Total Zakat',
-thSmPerson:'Person',thSmNisab:'Nisab',thSmMetals:'Metals',thSmGoldWear:'Gold Jewelry',thSmBank:'Banks',thSmInv:'Investments',thSmTotal:'Grand',
-thSmZakat:'Zakat Total',tfSmTotal:'Grand Total',thSmExpand:'Details',
+thSmPerson:'Person',thSmNisab:'Nisab',thSmMetals:'Metals',thSmGoldWear:'Gold Jewelry',thSmBank:'Banks',thSmInv:'Investments',thSmTotal:'Total',
+thSmZakat:'Zakat',tfSmTotal:'Grand Total',thSmExpand:'Details',
+thSmLastYear:'Latest Year',
+summaryTotalLabel:'Grand Total (latest year per person)',
+latestBadge:'⭐ Latest',
+previousYearsLabel:'Previous Years',
 expandYearsTitle:'Zakat Years for This Person',
 expandYearCol:'Year',
 expandBankCol:'Bank Amount',
@@ -1565,32 +1594,52 @@ function recalcGoldWearRec(){
     renderSummary();
 }
 
-/* ============== الملخص ============== */
-function computeNameTotals(nameId){
+/* ============== حساب آخر سنة لكل شخص ============== */
+function getPersonLatestYearData(nameId){
     const n = recData.names.find(x=>x.id===nameId);
-    const metalsTotal = recData.metals.filter(m=>m.nameId===nameId)
-        .reduce((s,m)=>s+((parseFloat(m.weight)||0)*(parseFloat(m.price)||0)),0);
-    const goldWearTotal = recData.goldWearRec.filter(g=>g.nameId===nameId)
-        .reduce((s,g)=>s+((parseFloat(g.weight)||0)*(parseFloat(g.price)||0)),0);
-    const bankTotal = recData.banks.filter(b=>b.nameId===nameId)
-        .reduce((s,b)=>s+(parseFloat(b.amount)||0),0);
-    const invTotal = recData.investments.filter(x=>x.nameId===nameId)
-        .reduce((s,x)=>s+(parseFloat(x.value)||0),0);
+    const pBanks = recData.banks.filter(b=>b.nameId===nameId);
+    const pMetals = recData.metals.filter(m=>m.nameId===nameId);
+    const pGoldWear = recData.goldWearRec.filter(g=>g.nameId===nameId);
+    const pInv = recData.investments.filter(x=>x.nameId===nameId);
+
+    const yearsSet = new Set();
+    [...pBanks, ...pMetals, ...pGoldWear, ...pInv].forEach(x=>{ if(x.year) yearsSet.add(String(x.year)); });
+    const years = Array.from(yearsSet).sort((a,b)=>Number(b)-Number(a));
+    const lastYear = years[0] || '';
+
+    let metalsTotal = 0, goldWearTotal = 0, bankTotal = 0, invTotal = 0;
+    let metalsZakat = 0, goldWearZakat = 0, banksZakat = 0, invZakat = 0;
+
+    if(lastYear){
+        pMetals.filter(m=>String(m.year)===lastYear).forEach(m=>{
+            const w = parseFloat(m.weight)||0, p = parseFloat(m.price)||0;
+            metalsTotal += w*p;
+            metalsZakat += silverEqEnabled ? computeMetalZakatFlexible(m) : computeMetalZakat(m);
+        });
+        pGoldWear.filter(g=>String(g.year)===lastYear).forEach(g=>{
+            const w = parseFloat(g.weight)||0, p = parseFloat(g.price)||0;
+            goldWearTotal += w*p;
+            goldWearZakat += silverEqEnabled ? computeGoldWearZakatFlexible(g) : computeGoldWearZakat(g);
+        });
+        pBanks.filter(b=>String(b.year)===lastYear).forEach(b=>{
+            const amt = parseFloat(b.amount)||0;
+            bankTotal += amt;
+            if(checkHawlComplete(b)) banksZakat += amt/40;
+        });
+        pInv.filter(x=>String(x.year)===lastYear).forEach(x=>{
+            const v = parseFloat(x.value)||0;
+            invTotal += v;
+            if(checkHawlComplete(x)) invZakat += v/40;
+        });
+    }
+
     const grand = metalsTotal + goldWearTotal + bankTotal + invTotal;
-    const metalsZakat = recData.metals.filter(m=>m.nameId===nameId)
-        .reduce((s,m)=>s + (silverEqEnabled ? computeMetalZakatFlexible(m) : computeMetalZakat(m)), 0);
-    const goldWearZakat = recData.goldWearRec.filter(g=>g.nameId===nameId)
-        .reduce((s,g)=>s + (silverEqEnabled ? computeGoldWearZakatFlexible(g) : computeGoldWearZakat(g)), 0);
-    const banksZakat = recData.banks.filter(b=>b.nameId===nameId)
-        .reduce((s,b)=>s + (checkHawlComplete(b) ? ((parseFloat(b.amount)||0)/40) : 0), 0);
-    const invZakat = recData.investments.filter(x=>x.nameId===nameId)
-        .reduce((s,x)=>s + (checkHawlComplete(x) ? ((parseFloat(x.value)||0)/40) : 0), 0);
     const zakatSum = metalsZakat + goldWearZakat + banksZakat + invZakat;
     const nisabType = n ? n.nisabType : 'silver';
     const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
     const reached = grand >= personNisab && grand > 0;
-    const zakat = reached ? grand/40 : 0;
-    return {metalsTotal, goldWearTotal, bankTotal, invTotal, grand, zakat, zakatSum, personNisab, reached, nisabType, metalsZakat, goldWearZakat, banksZakat, invZakat};
+
+    return {lastYear, years, metalsTotal, goldWearTotal, bankTotal, invTotal, grand, zakatSum, personNisab, reached, nisabType, metalsZakat, goldWearZakat, banksZakat, invZakat};
 }
 
 function togglePersonExpand(id){
@@ -1698,10 +1747,11 @@ function buildYearDetailsHtml(personId, year, personNisab){
 function renderSummary(){
     const tbody = document.getElementById('summaryBody'); if(!tbody) return;
     tbody.innerHTML='';
-    let tZakatSum=0;
+    let tZakatSum=0, tGrand=0;
     recData.names.forEach(n=>{
-        const tot = computeNameTotals(n.id);
+        const tot = getPersonLatestYearData(n.id);
         tZakatSum += tot.zakatSum;
+        tGrand += tot.grand;
         const isOpen = !!expandedPersons[n.id];
         const expandIcon = isOpen ? '×' : '+';
         const expandClass = isOpen ? 'btn-expand open' : 'btn-expand';
@@ -1709,10 +1759,7 @@ function renderSummary(){
         tr.innerHTML =
             '<td style="font-weight:bold;">'+escapeAttr(n.name||'—')+'</td>'+
             '<td>'+(tot.nisabType==='gold'?getText('nisabGold'):getText('nisabSilver'))+'</td>'+
-            '<td>'+fmtMoney(tot.metalsTotal)+'</td>'+
-            '<td>'+fmtMoney(tot.goldWearTotal)+'</td>'+
-            '<td>'+fmtMoney(tot.bankTotal)+'</td>'+
-            '<td>'+fmtMoney(tot.invTotal)+'</td>'+
+            '<td style="font-weight:bold;color:var(--green);">'+(tot.lastYear || '—')+'</td>'+
             '<td style="font-weight:bold;">'+fmtMoney(tot.grand)+'</td>'+
             '<td style="font-weight:bold;color:var(--gold);">'+fmtMoney(tot.zakatSum)+'</td>'+
             '<td><button class="'+expandClass+'" onclick="togglePersonExpand('+n.id+')">'+expandIcon+'</button></td>';
@@ -1720,39 +1767,48 @@ function renderSummary(){
 
         if(isOpen){
             const personNisab = tot.nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
-            const pBanks = recData.banks.filter(b=>b.nameId===n.id);
-            const pMetals = recData.metals.filter(m=>m.nameId===n.id);
-            const pGoldWear = recData.goldWearRec.filter(g=>g.nameId===n.id);
-            const pInv = recData.investments.filter(x=>x.nameId===n.id);
-            const yearsSet = new Set();
-            [...pBanks, ...pMetals, ...pGoldWear, ...pInv].forEach(x=>{ if(x.year) yearsSet.add(String(x.year)); });
-            const years = Array.from(yearsSet).sort((a,b)=>Number(b)-Number(a));
+            const years = tot.years;
             
             let innerHtml = '';
             if(years.length === 0){
                 innerHtml = '<div class="empty-row">'+getText('expandNoYears')+'</div>';
             } else {
                 innerHtml += '<div style="color:var(--text-sub);font-size:calc(.8rem*var(--font-scale));margin-bottom:10px;">'+
-                    (currentLang==='ar'?'اضغط على السنة لعرض تفاصيلها':'Click on a year to view its details')+
+                    (currentLang==='ar'?'⭐ السنة الأخيرة مفتوحة افتراضياً — اضغط على أي سنة لعرض/إخفاء تفاصيلها':'⭐ Latest year is open by default — click any year to toggle')+
                 '</div>';
-                years.forEach(year=>{
-                    const isYearOpen = !!(expandedYears[n.id] && expandedYears[n.id][year]);
-                    const yBanks = pBanks.filter(b=>String(b.year)===year);
-                    const yMetals = pMetals.filter(m=>String(m.year)===year);
-                    const yGoldWear = pGoldWear.filter(g=>String(g.year)===year);
-                    const yInv = pInv.filter(x=>String(x.year)===year);
+                years.forEach((year, idx)=>{
+                    const isLatest = idx === 0;
+                    const yearsExpandedMap = expandedYears[n.id] || {};
+                    const isYearOpen = yearsExpandedMap[year] !== undefined ? !!yearsExpandedMap[year] : isLatest;
+                    
+                    // حساب إجمالي السنة
+                    const yBanks = recData.banks.filter(b=>b.nameId===n.id && String(b.year)===year);
+                    const yMetals = recData.metals.filter(m=>m.nameId===n.id && String(m.year)===year);
+                    const yGoldWear = recData.goldWearRec.filter(g=>g.nameId===n.id && String(g.year)===year);
+                    const yInv = recData.investments.filter(x=>x.nameId===n.id && String(x.year)===year);
+                    
+                    let yMetalsTotal=0, yGoldWearTotal=0, yBankTotal=0, yInvTotal=0;
+                    yMetals.forEach(m=>{ yMetalsTotal += (parseFloat(m.weight)||0)*(parseFloat(m.price)||0); });
+                    yGoldWear.forEach(g=>{ yGoldWearTotal += (parseFloat(g.weight)||0)*(parseFloat(g.price)||0); });
+                    yBanks.forEach(b=>{ yBankTotal += parseFloat(b.amount)||0; });
+                    yInv.forEach(x=>{ yInvTotal += parseFloat(x.value)||0; });
+                    const yGrand = yMetalsTotal + yGoldWearTotal + yBankTotal + yInvTotal;
+                    
                     let yTotal = 0;
                     yBanks.forEach(b=>{ if(checkHawlComplete(b)) yTotal += (parseFloat(b.amount)||0)/40; });
                     yMetals.forEach(m=>{ yTotal += silverEqEnabled ? computeMetalZakatFlexible(m) : computeMetalZakat(m); });
                     yGoldWear.forEach(g=>{ yTotal += silverEqEnabled ? computeGoldWearZakatFlexible(g) : computeGoldWearZakat(g); });
                     yInv.forEach(x=>{ if(checkHawlComplete(x)) yTotal += (parseFloat(x.value)||0)/40; });
                     
-                    innerHtml += '<div class="year-row-collapsible" onclick="toggleYearExpand('+n.id+',\''+year+'\')">'+
+                    const rowClass = 'year-row-collapsible' + (isLatest ? ' year-latest' : '');
+                    const badge = isLatest ? '<span class="latest-badge">'+getText('latestBadge')+'</span>' : '';
+                    
+                    innerHtml += '<div class="'+rowClass+'" onclick="toggleYearExpand('+n.id+',\''+year+'\')">'+
                         '<span class="year-title">'+
                             '<span style="display:inline-block;width:26px;height:26px;line-height:24px;text-align:center;border-radius:50%;background:var(--green);color:#fff;font-weight:bold;font-size:1.1rem;transition:transform .2s;'+(isYearOpen?'transform:rotate(45deg);':'')+'">'+(isYearOpen?'×':'+')+'</span>'+
-                            '📅 '+year+
+                            '📅 '+year+' '+badge+
                         '</span>'+
-                        '<span class="year-total-mini">💰 '+fmtMoney(yTotal)+' د.ب</span>'+
+                        '<span class="year-total-mini">💰 '+fmtMoney(yGrand)+' د.ب</span>'+
                     '</div>';
                     
                     if(isYearOpen){
@@ -1762,20 +1818,22 @@ function renderSummary(){
             }
             const trExp = document.createElement('tr');
             trExp.className = 'expand-row';
-            trExp.innerHTML = '<td colspan="9"><div class="expand-content"><div class="exp-title">📅 '+getText('expandYearsTitle')+' — '+escapeAttr(n.name||'—')+'</div>'+innerHtml+'</div></td>';
+            trExp.innerHTML = '<td colspan="6"><div class="expand-content"><div class="exp-title">📅 '+getText('expandYearsTitle')+' — '+escapeAttr(n.name||'—')+'</div>'+innerHtml+'</div></td>';
             tbody.appendChild(trExp);
         }
     });
     const foot = document.getElementById('smZakatFoot'); if(foot) foot.textContent = fmtMoney(tZakatSum);
-    let tM=0, tG=0, tB=0, tI=0, tZ=0;
+    
+    // كروت الملخص تعرض مجموع آخر سنة لكل شخص
+    let tM=0, tG=0, tB=0, tI=0;
     recData.names.forEach(n=>{
-        const t = computeNameTotals(n.id);
-        tM+=t.metalsTotal; tG+=t.goldWearTotal; tB+=t.bankTotal; tI+=t.invTotal; tZ+=t.zakatSum;
+        const t = getPersonLatestYearData(n.id);
+        tM += t.metalsTotal; tG += t.goldWearTotal; tB += t.bankTotal; tI += t.invTotal;
     });
     const set = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
     set('recTotalBank', fmtMoney(tB));
     set('recTotalMetals', fmtMoney(tM));
-    set('recTotalZakat', fmtMoney(tZ));
+    set('recTotalZakat', fmtMoney(tZakatSum));
     let received = 0;
     recData.distributions.forEach(d=>{ if(d.received) received += parseFloat(d.amount)||0; });
     set('recTotalReceived', fmtMoney(received));
@@ -2154,10 +2212,10 @@ function buildFullReportHtml(nameId){
     const banks = recData.banks.filter(b=>b.nameId===nameId);
     const invs = recData.investments.filter(x=>x.nameId===nameId);
     const dists = recData.distributions.filter(d=>d.nameId===nameId);
-    const tot = computeNameTotals(nameId);
+    const tot = getPersonLatestYearData(nameId);
     const totalAlloc = dists.reduce((s,d)=>s+(parseFloat(d.amount)||0),0);
     const totalRecv = dists.reduce((s,d)=>s+(d.received?(parseFloat(d.amount)||0):0),0);
-    const remaining = tot.zakat - totalAlloc;
+    const remaining = tot.zakatSum - totalAlloc;
     const nisabLabel = tot.nisabType==='gold'?getText('nisabGold'):getText('nisabSilver');
     let mz = 0;
     const metalsRows = metals.map(m=>{
@@ -2195,13 +2253,13 @@ function buildFullReportHtml(nameId){
     const statusBadge = tot.reached ? '<span style="background:#e8f5e9;color:#2e7d32;border:1px solid #2e7d32;padding:3px 12px;border-radius:12px;font-weight:bold;">'+getText('reachedYes')+'</span>' : '<span style="background:#fff8e1;color:#b8860b;border:1px solid #b8860b;padding:3px 12px;border-radius:12px;font-weight:bold;">'+getText('reachedNo')+'</span>';
     return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>تقرير الزكاة - '+escapeAttr(n.name)+'</title><style>'+REPORT_STYLES+'</style></head><body>'+
     buildReportHead('تقرير الزكاة السنوي الشامل')+
-    '<div class="info-bar"><div><strong>الاسم:</strong> '+escapeAttr(n.name||'—')+'</div><div><strong>النصاب:</strong> '+nisabLabel+' ('+fmtMoney2(tot.personNisab)+' '+currency+')</div><div><strong>الحالة:</strong> '+statusBadge+'</div><div><strong>التاريخ:</strong> '+new Date().toLocaleDateString('ar-BH')+'</div></div>'+
+    '<div class="info-bar"><div><strong>الاسم:</strong> '+escapeAttr(n.name||'—')+'</div><div><strong>آخر سنة:</strong> '+(tot.lastYear||'—')+'</div><div><strong>النصاب:</strong> '+nisabLabel+' ('+fmtMoney2(tot.personNisab)+' '+currency+')</div><div><strong>الحالة:</strong> '+statusBadge+'</div><div><strong>التاريخ:</strong> '+new Date().toLocaleDateString('ar-BH')+'</div></div>'+
     '<h2>1. موجود المعادن</h2><table><thead><tr><th>الحول</th><th>النوع</th><th>العيار</th><th>السنة</th><th>الوزن (جم)</th><th>السعر/جم</th><th>الإجمالي</th><th>الزكاة</th></tr></thead><tbody>'+metalsRows+'</tbody><tfoot><tr class="total-row"><td colspan="6">المجموع</td><td>'+fmtMoney(tot.metalsTotal)+'</td><td>'+fmtMoney(mz)+'</td></tr></tfoot></table>'+
     '<h2>2. الذهب الملبوس</h2><table><thead><tr><th>الحول</th><th>العيار</th><th>السنة</th><th>الوزن (جم)</th><th>السعر/جم</th><th>الإجمالي</th><th>الزكاة</th></tr></thead><tbody>'+goldWearRows+'</tbody><tfoot><tr class="total-row"><td colspan="5">المجموع</td><td>'+fmtMoney(tot.goldWearTotal)+'</td><td>'+fmtMoney(gz)+'</td></tr></tfoot></table>'+
     '<h2>3. المبلغ الموجود في جميع البنوك</h2><table><thead><tr><th>الحول</th><th>السنة</th><th>المبلغ</th><th>الزكاة (÷40)</th></tr></thead><tbody>'+banksRows+'</tbody></table>'+
     '<h2>4. استثمارات وعقارات</h2><table><thead><tr><th>الحول</th><th>الاسم</th><th>السنة</th><th>القيمة</th><th>الزكاة (÷40)</th></tr></thead><tbody>'+invRows+'</tbody></table>'+
     '<h2>5. توزيع الزكاة</h2><table><thead><tr><th>التاريخ</th><th>المستفيد</th><th>الجهة</th><th>السنة</th><th>المبلغ</th><th>استلم؟</th><th>ملاحظات</th></tr></thead><tbody>'+distRows+'</tbody></table>'+
-    '<h2>6. الملخص النهائي</h2><div class="summary-cards">'+
+    '<h2>6. الملخص النهائي (آخر سنة: '+(tot.lastYear||'—')+')</h2><div class="summary-cards">'+
     '<div class="sum-card"><div class="lbl">إجمالي المعادن</div><div class="val">'+fmtMoney(tot.metalsTotal)+'</div></div>'+
     '<div class="sum-card"><div class="lbl">إجمالي الذهب الملبوس</div><div class="val">'+fmtMoney(tot.goldWearTotal)+'</div></div>'+
     '<div class="sum-card"><div class="lbl">إجمالي البنوك</div><div class="val">'+fmtMoney(tot.bankTotal)+'</div></div>'+
@@ -2210,11 +2268,11 @@ function buildFullReportHtml(nameId){
     '<div class="sum-card gold"><div class="lbl">زكاة الذهب الملبوس</div><div class="val">'+fmtMoney(tot.goldWearZakat)+'</div></div>'+
     '<div class="sum-card gold"><div class="lbl">زكاة البنوك</div><div class="val">'+fmtMoney(tot.banksZakat)+'</div></div>'+
     '<div class="sum-card gold"><div class="lbl">زكاة الاستثمارات</div><div class="val">'+fmtMoney(tot.invZakat)+'</div></div>'+
-    '<div class="sum-card gold"><div class="lbl">إجمالي الأصول</div><div class="val">'+fmtMoney(tot.grand)+'</div></div>'+
+    '<div class="sum-card gold"><div class="lbl">إجمالي الأصول (آخر سنة)</div><div class="val">'+fmtMoney(tot.grand)+'</div></div>'+
     '<div class="sum-card gold"><div class="lbl">إجمالي الموزّع</div><div class="val">'+fmtMoney(totalAlloc)+'</div></div>'+
     '<div class="sum-card"><div class="lbl">تم استلامه</div><div class="val">'+fmtMoney(totalRecv)+'</div></div>'+
     '<div class="sum-card '+(remaining<0?'danger':'')+'"><div class="lbl">المتبقي للتوزيع</div><div class="val">'+fmtMoney(remaining)+'</div></div>'+
-    '<div class="zakat-final"><div class="lbl">مجموع الزكاة النهائي</div><div class="val">'+fmtMoney(tot.zakatSum)+' '+currency+'</div></div>'+
+    '<div class="zakat-final"><div class="lbl">مجموع الزكاة النهائي (آخر سنة)</div><div class="val">'+fmtMoney(tot.zakatSum)+' '+currency+'</div></div>'+
     '</div><div class="footer">تم إنشاؤه بواسطة حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div></body></html>';
 }
 function buildHelpReportHtml(){
@@ -2344,7 +2402,6 @@ function resetRecord(){
     if(modal) modal.classList.add('show');
 }
 
-/* حفظ نسخة احتياطية كاملة قبل إعادة الضبط */
 function backupBeforeReset(){
     const ar = currentLang === 'ar';
     try{
@@ -2388,7 +2445,6 @@ function backupBeforeReset(){
     }
 }
 
-/* تأكيد إعادة الضبط */
 function confirmResetRecord(){
     recData = {names:[], metals:[], goldWearRec:[], banks:[], investments:[], distributions:[], help:[], seq:1};
     expandedPersons = {};
@@ -2402,12 +2458,10 @@ function confirmResetRecord(){
     saveRecord();
 }
 
-/* إلغاء إعادة الضبط */
 function cancelResetRecord(){
     closeResetModal();
 }
 
-/* إغلاق نافذة إعادة الضبط */
 function closeResetModal(){
     const modal = document.getElementById('resetRecordModal');
     if(modal) modal.classList.remove('show');
@@ -2891,6 +2945,7 @@ window.backupBeforeReset = backupBeforeReset;
 window.confirmResetRecord = confirmResetRecord;
 window.cancelResetRecord = cancelResetRecord;
 window.closeResetModal = closeResetModal;
+window.getPersonLatestYearData = getPersonLatestYearData;
 
 /* ============== إضافات للتوافق ============== */
 function addGoldWearItem(){}
@@ -3024,6 +3079,8 @@ function applyLanguage(){
     set('btnPrintHelp',t.btnPrintHelp);
     set('btnShareDist',t.btnShareDist); set('btnShareHelp',t.btnShareHelp);
     set('lblHelpTotal',t.lblHelpTotal); set('noteHelp',t.noteHelp); set('btnAddHelp',t.btnAddHelp);
+    const sn = document.getElementById('summaryNote');
+    if(sn) sn.innerHTML = t.summaryNote;
     setHtml('lblHelpPayer','<i class="fas fa-user"></i> '+t.lblHelpPayer);
     set('lblHelpYear',t.lblHelpYear);
     set('lblDistPerson',t.lblDistPerson);
@@ -3040,9 +3097,8 @@ function applyLanguage(){
     set('thYrPerson',t.thYrPerson); set('thYrYear',t.thYrYear); set('thYrBank',t.thYrBank); set('thYrZakat',t.thYrZakat); set('thYrReached',t.thYrReached); set('tfYrTotal',t.tfYrTotal);
     set('thIvHawl',t.thIvHawl); set('thIvPerson',t.thIvPerson); set('thIvYear',t.thIvYear); set('thIvName',t.thIvName);
     set('thIvValue',t.thIvValue); set('thIvZakat',t.thIvZakat); set('thIvReached',t.thIvReached); set('tfIvTotal',t.tfIvTotal);
-    set('thSmPerson',t.thSmPerson); set('thSmNisab',t.thSmNisab); set('thSmMetals',t.thSmMetals); set('thSmGoldWear',t.thSmGoldWear);
-    set('thSmBank',t.thSmBank); set('thSmInv',t.thSmInv); set('thSmTotal',t.thSmTotal);
-    set('thSmZakat',t.thSmZakat); set('thSmExpand',t.thSmExpand);
+    set('thSmPerson',t.thSmPerson); set('thSmNisab',t.thSmNisab); set('thSmLastYear',t.thSmLastYear);
+    set('thSmTotal',t.thSmTotal); set('thSmZakat',t.thSmZakat); set('thSmExpand',t.thSmExpand);
     set('thDsPerson',t.thDsPerson); set('thDsDate',t.thDsDate); set('thDsRecipient',t.thDsRecipient); set('thDsRegion',t.thDsRegion);
     set('thDsAmount',t.thDsAmount); set('thDsReceived',t.thDsReceived); set('thDsNote',t.thDsNote);
     setHtml('lblPrintPerson','<i class="fas fa-user"></i> '+t.lblPrintPerson); set('btnPrintReport',t.btnPrintReport);
