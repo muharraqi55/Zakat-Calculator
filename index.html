@@ -158,6 +158,7 @@ input::placeholder{color:var(--placeholder-color)}
 .badge-status{display:inline-block;padding:3px 10px;border-radius:12px;font-size:calc(.75rem*var(--font-scale));font-weight:bold;white-space:nowrap}
 .badge-status.ok{background:var(--success-bg);color:var(--success);border:1px solid var(--success)}
 .badge-status.no{background:var(--bg-status-loading);color:var(--gold);border:1px solid var(--gold)}
+.badge-status.silver-eq{background:#fff8e1;color:var(--green);border:1px solid var(--green);font-size:calc(.72rem*var(--font-scale))}
 .price-readonly{background:var(--bg-body)!important;cursor:not-allowed;color:var(--gold);font-weight:bold;text-align:center}
 .share-loading{opacity:.6;pointer-events:none}
 .btn-expand{background:var(--green);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-weight:bold;display:inline-flex;align-items:center;justify-content:center;font-size:1rem;line-height:1;transition:transform .2s}
@@ -184,6 +185,53 @@ input::placeholder{color:var(--placeholder-color)}
 .expand-table .zakat-v{color:var(--gold);font-weight:bold}
 .expand-table .empty-row{color:var(--text-sub);text-align:center;padding:10px}
 .expand-content .empty-row{color:var(--text-sub);text-align:center;padding:10px;background:var(--bg-card);border-radius:8px;margin-bottom:10px;font-size:calc(.82rem*var(--font-scale))}
+.year-group-header{
+    background:linear-gradient(90deg, var(--green) 0%, var(--green-hover) 100%);
+    color:#fff;
+    font-weight:bold;
+    font-size:calc(1rem*var(--font-scale));
+    padding:10px 16px;
+    border-radius:10px;
+    margin:16px 0 10px;
+    text-align:center;
+    letter-spacing:1px;
+    box-shadow:0 3px 8px rgba(0,0,0,.15);
+}
+.year-group-header:first-child{margin-top:0;}
+.year-final-result{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:linear-gradient(135deg, var(--gold) 0%, var(--gold-hover) 100%);
+    color:#1a1a1a;
+    border-radius:12px;
+    padding:14px 20px;
+    margin:14px 0 20px;
+    font-weight:bold;
+    box-shadow:0 4px 12px rgba(184,134,11,.25);
+    flex-wrap:wrap;
+    gap:8px;
+}
+.year-final-result .lbl{
+    font-size:calc(.9rem*var(--font-scale));
+}
+.year-final-result .val{
+    font-size:calc(1.3rem*var(--font-scale));
+    font-weight:900;
+    color:#1a1a1a;
+    background:rgba(255,255,255,.5);
+    padding:4px 14px;
+    border-radius:20px;
+}
+.expand-total-row{
+    background:var(--bg-status-loading);
+    font-weight:bold;
+}
+.expand-total-row td{
+    color:var(--green);
+    font-weight:bold;
+    padding:8px 10px;
+}
 @media (max-width:600px){.container{padding:12px}.item-row{flex-direction:column;align-items:stretch}.header-tools{flex-direction:column;align-items:stretch}.main-title h1{font-size:calc(1.8rem*var(--font-scale))}.hawl-mini{flex-direction:column;align-items:stretch}.hawl-mini input[type="month"]{width:100%}.nisab-banner{flex-direction:column;align-items:stretch;text-align:center}.zakat-details-table{font-size:calc(.7rem*var(--font-scale))}.tabs-nav{justify-content:center}.name-card-head .nisab-select{flex:1 1 100%}}
 </style>
 </head>
@@ -603,7 +651,9 @@ noYears:'لا توجد سنوات - أضف سنة من الأعلى',recipient:'
 reachedYes:'✅ بلغ النصاب',reachedNo:'⚠️ لم يبلغ النصاب',allOption:'-- الكل --',
 noDate:'بدون تاريخ',selectYear:'اختر سنة',
 pdfGenerating:'⏳ جاري إنشاء PDF...',pdfError:'❌ حدث خطأ أثناء إنشاء PDF',selectPersonFirst:'اختر شخصاً أولاً',
-invalidYear:'⚠️ الرجاء إدخال سنة من 4 أرقام بين 1900 و 2200'
+invalidYear:'⚠️ الرجاء إدخال سنة من 4 أرقام بين 1900 و 2200',
+yearFinalZakat:'النتيجة النهائية للزكاة',
+silverEqBadge:'✅ بلغ كنصاب الفضة'
 },
 en:{
 pageTitle:'Zakat Calculator',langBtn:'🇸🇦 العربية',helpBtnText:'Guide',resetBtnText:'Reset',
@@ -669,7 +719,9 @@ noYears:'No years - add a year from above',recipient:'Recipient',
 reachedYes:'✅ Reached',reachedNo:'⚠️ Not Reached',allOption:'-- All --',
 noDate:'No date',selectYear:'Select Year',
 pdfGenerating:'⏳ Generating PDF...',pdfError:'❌ Failed to generate PDF',selectPersonFirst:'Select a person first',
-invalidYear:'⚠️ Please enter a 4-digit year between 1900 and 2200'
+invalidYear:'⚠️ Please enter a 4-digit year between 1900 and 2200',
+yearFinalZakat:'Final Zakat Result',
+silverEqBadge:'✅ Silver Nisab Reached'
 }};
 
 let currentLang = 'ar';
@@ -707,8 +759,26 @@ function checkMetalNisab(m){
         return w >= nisabForCarat;
     }
 }
+/* فحص النصاب بشكل مرن - يقبل الذهب إذا بلغ نصاب الذهب أو قيمة نصاب الفضة */
+function checkMetalNisabFlexible(m){
+    const w = parseFloat(m.weight) || 0;
+    const p = parseFloat(m.price) || 0;
+    if(w <= 0) return false;
+    if(checkMetalNisab(m)) return true;
+    // فحص بديل: قيمة المعدن >= قيمة نصاب الفضة
+    const value = w * p;
+    const silverNisabValue = (goldPrice24 / 85) * 595;
+    return value >= silverNisabValue;
+}
 function computeMetalZakat(m){
     if(!checkMetalNisab(m)) return 0;
+    const w = parseFloat(m.weight) || 0;
+    const p = parseFloat(m.price) || 0;
+    return (w * p) / 40;
+}
+/* حساب الزكاة المرن */
+function computeMetalZakatFlexible(m){
+    if(!checkMetalNisabFlexible(m)) return 0;
     const w = parseFloat(m.weight) || 0;
     const p = parseFloat(m.price) || 0;
     return (w * p) / 40;
@@ -1706,78 +1776,118 @@ function renderSummary(){
 
         if(isOpen){
             const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
+            const personBanks = recData.banks.filter(b=>b.nameId===n.id);
+            const personMetals = recData.metals.filter(m=>m.nameId===n.id);
+            
+            const yearsSet = new Set();
+            personBanks.forEach(b=>{ if(b.year) yearsSet.add(String(b.year)); });
+            personMetals.forEach(m=>{ if(m.year) yearsSet.add(String(m.year)); });
+            const years = Array.from(yearsSet).sort((a,b)=> Number(b) - Number(a));
+            
             let innerHtml = '';
-
-            /* ============ الجدول 1: زكاة السنوات - أرصدة البنوك ============ */
-            const personBanks = recData.banks.filter(b=>b.nameId===n.id)
-                .slice().sort((a,b)=> (Number(b.year)||0) - (Number(a.year)||0));
-            innerHtml += '<div class="expand-section-title">🏦 '+getText('recTitleYears')+'</div>';
-            if(personBanks.length === 0){
-                innerHtml += '<div class="empty-row">'+getText('expandNoYears')+'</div>';
+            
+            if(years.length === 0){
+                innerHtml = '<div class="empty-row">'+getText('expandNoYears')+'</div>';
             } else {
-                innerHtml += '<table class="expand-table"><thead><tr>'+
-                    '<th>'+getText('expandYearCol')+'</th>'+
-                    '<th>'+getText('expandBankCol')+'</th>'+
-                    '<th>'+getText('expandZakatCol')+'</th>'+
-                    '<th>'+getText('expandReachedCol')+'</th>'+
-                '</tr></thead><tbody>';
-                personBanks.forEach(b=>{
-                    const amt = parseFloat(b.amount)||0;
-                    const z = amt/40;
-                    const reached = amt >= personNisab && amt > 0;
-                    const badge = reached
-                        ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
-                        : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
-                    innerHtml += '<tr>'+
-                        '<td style="font-weight:bold;">'+escapeAttr(b.year||'—')+'</td>'+
-                        '<td>'+fmtMoney(amt)+'</td>'+
-                        '<td class="zakat-v">'+fmtMoney(z)+'</td>'+
-                        '<td>'+badge+'</td>'+
-                    '</tr>';
+                years.forEach(year=>{
+                    const yearBanks = personBanks.filter(b=>String(b.year)===year);
+                    const yearMetals = personMetals.filter(m=>String(m.year)===year);
+                    
+                    innerHtml += '<div class="year-group-header">📅 '+year+'</div>';
+                    
+                    // قسم البنوك
+                    innerHtml += '<div class="expand-section-title">🏦 '+getText('recTitleYears')+'</div>';
+                    let yearBankZakat = 0;
+                    if(yearBanks.length === 0){
+                        innerHtml += '<div class="empty-row">'+getText('expandNoYears')+'</div>';
+                    } else {
+                        innerHtml += '<table class="expand-table"><thead><tr>'+
+                            '<th>'+getText('expandBankCol')+'</th>'+
+                            '<th>'+getText('expandZakatCol')+'</th>'+
+                            '<th>'+getText('expandReachedCol')+'</th>'+
+                        '</tr></thead><tbody>';
+                        yearBanks.forEach(b=>{
+                            const amt = parseFloat(b.amount)||0;
+                            const z = amt/40;
+                            yearBankZakat += z;
+                            const reached = amt >= personNisab && amt > 0;
+                            const badge = reached
+                                ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
+                                : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+                            innerHtml += '<tr>'+
+                                '<td>'+fmtMoney(amt)+'</td>'+
+                                '<td class="zakat-v">'+fmtMoney(z)+'</td>'+
+                                '<td>'+badge+'</td>'+
+                            '</tr>';
+                        });
+                        innerHtml += '<tr class="expand-total-row">'+
+                            '<td>المجموع</td>'+
+                            '<td class="zakat-v">'+fmtMoney(yearBankZakat)+'</td>'+
+                            '<td></td>'+
+                        '</tr>';
+                        innerHtml += '</tbody></table>';
+                    }
+                    
+                    // قسم المعادن
+                    innerHtml += '<div class="expand-section-title" style="margin-top:14px;">💎 '+getText('recTitleMetals')+'</div>';
+                    let yearMetalTotal = 0, yearMetalZakat = 0;
+                    if(yearMetals.length === 0){
+                        innerHtml += '<div class="empty-row">'+getText('expandNoMetals')+'</div>';
+                    } else {
+                        innerHtml += '<table class="expand-table"><thead><tr>'+
+                            '<th>'+getText('expandMetalTypeCol')+'</th>'+
+                            '<th>'+getText('expandMetalCaratCol')+'</th>'+
+                            '<th>'+getText('expandMetalWeightCol')+'</th>'+
+                            '<th>'+getText('expandMetalPriceCol')+'</th>'+
+                            '<th>'+getText('expandMetalTotalCol')+'</th>'+
+                            '<th>'+getText('expandMetalZakatCol')+'</th>'+
+                            '<th>'+getText('expandReachedCol')+'</th>'+
+                        '</tr></thead><tbody>';
+                        yearMetals.forEach(m=>{
+                            const w = parseFloat(m.weight)||0;
+                            const p = parseFloat(m.price)||0;
+                            const total = w*p;
+                            const z = computeMetalZakatFlexible(m);
+                            yearMetalTotal += total;
+                            yearMetalZakat += z;
+                            const reachedGold = checkMetalNisab(m);
+                            const reachedFlexible = checkMetalNisabFlexible(m);
+                            let badge;
+                            if(reachedGold){
+                                badge = '<span class="badge-status ok">'+getText('reachedYes')+'</span>';
+                            } else if(reachedFlexible){
+                                badge = '<span class="badge-status silver-eq">'+getText('silverEqBadge')+'</span>';
+                            } else {
+                                badge = '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+                            }
+                            const typeLabel = m.type==='gold' ? 'ذهب' : 'فضة';
+                            const caratLabel = m.type==='gold' ? (m.carat||'-') : '—';
+                            innerHtml += '<tr>'+
+                                '<td>'+typeLabel+'</td>'+
+                                '<td>'+caratLabel+'</td>'+
+                                '<td>'+w.toFixed(3)+'</td>'+
+                                '<td>'+fmtMoney(p)+'</td>'+
+                                '<td>'+fmtMoney(total)+'</td>'+
+                                '<td class="zakat-v">'+fmtMoney(z)+'</td>'+
+                                '<td>'+badge+'</td>'+
+                            '</tr>';
+                        });
+                        innerHtml += '<tr class="expand-total-row">'+
+                            '<td colspan="4">المجموع</td>'+
+                            '<td>'+fmtMoney(yearMetalTotal)+'</td>'+
+                            '<td class="zakat-v">'+fmtMoney(yearMetalZakat)+'</td>'+
+                            '<td></td>'+
+                        '</tr>';
+                        innerHtml += '</tbody></table>';
+                    }
+                    
+                    // النتيجة النهائية للسنة
+                    const yearTotalZakat = yearBankZakat + yearMetalZakat;
+                    innerHtml += '<div class="year-final-result">'+
+                        '<span class="lbl">📊 '+getText('yearFinalZakat')+' — '+year+'</span>'+
+                        '<span class="val">'+fmtMoney(yearTotalZakat)+' د.ب</span>'+
+                    '</div>';
                 });
-                innerHtml += '</tbody></table>';
-            }
-
-            /* ============ الجدول 2: موجود المعادن و الملبوس ============ */
-            const personMetals = recData.metals.filter(m=>m.nameId===n.id)
-                .slice().sort((a,b)=> (Number(b.year)||0) - (Number(a.year)||0));
-            innerHtml += '<div class="expand-section-title" style="margin-top:14px;">💎 '+getText('recTitleMetals')+'</div>';
-            if(personMetals.length === 0){
-                innerHtml += '<div class="empty-row">'+getText('expandNoMetals')+'</div>';
-            } else {
-                innerHtml += '<table class="expand-table"><thead><tr>'+
-                    '<th>'+getText('expandYearCol')+'</th>'+
-                    '<th>'+getText('expandMetalTypeCol')+'</th>'+
-                    '<th>'+getText('expandMetalCaratCol')+'</th>'+
-                    '<th>'+getText('expandMetalWeightCol')+'</th>'+
-                    '<th>'+getText('expandMetalPriceCol')+'</th>'+
-                    '<th>'+getText('expandMetalTotalCol')+'</th>'+
-                    '<th>'+getText('expandMetalZakatCol')+'</th>'+
-                    '<th>'+getText('expandReachedCol')+'</th>'+
-                '</tr></thead><tbody>';
-                personMetals.forEach(m=>{
-                    const w = parseFloat(m.weight)||0;
-                    const p = parseFloat(m.price)||0;
-                    const total = w*p;
-                    const z = computeMetalZakat(m);
-                    const reached = checkMetalNisab(m);
-                    const badge = reached
-                        ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
-                        : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
-                    const typeLabel = m.type==='gold' ? 'ذهب' : 'فضة';
-                    const caratLabel = m.type==='gold' ? (m.carat||'-') : '—';
-                    innerHtml += '<tr>'+
-                        '<td style="font-weight:bold;">'+escapeAttr(m.year||'—')+'</td>'+
-                        '<td>'+typeLabel+'</td>'+
-                        '<td>'+caratLabel+'</td>'+
-                        '<td>'+w.toFixed(3)+'</td>'+
-                        '<td>'+fmtMoney(p)+'</td>'+
-                        '<td>'+fmtMoney(total)+'</td>'+
-                        '<td class="zakat-v">'+fmtMoney(z)+'</td>'+
-                        '<td>'+badge+'</td>'+
-                    '</tr>';
-                });
-                innerHtml += '</tbody></table>';
             }
 
             const trExp = document.createElement('tr');
@@ -2069,12 +2179,12 @@ function shareFullReportWhatsApp(){
 function printHelp(){ printHtml(buildHelpReportHtml()); }
 function shareHelpWhatsApp(){ sharePdfViaWhatsApp(buildHelpReportHtml(), 'zakat-help.pdf', 'تقرير زكاة'); }
 
-function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV13', JSON.stringify(recData)); }catch(e){} }
+function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV14', JSON.stringify(recData)); }catch(e){} }
 function seedRecord(){ recData = {names:[], metals:[], banks:[], distributions:[], help:[], seq:1}; }
 function loadRecord(){
     let loaded = false;
     try{
-        const raw = localStorage.getItem('zakatRecordDataV13');
+        const raw = localStorage.getItem('zakatRecordDataV14');
         if(raw){
             const d = JSON.parse(raw);
             if(d && Array.isArray(d.names)){
