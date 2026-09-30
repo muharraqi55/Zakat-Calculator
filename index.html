@@ -232,6 +232,58 @@ input::placeholder{color:var(--placeholder-color)}
     font-weight:bold;
     padding:8px 10px;
 }
+/* ===== زر تبديل نصاب الفضة ===== */
+.silver-eq-toggle{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    user-select:none;
+    font-weight:bold;
+    font-size:calc(.82rem*var(--font-scale));
+    color:var(--text-main);
+    background:var(--bg-body);
+    padding:8px 14px;
+    border-radius:25px;
+    border:2px solid var(--border-color);
+    transition:0.2s;
+}
+.silver-eq-toggle:hover{border-color:var(--gold);}
+.silver-eq-toggle input{display:none;}
+.silver-eq-toggle .slider{
+    position:relative;
+    width:44px;
+    height:22px;
+    background:#ccc;
+    border-radius:25px;
+    transition:0.3s;
+    flex:0 0 auto;
+}
+.silver-eq-toggle .slider::before{
+    content:"";
+    position:absolute;
+    top:2px;
+    right:2px;
+    width:18px;
+    height:18px;
+    background:#fff;
+    border-radius:50%;
+    transition:0.3s;
+    box-shadow:0 1px 3px rgba(0,0,0,.3);
+}
+.silver-eq-toggle input:checked + .slider{
+    background:var(--green);
+}
+.silver-eq-toggle input:checked + .slider::before{
+    transform:translateX(-22px);
+}
+.silver-eq-toggle input:checked ~ .lbl-text{
+    color:var(--green);
+}
+.silver-eq-toggle .lbl-text{
+    color:var(--text-sub);
+    transition:0.2s;
+}
 @media (max-width:600px){.container{padding:12px}.item-row{flex-direction:column;align-items:stretch}.header-tools{flex-direction:column;align-items:stretch}.main-title h1{font-size:calc(1.8rem*var(--font-scale))}.hawl-mini{flex-direction:column;align-items:stretch}.hawl-mini input[type="month"]{width:100%}.nisab-banner{flex-direction:column;align-items:stretch;text-align:center}.zakat-details-table{font-size:calc(.7rem*var(--font-scale))}.tabs-nav{justify-content:center}.name-card-head .nisab-select{flex:1 1 100%}}
 </style>
 </head>
@@ -447,7 +499,14 @@ input::placeholder{color:var(--placeholder-color)}
 </div>
 
 <div class="section">
-<h2 id="recTitleSummary"><i class="fas fa-file-invoice-dollar"></i> ملخص الزكاة لكل شخص لجميع السنوات</h2>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+<h2 id="recTitleSummary" style="margin:0;"><i class="fas fa-file-invoice-dollar"></i> ملخص الزكاة لكل شخص لجميع السنوات</h2>
+<label class="silver-eq-toggle" id="silverEqToggleLabel" title="عند التفعيل: يحسب الذهب بنصاب الفضة إذا لم يبلغ 85 جرام لكن قيمته كافية">
+<input type="checkbox" id="silverEqToggle" checked onchange="toggleSilverEq(this.checked)"/>
+<span class="slider"></span>
+<span class="lbl-text" id="silverEqToggleText">احتساب نصاب الفضة</span>
+</label>
+</div>
 <div style="overflow-x:auto;">
 <table class="rec-table">
 <thead><tr>
@@ -653,7 +712,9 @@ noDate:'بدون تاريخ',selectYear:'اختر سنة',
 pdfGenerating:'⏳ جاري إنشاء PDF...',pdfError:'❌ حدث خطأ أثناء إنشاء PDF',selectPersonFirst:'اختر شخصاً أولاً',
 invalidYear:'⚠️ الرجاء إدخال سنة من 4 أرقام بين 1900 و 2200',
 yearFinalZakat:'النتيجة النهائية للزكاة',
-silverEqBadge:'✅ بلغ كنصاب الفضة'
+silverEqBadge:'✅ بلغ كنصاب الفضة',
+silverEqToggleText:'احتساب نصاب الفضة',
+silverEqToggleTip:'عند التفعيل: إذا كان الذهب أقل من 85 جرام لكن قيمته كافية بنصاب الفضة → تُحسب زكاته'
 },
 en:{
 pageTitle:'Zakat Calculator',langBtn:'🇸🇦 العربية',helpBtnText:'Guide',resetBtnText:'Reset',
@@ -721,7 +782,9 @@ noDate:'No date',selectYear:'Select Year',
 pdfGenerating:'⏳ Generating PDF...',pdfError:'❌ Failed to generate PDF',selectPersonFirst:'Select a person first',
 invalidYear:'⚠️ Please enter a 4-digit year between 1900 and 2200',
 yearFinalZakat:'Final Zakat Result',
-silverEqBadge:'✅ Silver Nisab Reached'
+silverEqBadge:'✅ Silver Nisab Reached',
+silverEqToggleText:'Silver Nisab Calc',
+silverEqToggleTip:'When enabled: If gold is less than 85g but value reaches silver nisab → Zakat calculated'
 }};
 
 let currentLang = 'ar';
@@ -737,6 +800,7 @@ appState.goldPrices['20'] = parseFloat((55.32*20/24).toFixed(4));
 appState.goldPrices['18'] = parseFloat((55.32*18/24).toFixed(4));
 
 let expandedPersons = {};
+let silverEqEnabled = true;
 function getText(k){ return (translations[currentLang]||translations.ar)[k]||k; }
 
 function fmtMoney(n){
@@ -759,13 +823,11 @@ function checkMetalNisab(m){
         return w >= nisabForCarat;
     }
 }
-/* فحص النصاب بشكل مرن - يقبل الذهب إذا بلغ نصاب الذهب أو قيمة نصاب الفضة */
 function checkMetalNisabFlexible(m){
     const w = parseFloat(m.weight) || 0;
     const p = parseFloat(m.price) || 0;
     if(w <= 0) return false;
     if(checkMetalNisab(m)) return true;
-    // فحص بديل: قيمة المعدن >= قيمة نصاب الفضة
     const value = w * p;
     const silverNisabValue = (goldPrice24 / 85) * 595;
     return value >= silverNisabValue;
@@ -776,7 +838,6 @@ function computeMetalZakat(m){
     const p = parseFloat(m.price) || 0;
     return (w * p) / 40;
 }
-/* حساب الزكاة المرن */
 function computeMetalZakatFlexible(m){
     if(!checkMetalNisabFlexible(m)) return 0;
     const w = parseFloat(m.weight) || 0;
@@ -1332,6 +1393,15 @@ function setFontSize(s,btn){
     document.querySelectorAll('.font-btn').forEach(b=>b.classList.remove('active'));
     if(btn) btn.classList.add('active');
 }
+
+/* تبديل تفعيل/إلغاء نصاب الفضة للمعادن */
+function toggleSilverEq(enabled){
+    silverEqEnabled = !!enabled;
+    try{ localStorage.setItem('zakatSilverEqEnabled', silverEqEnabled ? '1' : '0'); }catch(e){}
+    renderSummary();
+    calculateAll();
+}
+
 function applyLanguage(){
     const t = translations[currentLang];
     const set = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
@@ -1383,6 +1453,10 @@ function applyLanguage(){
     set('thDsPerson',t.thDsPerson); set('thDsDate',t.thDsDate); set('thDsRecipient',t.thDsRecipient); set('thDsRegion',t.thDsRegion);
     set('thDsAmount',t.thDsAmount); set('thDsReceived',t.thDsReceived); set('thDsNote',t.thDsNote);
     setHtml('lblPrintPerson','<i class="fas fa-user"></i> '+t.lblPrintPerson); set('btnPrintReport',t.btnPrintReport);
+    const sEqText = document.getElementById('silverEqToggleText');
+    if(sEqText) sEqText.textContent = t.silverEqToggleText;
+    const sEqLabel = document.getElementById('silverEqToggleLabel');
+    if(sEqLabel) sEqLabel.title = t.silverEqToggleTip;
     document.dir = currentLang==='ar'?'rtl':'ltr';
     document.documentElement.lang = currentLang;
     ['banks','goldWear','bullion','investments'].forEach(checkHawl);
@@ -1737,7 +1811,7 @@ function computeNameTotals(nameId){
         .reduce((s,b)=>s+(parseFloat(b.amount)||0),0);
     const grand = metalsTotal + bankTotal;
     const metalsZakat = recData.metals.filter(m=>m.nameId===nameId)
-        .reduce((s,m)=>s + computeMetalZakat(m), 0);
+        .reduce((s,m)=>s + (silverEqEnabled ? computeMetalZakatFlexible(m) : computeMetalZakat(m)), 0);
     const banksZakat = recData.banks.filter(b=>b.nameId===nameId)
         .reduce((s,b)=>s + ((parseFloat(b.amount)||0)/40), 0);
     const zakatSum = metalsZakat + banksZakat;
@@ -1795,7 +1869,6 @@ function renderSummary(){
                     
                     innerHtml += '<div class="year-group-header">📅 '+year+'</div>';
                     
-                    // قسم البنوك
                     innerHtml += '<div class="expand-section-title">🏦 '+getText('recTitleYears')+'</div>';
                     let yearBankZakat = 0;
                     if(yearBanks.length === 0){
@@ -1828,7 +1901,6 @@ function renderSummary(){
                         innerHtml += '</tbody></table>';
                     }
                     
-                    // قسم المعادن
                     innerHtml += '<div class="expand-section-title" style="margin-top:14px;">💎 '+getText('recTitleMetals')+'</div>';
                     let yearMetalTotal = 0, yearMetalZakat = 0;
                     if(yearMetals.length === 0){
@@ -1847,7 +1919,7 @@ function renderSummary(){
                             const w = parseFloat(m.weight)||0;
                             const p = parseFloat(m.price)||0;
                             const total = w*p;
-                            const z = computeMetalZakatFlexible(m);
+                            const z = silverEqEnabled ? computeMetalZakatFlexible(m) : computeMetalZakat(m);
                             yearMetalTotal += total;
                             yearMetalZakat += z;
                             const reachedGold = checkMetalNisab(m);
@@ -1855,7 +1927,7 @@ function renderSummary(){
                             let badge;
                             if(reachedGold){
                                 badge = '<span class="badge-status ok">'+getText('reachedYes')+'</span>';
-                            } else if(reachedFlexible){
+                            } else if(reachedFlexible && silverEqEnabled){
                                 badge = '<span class="badge-status silver-eq">'+getText('silverEqBadge')+'</span>';
                             } else {
                                 badge = '<span class="badge-status no">'+getText('reachedNo')+'</span>';
@@ -1881,7 +1953,6 @@ function renderSummary(){
                         innerHtml += '</tbody></table>';
                     }
                     
-                    // النتيجة النهائية للسنة
                     const yearTotalZakat = yearBankZakat + yearMetalZakat;
                     innerHtml += '<div class="year-final-result">'+
                         '<span class="lbl">📊 '+getText('yearFinalZakat')+' — '+year+'</span>'+
@@ -2081,7 +2152,7 @@ function buildFullReportHtml(nameId){
         const tot = (parseFloat(m.weight)||0)*(parseFloat(m.price)||0);
         const mr = checkMetalNisab(m);
         const mbadge = mr ? '✅' : '⚠️';
-        const mz = computeMetalZakat(m);
+        const mz = silverEqEnabled ? computeMetalZakatFlexible(m) : computeMetalZakat(m);
         metalsZakatTotal += mz;
         return '<tr><td>'+(m.type==='gold'?'ذهب':'فضة')+'</td><td>'+(m.type==='gold'?m.carat:'-')+
             '</td><td>'+escapeAttr(m.year)+'</td><td>'+(parseFloat(m.weight)||0).toFixed(3)+'</td><td>'+fmtMoney(m.price)+
@@ -2179,12 +2250,12 @@ function shareFullReportWhatsApp(){
 function printHelp(){ printHtml(buildHelpReportHtml()); }
 function shareHelpWhatsApp(){ sharePdfViaWhatsApp(buildHelpReportHtml(), 'zakat-help.pdf', 'تقرير زكاة'); }
 
-function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV14', JSON.stringify(recData)); }catch(e){} }
+function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV15', JSON.stringify(recData)); }catch(e){} }
 function seedRecord(){ recData = {names:[], metals:[], banks:[], distributions:[], help:[], seq:1}; }
 function loadRecord(){
     let loaded = false;
     try{
-        const raw = localStorage.getItem('zakatRecordDataV14');
+        const raw = localStorage.getItem('zakatRecordDataV15');
         if(raw){
             const d = JSON.parse(raw);
             if(d && Array.isArray(d.names)){
@@ -2334,6 +2405,16 @@ window.onload = function(){
     });
     ['banks','goldWear','bullion','investments'].forEach(checkHawl);
     
+    // استعادة حالة تفعيل نصاب الفضة
+    try{
+        const savedSilverEq = localStorage.getItem('zakatSilverEqEnabled');
+        if(savedSilverEq !== null){
+            silverEqEnabled = savedSilverEq === '1';
+            const toggleEl = document.getElementById('silverEqToggle');
+            if(toggleEl) toggleEl.checked = silverEqEnabled;
+        }
+    }catch(e){}
+    
     loadData();
     const savedCalc = localStorage.getItem('zakatCalculatorData');
     if(!savedCalc){
@@ -2393,6 +2474,7 @@ window.resetRecord = resetRecord;
 window.exportAllData = exportAllData;
 window.importAllData = importAllData;
 window.togglePersonExpand = togglePersonExpand;
+window.toggleSilverEq = toggleSilverEq;
 </script>
 </body>
 </html>
