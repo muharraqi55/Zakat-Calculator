@@ -650,9 +650,16 @@ invalidYear:'⚠️ Please enter a 4-digit year between 1900 and 2200'
 let currentLang = 'ar';
 let hawlStates = {banks:false,goldWear:false,bullion:false,investments:false};
 let nisabValue = 0;
-let goldPrice24 = 0;
+let goldPrice24 = 55.32;
 let silverPrice = 0.30;
-let appState = {theme:'light',fontSize:1,goldPrices:{'24':0,'22':0,'21':0,'20':0,'18':0}, silverPrice:0.30};
+let appState = {theme:'light',fontSize:1,goldPrices:{'24':55.32,'22':50.71,'21':48.41,'20':46.10,'18':41.49}, silverPrice:0.30};
+// تعبئة أسعار افتراضية مسبقاً
+appState.goldPrices['24'] = 55.32;
+appState.goldPrices['22'] = parseFloat((55.32*22/24).toFixed(4));
+appState.goldPrices['21'] = parseFloat((55.32*21/24).toFixed(4));
+appState.goldPrices['20'] = parseFloat((55.32*20/24).toFixed(4));
+appState.goldPrices['18'] = parseFloat((55.32*18/24).toFixed(4));
+
 let expandedPersons = {};
 function getText(k){ return (translations[currentLang]||translations.ar)[k]||k; }
 
@@ -665,7 +672,6 @@ function fmtMoney2(n){
     return num.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
 }
 
-/* فحص بلوغ نصاب معدن معين */
 function checkMetalNisab(m){
     const w = parseFloat(m.weight) || 0;
     if(w <= 0) return false;
@@ -677,8 +683,6 @@ function checkMetalNisab(m){
         return w >= nisabForCarat;
     }
 }
-
-/* حساب زكاة معدن معين - فقط إذا بلغ النصاب */
 function computeMetalZakat(m){
     if(!checkMetalNisab(m)) return 0;
     const w = parseFloat(m.weight) || 0;
@@ -707,10 +711,13 @@ async function fetchGoldPrices(){
                 const dSilver = await rSilver.json();
                 silverPrice = parseFloat(((dSilver.price/31.1035)*0.377).toFixed(4));
                 appState.silverPrice = silverPrice;
-            }catch(e){ /* */ }
+            }catch(e){}
         }
         updateNisabBanner(); updateAllPriceFields(); calculateAll(); refreshRecord();
-    }catch(e){ goldPrice24=55.32; updateNisabBanner(); refreshRecord(); }
+    }catch(e){ 
+        console.warn('API fetch failed, using default prices', e);
+        updateNisabBanner(); refreshRecord();
+    }
     finally{ document.querySelectorAll('.fetch-btn').forEach(b=>{b.disabled=false;b.innerHTML='<i class="fas fa-sync-alt"></i> '+getText('btnFetch');}); }
 }
 function updateNisabBanner(){
@@ -747,11 +754,14 @@ function updateAllPriceFields(){
     updateTotals();
 }
 
+/* جلب السعر الحالي - الآن يعمل حتى بدون API */
 function getCurrentMetalPrice(type, carat){
     if(type === 'silver') {
         return appState.silverPrice || silverPrice || SILVER_PRICE_DEFAULT;
     }
-    return appState.goldPrices[carat] || 0;
+    const caratNum = parseFloat(carat) || 21;
+    const gold24 = appState.goldPrices['24'] || goldPrice24 || 55.32;
+    return appState.goldPrices[caratNum] || parseFloat((gold24 * caratNum / 24).toFixed(4));
 }
 
 function checkHawl(section){
@@ -787,10 +797,11 @@ function checkHawl(section){
 }
 
 let goldWearCounter=0;
-function addGoldWearItem(){
+function addGoldWearItem(skipSave){
     if(!hawlStates.goldWear) return;
     const c=document.getElementById('goldWearContainer'); const id=goldWearCounter++;
     const div=document.createElement('div'); div.className='item-row gold-wear-item'; div.dataset.id=id;
+    const defaultPrice = getCurrentMetalPrice('gold', '21');
     div.innerHTML=`
 <input type="text" placeholder="${getText('goldName')}" class="gw-name" style="flex:1.2;min-width:80px;"/>
 <select class="gold-carat-select" onchange="updateGoldWearPrice(${id})" style="flex:0.7;min-width:70px;">
@@ -810,7 +821,7 @@ function addGoldWearItem(){
 </div>
 <div class="gold-price-row">
 <div class="price-input-wrapper">
-<input type="number" placeholder="${getText('goldPrice')}" step="0.001" class="gw-price" style="flex:1;"/>
+<input type="number" placeholder="${getText('goldPrice')}" step="0.001" class="gw-price" value="${defaultPrice}" style="flex:1;"/>
 <span class="currency-label">${getText('currency')}</span>
 </div>
 <button class="btn btn-gold btn-sm fetch-btn" onclick="fetchGoldPrices()" style="padding:5px 10px;font-size:calc(.75rem*var(--font-scale));"><i class="fas fa-sync-alt"></i> ${getText('btnFetch')}</button>
@@ -821,29 +832,33 @@ function addGoldWearItem(){
     div.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',updateTotals));
     div.querySelector('.gw-price').readOnly=true;
     updateTotals();
+    if(!skipSave) saveData();
 }
-function removeGoldWearItem(b){ b.closest('.item-row').remove(); updateTotals(); }
+function removeGoldWearItem(b){ b.closest('.item-row').remove(); updateTotals(); saveData(); }
 function toggleGoldWearSource(id){
     const item = document.querySelector('.gold-wear-item[data-id="'+id+'"]'); if(!item) return;
     const src = item.querySelector('input[name="goldSource_'+id+'"]:checked').value;
     const p = item.querySelector('.gw-price');
     const carat = item.querySelector('.gold-carat-select').value;
-    if(src==='auto'){ const v=appState.goldPrices[carat]||0; if(v>0){p.value=v;p.readOnly=true;updateTotals();} else fetchGoldPrices(); }
+    if(src==='auto'){ const v=appState.goldPrices[carat]||getCurrentMetalPrice('gold',carat); if(v>0){p.value=v;p.readOnly=true;updateTotals();} else fetchGoldPrices(); }
     else { p.readOnly=false; p.value=''; updateTotals(); }
+    saveData();
 }
 function updateGoldWearPrice(id){
     const item = document.querySelector('.gold-wear-item[data-id="'+id+'"]'); if(!item) return;
     const carat = item.querySelector('.gold-carat-select').value;
     const p = item.querySelector('.gw-price');
     const src = item.querySelector('input[name="goldSource_'+id+'"]:checked');
-    if(src && src.value==='auto'){ const v=appState.goldPrices[carat]||0; if(v>0){p.value=v;p.readOnly=true;} }
+    if(src && src.value==='auto'){ const v=getCurrentMetalPrice('gold',carat); if(v>0){p.value=v;p.readOnly=true;} }
     updateTotals();
+    saveData();
 }
 
 let bullionCounter=0;
-function addBullionItem(){
+function addBullionItem(skipSave){
     if(!hawlStates.bullion) return;
     const c=document.getElementById('bullionContainer'); const id=bullionCounter++;
+    const defaultPrice = getCurrentMetalPrice('gold', '24');
     const div=document.createElement('div'); div.className='item-row bullion-item'; div.dataset.id=id;
     div.innerHTML=`
 <div class="input-wrapper" style="flex:0.7;min-width:80px;">
@@ -857,7 +872,7 @@ function addBullionItem(){
 </div>
 <div class="gold-price-row">
 <div class="price-input-wrapper">
-<input type="number" placeholder="${getText('bullionPrice')}" step="0.001" class="b-price" style="flex:1;"/>
+<input type="number" placeholder="${getText('bullionPrice')}" step="0.001" class="b-price" value="${defaultPrice}" style="flex:1;"/>
 <span class="currency-label">${getText('currency')}</span>
 </div>
 <button class="btn btn-gold btn-sm fetch-btn" onclick="fetchGoldPrices()" style="padding:5px 10px;font-size:calc(.75rem*var(--font-scale));"><i class="fas fa-sync-alt"></i> ${getText('btnFetch')}</button>
@@ -868,17 +883,19 @@ function addBullionItem(){
     div.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',updateTotals));
     div.querySelector('.b-price').readOnly=true;
     updateTotals();
+    if(!skipSave) saveData();
 }
-function removeBullionItem(b){ b.closest('.item-row').remove(); updateTotals(); }
+function removeBullionItem(b){ b.closest('.item-row').remove(); updateTotals(); saveData(); }
 function toggleBullionSource(id){
     const item = document.querySelector('.bullion-item[data-id="'+id+'"]'); if(!item) return;
     const src = item.querySelector('input[name="bullionSource_'+id+'"]:checked').value;
     const p = item.querySelector('.b-price');
-    if(src==='auto'){ const v=appState.goldPrices['24']||0; if(v>0){p.value=v;p.readOnly=true;updateTotals();} else fetchGoldPrices(); }
+    if(src==='auto'){ const v=getCurrentMetalPrice('gold','24'); if(v>0){p.value=v;p.readOnly=true;updateTotals();} else fetchGoldPrices(); }
     else { p.readOnly=false; p.value=''; updateTotals(); }
+    saveData();
 }
 
-function addInvestment(){
+function addInvestment(skipSave){
     if(!hawlStates.investments) return;
     const c=document.getElementById('investmentsContainer');
     const div=document.createElement('div'); div.className='item-row';
@@ -888,10 +905,11 @@ function addInvestment(){
 <input type="number" placeholder="${getText('invValue')}" class="inv-value" step="0.01" style="flex:1;"/>
 <span class="currency-label">${getText('currency')}</span>
 </div>
-<button class="remove-btn" onclick="this.parentElement.remove();updateTotals();">${getText('remove')}</button>`;
+<button class="remove-btn" onclick="this.parentElement.remove();updateTotals();saveData();">${getText('remove')}</button>`;
     c.appendChild(div);
     div.querySelectorAll('input').forEach(el=>el.addEventListener('input',updateTotals));
     updateTotals();
+    if(!skipSave) saveData();
 }
 
 function updateTotals(){
@@ -974,7 +992,35 @@ function updateNisabStatus(total){
     else { s.className='nisab-status not-reached'; st.innerHTML='⚠️ '+getText('nisabNotReached'); }
 }
 
+/* ============ حفظ واستعادة بيانات الحاسبة ============ */
 function collectCalcData(){
+    const goldWear = [];
+    document.querySelectorAll('.gold-wear-item').forEach(it=>{
+        const src = it.querySelector('input[name^="goldSource_"]:checked');
+        goldWear.push({
+            name: it.querySelector('.gw-name') ? it.querySelector('.gw-name').value : '',
+            carat: it.querySelector('.gold-carat-select') ? it.querySelector('.gold-carat-select').value : '21',
+            weight: it.querySelector('.gw-weight') ? it.querySelector('.gw-weight').value : '',
+            price: it.querySelector('.gw-price') ? it.querySelector('.gw-price').value : '',
+            source: src ? src.value : 'auto'
+        });
+    });
+    const bullionItems = [];
+    document.querySelectorAll('.bullion-item').forEach(it=>{
+        const src = it.querySelector('input[name^="bullionSource_"]:checked');
+        bullionItems.push({
+            weight: it.querySelector('.b-weight') ? it.querySelector('.b-weight').value : '',
+            price: it.querySelector('.b-price') ? it.querySelector('.b-price').value : '',
+            source: src ? src.value : 'auto'
+        });
+    });
+    const investments = [];
+    document.querySelectorAll('#investmentsContainer .item-row').forEach(it=>{
+        investments.push({
+            name: it.querySelector('.inv-name') ? it.querySelector('.inv-name').value : '',
+            value: it.querySelector('.inv-value') ? it.querySelector('.inv-value').value : ''
+        });
+    });
     return {
         bankTotal: (document.getElementById('bankTotal')||{}).value||'',
         banksStart: (document.getElementById('banksStartMonth')||{}).value||'',
@@ -985,7 +1031,10 @@ function collectCalcData(){
         bullionStart: (document.getElementById('bullionStartMonth')||{}).value||'',
         bullionEnd: (document.getElementById('bullionEndMonth')||{}).value||'',
         invStart: (document.getElementById('invStartMonth')||{}).value||'',
-        invEnd: (document.getElementById('invEndMonth')||{}).value||''
+        invEnd: (document.getElementById('invEndMonth')||{}).value||'',
+        goldWear: goldWear,
+        bullionItems: bullionItems,
+        investments: investments
     };
 }
 function applyCalcData(d){
@@ -997,9 +1046,114 @@ function applyCalcData(d){
     set('gwStartMonth', d.gwStart); set('gwEndMonth', d.gwEnd);
     set('bullionStartMonth', d.bullionStart); set('bullionEndMonth', d.bullionEnd);
     set('invStartMonth', d.invStart); set('invEndMonth', d.invEnd);
+    
+    // استعادة الذهب الملبوس
+    const gwContainer = document.getElementById('goldWearContainer');
+    if(gwContainer && Array.isArray(d.goldWear) && d.goldWear.length > 0){
+        gwContainer.innerHTML = '';
+        goldWearCounter = 0;
+        // تأكد من أن الأقسام مفتوحة قبل الإضافة
+        const wasDisabled = document.getElementById('goldWearSection').classList.contains('disabled');
+        if(wasDisabled) document.getElementById('goldWearSection').classList.remove('disabled');
+        d.goldWear.forEach(item=>{
+            addGoldWearItem(true);
+            const lastItem = gwContainer.lastElementChild;
+            if(!lastItem) return;
+            const nameInp = lastItem.querySelector('.gw-name');
+            const caratSel = lastItem.querySelector('.gold-carat-select');
+            const weightInp = lastItem.querySelector('.gw-weight');
+            const priceInp = lastItem.querySelector('.gw-price');
+            if(nameInp) nameInp.value = item.name || '';
+            if(caratSel) caratSel.value = item.carat || '21';
+            if(weightInp) weightInp.value = item.weight || '';
+            if(priceInp) priceInp.value = item.price || '';
+            if(item.source){
+                const radio = lastItem.querySelector('input[name^="goldSource_"][value="'+item.source+'"]');
+                if(radio){
+                    radio.checked = true;
+                    if(item.source === 'manual'){
+                        if(priceInp){ priceInp.readOnly = false; }
+                    }
+                }
+            }
+        });
+    }
+    
+    // استعادة السبائك
+    const bContainer = document.getElementById('bullionContainer');
+    if(bContainer && Array.isArray(d.bullionItems) && d.bullionItems.length > 0){
+        bContainer.innerHTML = '';
+        bullionCounter = 0;
+        const wasDisabled = document.getElementById('bullionSection').classList.contains('disabled');
+        if(wasDisabled) document.getElementById('bullionSection').classList.remove('disabled');
+        d.bullionItems.forEach(item=>{
+            addBullionItem(true);
+            const lastItem = bContainer.lastElementChild;
+            if(!lastItem) return;
+            const wInp = lastItem.querySelector('.b-weight');
+            const pInp = lastItem.querySelector('.b-price');
+            if(wInp) wInp.value = item.weight || '';
+            if(pInp) pInp.value = item.price || '';
+            if(item.source){
+                const radio = lastItem.querySelector('input[name^="bullionSource_"][value="'+item.source+'"]');
+                if(radio){
+                    radio.checked = true;
+                    if(item.source === 'manual'){
+                        if(pInp){ pInp.readOnly = false; }
+                    }
+                }
+            }
+        });
+    }
+    
+    // استعادة الاستثمارات
+    const invContainer = document.getElementById('investmentsContainer');
+    if(invContainer && Array.isArray(d.investments) && d.investments.length > 0){
+        invContainer.innerHTML = '';
+        const wasDisabled = document.getElementById('investmentsSection').classList.contains('disabled');
+        if(wasDisabled) document.getElementById('investmentsSection').classList.remove('disabled');
+        d.investments.forEach(item=>{
+            addInvestment(true);
+            const lastItem = invContainer.lastElementChild;
+            if(!lastItem) return;
+            const nameInp = lastItem.querySelector('.inv-name');
+            const valInp = lastItem.querySelector('.inv-value');
+            if(nameInp) nameInp.value = item.name || '';
+            if(valInp) valInp.value = item.value || '';
+        });
+    }
+    
+    updateTotals();
 }
-function saveData(){ try{ localStorage.setItem('zakatCalculatorData', JSON.stringify(collectCalcData())); }catch(e){} }
-function loadData(){ try{ const s=localStorage.getItem('zakatCalculatorData'); if(s) applyCalcData(JSON.parse(s)); }catch(e){} }
+function saveData(){ 
+    try{ 
+        localStorage.setItem('zakatCalculatorData', JSON.stringify(collectCalcData())); 
+    }catch(e){ console.error('saveData error', e); }
+}
+function loadData(){ 
+    try{ 
+        const s=localStorage.getItem('zakatCalculatorData'); 
+        if(s) applyCalcData(JSON.parse(s)); 
+    }catch(e){ console.error('loadData error', e); }
+}
+
+/* ===== حفظ تلقائي شامل ===== */
+document.addEventListener('input', function(e){
+    const calcTab = document.getElementById('tab-calc');
+    if(calcTab && calcTab.contains(e.target)){
+        saveData();
+    }
+});
+document.addEventListener('change', function(e){
+    const calcTab = document.getElementById('tab-calc');
+    if(calcTab && calcTab.contains(e.target)){
+        saveData();
+    }
+});
+window.addEventListener('beforeunload', function(){
+    saveData();
+    saveRecord();
+});
 
 function exportAllData(){
     try{
@@ -1068,6 +1222,9 @@ function resetAll(){
     goldWearCounter=0; bullionCounter=0;
     localStorage.removeItem('zakatCalculatorData');
     ['banks','goldWear','bullion','investments'].forEach(checkHawl);
+    addGoldWearItem(true);
+    addBullionItem(true);
+    addInvestment(true);
     alert(getText('resetSuccess'));
     calculateAll();
 }
@@ -1491,23 +1648,16 @@ function updateHelpTotal(){
 
 function computeNameTotals(nameId){
     const n = recData.names.find(x=>x.id===nameId);
-    // إجمالي قيم المعادن
     const metalsTotal = recData.metals.filter(m=>m.nameId===nameId)
         .reduce((s,m)=>s+((parseFloat(m.weight)||0)*(parseFloat(m.price)||0)),0);
-    // إجمالي أرصدة البنوك
     const bankTotal = recData.banks.filter(b=>b.nameId===nameId)
         .reduce((s,b)=>s+(parseFloat(b.amount)||0),0);
     const grand = metalsTotal + bankTotal;
-    
-    // ===== زكاة المعادن (فقط ما بلغ النصاب) =====
     const metalsZakat = recData.metals.filter(m=>m.nameId===nameId)
         .reduce((s,m)=>s + computeMetalZakat(m), 0);
-    // ===== زكاة البنوك =====
     const banksZakat = recData.banks.filter(b=>b.nameId===nameId)
         .reduce((s,b)=>s + ((parseFloat(b.amount)||0)/40), 0);
-    // ===== المجموع = زكاة المعادن + زكاة البنوك =====
     const zakatSum = metalsZakat + banksZakat;
-    
     const nisabType = n ? n.nisabType : 'silver';
     const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
     const reached = grand >= personNisab && grand > 0;
@@ -1527,11 +1677,9 @@ function renderSummary(){
     recData.names.forEach(n=>{
         const {metalsTotal, bankTotal, grand, nisabType, zakatSum} = computeNameTotals(n.id);
         tZakatSum += zakatSum;
-
         const isOpen = !!expandedPersons[n.id];
         const expandIcon = isOpen ? '×' : '+';
         const expandClass = isOpen ? 'btn-expand open' : 'btn-expand';
-
         const tr = document.createElement('tr');
         tr.innerHTML =
             '<td style="font-weight:bold;">'+escapeAttr(n.name||'—')+'</td>'+
@@ -1573,7 +1721,6 @@ function renderSummary(){
                 });
                 innerHtml += '</tbody></table>';
             }
-
             const trExp = document.createElement('tr');
             trExp.className = 'expand-row';
             trExp.innerHTML = '<td colspan="7"><div class="expand-content">'+
@@ -1722,24 +1869,17 @@ async function sharePdfViaWhatsApp(html, filename, shareText){
         const file = new File([blob], filename || 'zakat-report.pdf', { type: 'application/pdf' });
         if(navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share){
             try{
-                await navigator.share({
-                    files: [file],
-                    title: filename || 'تقرير الزكاة',
-                    text: shareText || 'تقرير الزكاة'
-                });
+                await navigator.share({ files: [file], title: filename || 'تقرير الزكاة', text: shareText || 'تقرير الزكاة' });
                 return;
             }catch(err){
                 if(err && err.name === 'AbortError') return;
-                console.warn('Web Share failed, falling back', err);
             }
         }
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = filename || 'zakat-report.pdf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
         setTimeout(function(){
             URL.revokeObjectURL(url);
             const text = encodeURIComponent(shareText || 'تقرير الزكاة - تم تنزيل الملف، يرجى إرفاقه');
@@ -1870,12 +2010,12 @@ function shareFullReportWhatsApp(){
 function printHelp(){ printHtml(buildHelpReportHtml()); }
 function shareHelpWhatsApp(){ sharePdfViaWhatsApp(buildHelpReportHtml(), 'zakat-help.pdf', 'تقرير زكاة'); }
 
-function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV11', JSON.stringify(recData)); }catch(e){} }
+function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV12', JSON.stringify(recData)); }catch(e){} }
 function seedRecord(){ recData = {names:[], metals:[], banks:[], distributions:[], help:[], seq:1}; }
 function loadRecord(){
     let loaded = false;
     try{
-        const raw = localStorage.getItem('zakatRecordDataV11');
+        const raw = localStorage.getItem('zakatRecordDataV12');
         if(raw){
             const d = JSON.parse(raw);
             if(d && Array.isArray(d.names)){
@@ -2024,8 +2164,27 @@ window.onload = function(){
         if(s) s.value = ds; if(e) e.value = de;
     });
     ['banks','goldWear','bullion','investments'].forEach(checkHawl);
-    loadData(); loadRecord();
-    setTimeout(()=>fetchGoldPrices(), 500);
+    
+    // استعادة بيانات الحاسبة المحفوظة أولاً
+    loadData();
+    // إذا لم تكن هناك بيانات محفوظة، أضف صفوف فارغة افتراضية
+    const savedCalc = localStorage.getItem('zakatCalculatorData');
+    if(!savedCalc){
+        addGoldWearItem(true);
+        addBullionItem(true);
+        addInvestment(true);
+    }
+    
+    loadRecord();
+    
+    // تحديث الواجهة بالأسعار الافتراضية أولاً
+    updateNisabBanner();
+    updateAllPriceFields();
+    calculateAll();
+    refreshRecord();
+    
+    // جلب الأسعار العالمية
+    fetchGoldPrices();
 };
 
 window.addGoldWearItem = addGoldWearItem;
