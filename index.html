@@ -9,7 +9,7 @@
 [data-theme="dark"]{--bg-body:#0d1117;--bg-card:#161b22;--text-main:#f0f6fc;--text-sub:#c9d1d9;--border-color:#30363d;--bg-input:#0d1117;--bg-section:#1c2333;--shadow:0 15px 35px rgba(0,0,0,.7);--success:#58a6ff;--success-bg:#1a2332;--danger:#f85149;--danger-bg:#2d1b1e;--gold:#d4a843;--gold-hover:#e8b84a;--green:#58a6ff;--green-hover:#79c0ff;--bg-status-loading:#1c2333;--input-border:#30363d;--placeholder-color:#6e7681;--badge-bg:#1c2333;--badge-border:#d4a843;--table-header-bg:#21283a}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif;transition:background-color .3s,color .3s,border-color .3s}
 body{background:var(--bg-body);padding:10px;display:flex;justify-content:center;min-height:100vh;font-size:calc(16px*var(--font-scale));color:var(--text-main)}
-.container{max-width:1100px;width:100%;background:var(--bg-card);border-radius:30px;padding:20px 18px;box-shadow:var(--shadow)}
+.container{max-width:1500px;width:100%;background:var(--bg-card);border-radius:30px;padding:20px 18px;box-shadow:var(--shadow)}
 .main-title{text-align:center;padding:8px 0 12px;margin-bottom:15px;border-bottom:3px solid var(--gold)}
 .main-title h1{font-size:calc(2.2rem*var(--font-scale));font-weight:900;color:var(--green);margin:0;letter-spacing:1px}
 .main-title h1 i{color:var(--gold);margin-left:10px}
@@ -152,7 +152,7 @@ input::placeholder{color:var(--placeholder-color)}
 .year-chip button:hover{opacity:.7}
 .add-year-select{width:auto;padding:4px 8px;font-size:calc(.8rem*var(--font-scale));border-radius:8px;flex:0 0 auto;min-width:100px;background:var(--bg-input);border:1px solid var(--input-border);color:var(--text-main)}
 .add-year-input{width:80px;padding:4px 8px;font-size:calc(.8rem*var(--font-scale));border-radius:8px;text-align:center;flex:0 0 auto}
-.year-sep{color:var(--text-sub);font-size:calc(.75rem*var(--font-scale));padding:0 2px;font-weight:bold;}
+.year-sep{color:var(--text-sub);font-size:calc(.75rem*var(--font-scale));padding:0 2px;font-weight:bold}
 .btn-add-year{background:var(--green);color:#fff;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:bold;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
 .btn-add-year:hover{background:var(--green-hover)}
 .badge-status{display:inline-block;padding:3px 10px;border-radius:12px;font-size:calc(.75rem*var(--font-scale));font-weight:bold;white-space:nowrap}
@@ -168,16 +168,7 @@ input::placeholder{color:var(--placeholder-color)}
 .expand-row td{padding:0!important;text-align:right!important}
 .expand-content{padding:10px 14px;background:var(--bg-body);border-right:3px solid var(--gold)}
 .expand-content .exp-title{font-weight:bold;color:var(--gold);font-size:calc(.9rem*var(--font-scale));margin-bottom:10px}
-.expand-section-title{
-    font-weight:bold;
-    color:var(--green);
-    font-size:calc(.85rem*var(--font-scale));
-    padding:6px 10px;
-    margin-bottom:6px;
-    background:var(--bg-card);
-    border-right:3px solid var(--gold);
-    border-radius:6px;
-}
+.expand-section-title{font-weight:bold;color:var(--green);font-size:calc(.85rem*var(--font-scale));padding:6px 10px;margin-bottom:6px;background:var(--bg-card);border-right:3px solid var(--gold);border-radius:6px}
 .expand-table{width:100%;border-collapse:collapse;font-size:calc(.8rem*var(--font-scale));background:var(--bg-card);margin-bottom:10px}
 .expand-table th,.expand-table td{border:1px solid var(--border-color);padding:6px 10px;text-align:center}
 .expand-table th{background:var(--table-header-bg);color:var(--text-sub);font-weight:bold}
@@ -185,104 +176,86 @@ input::placeholder{color:var(--placeholder-color)}
 .expand-table .zakat-v{color:var(--gold);font-weight:bold}
 .expand-table .empty-row{color:var(--text-sub);text-align:center;padding:10px}
 .expand-content .empty-row{color:var(--text-sub);text-align:center;padding:10px;background:var(--bg-card);border-radius:8px;margin-bottom:10px;font-size:calc(.82rem*var(--font-scale))}
-.year-group-header{
-    background:linear-gradient(90deg, var(--green) 0%, var(--green-hover) 100%);
-    color:#fff;
-    font-weight:bold;
-    font-size:calc(1rem*var(--font-scale));
-    padding:10px 16px;
+.year-group-header{background:linear-gradient(90deg, var(--green) 0%, var(--green-hover) 100%);color:#fff;font-weight:bold;font-size:calc(1rem*var(--font-scale));padding:10px 16px;border-radius:10px;margin:16px 0 10px;text-align:center;letter-spacing:1px;box-shadow:0 3px 8px rgba(0,0,0,.15)}
+.year-group-header:first-child{margin-top:0}
+.year-final-result{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg, var(--gold) 0%, var(--gold-hover) 100%);color:#1a1a1a;border-radius:12px;padding:14px 20px;margin:14px 0 20px;font-weight:bold;box-shadow:0 4px 12px rgba(184,134,11,.25);flex-wrap:wrap;gap:8px}
+.year-final-result .lbl{font-size:calc(.9rem*var(--font-scale))}
+.year-final-result .val{font-size:calc(1.3rem*var(--font-scale));font-weight:900;color:#1a1a1a;background:rgba(255,255,255,.5);padding:4px 14px;border-radius:20px}
+.expand-total-row{background:var(--bg-status-loading);font-weight:bold}
+.expand-total-row td{color:var(--green);font-weight:bold;padding:8px 10px}
+.silver-eq-toggle{display:inline-flex;align-items:center;gap:10px;cursor:pointer;user-select:none;font-weight:bold;font-size:calc(.82rem*var(--font-scale));color:var(--text-main);background:var(--bg-body);padding:8px 14px;border-radius:25px;border:2px solid var(--border-color)}
+.silver-eq-toggle:hover{border-color:var(--gold)}
+.silver-eq-toggle input{display:none}
+.silver-eq-toggle .slider{position:relative;width:44px;height:22px;background:#ccc;border-radius:25px;transition:.3s;flex:0 0 auto}
+.silver-eq-toggle .slider::before{content:"";position:absolute;top:2px;right:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.silver-eq-toggle input:checked + .slider{background:var(--green)}
+.silver-eq-toggle input:checked + .slider::before{transform:translateX(-22px)}
+.silver-eq-toggle input:checked ~ .lbl-text{color:var(--green)}
+.silver-eq-toggle .lbl-text{color:var(--text-sub)}
+.hawl-cell{display:flex;flex-direction:column;gap:4px;align-items:center;min-width:200px}
+.hawl-dates{display:flex;gap:4px;align-items:center;flex-wrap:nowrap}
+.hawl-dates input[type="month"]{padding:4px 6px;font-size:calc(.72rem*var(--font-scale));border-radius:6px;width:100px;min-width:90px;text-align:center}
+.hawl-dates span{color:var(--text-sub);font-weight:bold;font-size:calc(.7rem*var(--font-scale))}
+.hawl-status-badge{font-size:calc(.68rem*var(--font-scale));font-weight:bold;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.hawl-status-badge.ok{background:var(--success-bg);color:var(--success);border:1px solid var(--success)}
+.hawl-status-badge.no{background:var(--bg-status-loading);color:var(--gold);border:1px solid var(--gold)}
+.metal-row.hawl-incomplete .mt-name,
+.metal-row.hawl-incomplete .mt-year,
+.metal-row.hawl-incomplete .mt-type,
+.metal-row.hawl-incomplete .mt-carat,
+.metal-row.hawl-incomplete .mt-weight,
+.metal-row.hawl-incomplete .mt-price,
+.bank-row.hawl-incomplete .bn-name,
+.bank-row.hawl-incomplete .bn-year,
+.bank-row.hawl-incomplete .bn-amount,
+.inv-row.hawl-incomplete .iv-name-select,
+.inv-row.hawl-incomplete .iv-year,
+.inv-row.hawl-incomplete .iv-name,
+.inv-row.hawl-incomplete .iv-value,
+.metal-row.hawl-incomplete .gw-name-select,
+.metal-row.hawl-incomplete .gw-year,
+.metal-row.hawl-incomplete .gw-carat,
+.metal-row.hawl-incomplete .gw-weight{opacity:.45;pointer-events:none;background:var(--bg-body)}
+/* ===== صفوف السنوات القابلة للطي ===== */
+.year-row-collapsible{
+    background:var(--bg-card);
+    border:1px solid var(--border-color);
+    border-right:4px solid var(--gold);
     border-radius:10px;
-    margin:16px 0 10px;
-    text-align:center;
-    letter-spacing:1px;
-    box-shadow:0 3px 8px rgba(0,0,0,.15);
-}
-.year-group-header:first-child{margin-top:0;}
-.year-final-result{
+    padding:10px 14px;
+    margin-bottom:8px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    background:linear-gradient(135deg, var(--gold) 0%, var(--gold-hover) 100%);
-    color:#1a1a1a;
-    border-radius:12px;
-    padding:14px 20px;
-    margin:14px 0 20px;
-    font-weight:bold;
-    box-shadow:0 4px 12px rgba(184,134,11,.25);
     flex-wrap:wrap;
-    gap:8px;
-}
-.year-final-result .lbl{
-    font-size:calc(.9rem*var(--font-scale));
-}
-.year-final-result .val{
-    font-size:calc(1.3rem*var(--font-scale));
-    font-weight:900;
-    color:#1a1a1a;
-    background:rgba(255,255,255,.5);
-    padding:4px 14px;
-    border-radius:20px;
-}
-.expand-total-row{
-    background:var(--bg-status-loading);
-    font-weight:bold;
-}
-.expand-total-row td{
-    color:var(--green);
-    font-weight:bold;
-    padding:8px 10px;
-}
-/* ===== زر تبديل نصاب الفضة ===== */
-.silver-eq-toggle{
-    display:inline-flex;
-    align-items:center;
     gap:10px;
     cursor:pointer;
-    user-select:none;
+    transition:background-color .2s;
+}
+.year-row-collapsible:hover{background:var(--bg-hover);}
+.year-row-collapsible .year-title{
     font-weight:bold;
-    font-size:calc(.82rem*var(--font-scale));
-    color:var(--text-main);
-    background:var(--bg-body);
-    padding:8px 14px;
-    border-radius:25px;
-    border:2px solid var(--border-color);
-    transition:0.2s;
-}
-.silver-eq-toggle:hover{border-color:var(--gold);}
-.silver-eq-toggle input{display:none;}
-.silver-eq-toggle .slider{
-    position:relative;
-    width:44px;
-    height:22px;
-    background:#ccc;
-    border-radius:25px;
-    transition:0.3s;
-    flex:0 0 auto;
-}
-.silver-eq-toggle .slider::before{
-    content:"";
-    position:absolute;
-    top:2px;
-    right:2px;
-    width:18px;
-    height:18px;
-    background:#fff;
-    border-radius:50%;
-    transition:0.3s;
-    box-shadow:0 1px 3px rgba(0,0,0,.3);
-}
-.silver-eq-toggle input:checked + .slider{
-    background:var(--green);
-}
-.silver-eq-toggle input:checked + .slider::before{
-    transform:translateX(-22px);
-}
-.silver-eq-toggle input:checked ~ .lbl-text{
+    font-size:calc(1rem*var(--font-scale));
     color:var(--green);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
 }
-.silver-eq-toggle .lbl-text{
-    color:var(--text-sub);
-    transition:0.2s;
+.year-row-collapsible .year-total-mini{
+    font-weight:bold;
+    color:var(--gold);
+    font-size:calc(.9rem*var(--font-scale));
+    background:var(--badge-bg);
+    padding:4px 14px;
+    border-radius:20px;
+    border:1px solid var(--badge-border);
+}
+.year-expanded-content{
+    padding:10px 14px;
+    background:var(--bg-body);
+    border-radius:10px;
+    margin-bottom:14px;
+    border:1px dashed var(--border-color);
 }
 @media (max-width:600px){.container{padding:12px}.item-row{flex-direction:column;align-items:stretch}.header-tools{flex-direction:column;align-items:stretch}.main-title h1{font-size:calc(1.8rem*var(--font-scale))}.hawl-mini{flex-direction:column;align-items:stretch}.hawl-mini input[type="month"]{width:100%}.nisab-banner{flex-direction:column;align-items:stretch;text-align:center}.zakat-details-table{font-size:calc(.7rem*var(--font-scale))}.tabs-nav{justify-content:center}.name-card-head .nisab-select{flex:1 1 100%}}
 </style>
@@ -310,121 +283,7 @@ input::placeholder{color:var(--placeholder-color)}
 </div>
 </div>
 
-<div class="tabs-nav">
-<button class="tab-btn active" data-tab="calc" onclick="switchTab('calc',this)">🧮 <span id="tabCalcText">الحاسبة</span></button>
-<button class="tab-btn" data-tab="record" onclick="switchTab('record',this)">📒 <span id="tabRecordText">سجل الزكاة السنوي</span></button>
-</div>
-
-<div class="tab-panel active" id="tab-calc">
-
-<div class="nisab-banner">
-<div class="nisab-info">
-<span class="label"><i class="fas fa-scale-balanced"></i> <span id="nisabLabel">نصاب الزكاة:</span></span>
-<select id="globalNisabType" onchange="onNisabChange()" style="width:auto;padding:6px 12px;font-size:calc(.85rem*var(--font-scale));font-weight:bold;">
-<option value="silver" selected>فضة (595 جرام) - الأحوط</option>
-<option value="gold">ذهب (85 جرام)</option>
-</select>
-<span class="value" id="nisabValue">0.00 د.ب</span>
-<span class="gold-price" id="nisabGoldPrice">(سعر الذهب: 0.00 د.ب/جرام)</span>
-</div>
-<div class="nisab-status" id="nisabStatus"><span id="nisabStatusText">جاري حساب النصاب...</span></div>
-</div>
-
-<div class="section" id="banksSection">
-<h2 id="titleBanks"><i class="fas fa-university"></i> المبلغ الموجود في جميع البنوك</h2>
-<div class="hawl-mini">
-<label><i class="fas fa-calendar-alt"></i> <span id="banksHawlLabel">الحول:</span></label>
-<input type="month" id="banksStartMonth"/>
-<span style="font-size:.8rem;color:var(--text-sub);">→</span>
-<input type="month" id="banksEndMonth"/>
-<span class="hawl-status" id="banksHawlStatus">⏳</span>
-</div>
-<div class="hawl-message" id="banksHawlMessage"></div>
-<div class="flex-row">
-<div class="field">
-<label id="lblBanks"><i class="fas fa-wallet"></i> جميع البنوك</label>
-<div class="price-input-wrapper">
-<input type="number" id="bankTotal" placeholder="0.00" step="0.01"/>
-<span class="currency-label">د.ب</span>
-</div>
-</div>
-</div>
-</div>
-
-<div class="section" id="goldWearSection">
-<h2 id="titleGoldWear"><i class="fas fa-ring"></i> الذهب الملبوس</h2>
-<div class="hawl-mini">
-<label><i class="fas fa-calendar-alt"></i> <span id="gwHawlLabel">الحول:</span></label>
-<input type="month" id="gwStartMonth"/>
-<span style="font-size:.8rem;color:var(--text-sub);">→</span>
-<input type="month" id="gwEndMonth"/>
-<span class="hawl-status" id="gwHawlStatus">⏳</span>
-</div>
-<div class="hawl-message" id="gwHawlMessage"></div>
-<div id="goldWearContainer"></div>
-<button class="add-btn" id="addGoldWearBtn" onclick="addGoldWearItem()"><i class="fas fa-plus-circle"></i> <span id="btnAddGoldWear">إضافة قطعة ذهب</span></button>
-<div class="item-summary"><span id="totalGoldWearText">إجمالي قيمة الذهب الملبوس:</span> <strong id="totalGoldWearValue">0.00</strong> د.ب</div>
-<div class="important-note">
-<div class="note-title"><i class="fas fa-exclamation-circle"></i> <span id="noteGoldWearTitle">ملاحظة مهمة:</span></div>
-<div class="note-text" id="noteGoldWearText">يوجد <span class="highlight">اختلاف بين العلماء</span> في وجوب الزكاة على الذهب الملبوس.</div>
-</div>
-</div>
-
-<div class="section" id="bullionSection">
-<h2 id="titleBullion"><i class="fas fa-cubes"></i> سبائك الذهب (عيار 24)</h2>
-<div class="hawl-mini">
-<label><i class="fas fa-calendar-alt"></i> <span id="bullionHawlLabel">الحول:</span></label>
-<input type="month" id="bullionStartMonth"/>
-<span style="font-size:.8rem;color:var(--text-sub);">→</span>
-<input type="month" id="bullionEndMonth"/>
-<span class="hawl-status" id="bullionHawlStatus">⏳</span>
-</div>
-<div class="hawl-message" id="bullionHawlMessage"></div>
-<div id="bullionContainer"></div>
-<button class="add-btn" id="addBullionBtn" onclick="addBullionItem()"><i class="fas fa-plus-circle"></i> <span id="btnAddBullion">إضافة سبيكة</span></button>
-<div class="item-summary"><span id="totalBullionText">إجمالي قيمة السبائك:</span> <strong id="totalBullionValue">0.00</strong> د.ب</div>
-</div>
-
-<div class="section" id="investmentsSection">
-<h2 id="titleInvestments"><i class="fas fa-chart-pie"></i> استثمارات وعقارات</h2>
-<div class="hawl-mini">
-<label><i class="fas fa-calendar-alt"></i> <span id="invHawlLabel">الحول:</span></label>
-<input type="month" id="invStartMonth"/>
-<span style="font-size:.8rem;color:var(--text-sub);">→</span>
-<input type="month" id="invEndMonth"/>
-<span class="hawl-status" id="invHawlStatus">⏳</span>
-</div>
-<div class="hawl-message" id="invHawlMessage"></div>
-<div id="investmentsContainer"></div>
-<button class="add-btn" id="addInvestmentBtn" onclick="addInvestment()"><i class="fas fa-plus-circle"></i> <span id="btnAddInvestment">إضافة استثمار</span></button>
-<div class="note"><i class="fas fa-info-circle"></i> <span id="noteInvestments">أدخل قيمة العقار، السيارة، الأسهم، أو أي أصل آخر.</span></div>
-</div>
-
-<div class="result-box">
-<div class="sub"><i class="fas fa-calculator"></i> <span id="totalAssetsLabel">تفاصيل الزكاة</span></div>
-<div style="overflow-x:auto;">
-<table class="zakat-details-table">
-<thead><tr>
-<th id="thSection">القسم</th>
-<th id="thAmount">المبلغ (د.ب)</th>
-<th id="thHawlStatus">حالة الحول</th>
-<th id="thStatus">الحالة</th>
-</tr></thead>
-<tbody id="zakatDetailsBody"></tbody>
-<tfoot><tr class="total-row">
-<td id="thTotalLabel">المجموع الكلي</td>
-<td id="totalAssets">0.00</td>
-<td id="thZakatStatus">حالة الزكاة</td>
-<td id="zakatAmount" style="color:var(--gold);">0.00</td>
-</tr></tfoot>
-</table>
-</div>
-<button class="btn" style="margin-top:15px;width:100%;" onclick="calculateAll()"><i class="fas fa-calculator"></i> <span id="btnCalculate">احسب الزكاة الآن</span></button>
-</div>
-
-</div>
-
-<div class="tab-panel" id="tab-record">
+<div class="tab-panel active" id="tab-record">
 
 <div class="section">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
@@ -448,10 +307,11 @@ input::placeholder{color:var(--placeholder-color)}
 </div>
 
 <div class="section">
-<h2 id="recTitleMetals"><i class="fas fa-gem"></i> موجود المعادن و الملبوس</h2>
+<h2 id="recTitleMetals"><i class="fas fa-gem"></i> موجود المعادن</h2>
 <div style="overflow-x:auto;">
 <table class="rec-table">
 <thead><tr>
+<th id="thMtHawl">الحول (من → إلى)</th>
 <th id="thMtPerson">الشخص</th>
 <th id="thMtYear">السنة</th>
 <th id="thMtType">النوع</th>
@@ -465,7 +325,7 @@ input::placeholder{color:var(--placeholder-color)}
 </tr></thead>
 <tbody id="metalsBody"></tbody>
 <tfoot><tr>
-<td colspan="6" id="tfMtTotal">المجموع</td>
+<td colspan="7" id="tfMtTotal">المجموع</td>
 <td id="recTotalMetalsFoot">0.000</td>
 <td id="recTotalMetalsZakatFoot" style="font-weight:bold;color:var(--gold);">0.000</td>
 <td colspan="2"></td>
@@ -476,10 +336,43 @@ input::placeholder{color:var(--placeholder-color)}
 </div>
 
 <div class="section">
-<h2 id="recTitleYears"><i class="fas fa-calendar-check"></i> زكاة السنوات - أرصدة البنوك</h2>
+<h2 id="recTitleGoldWear"><i class="fas fa-ring"></i> الذهب الملبوس</h2>
 <div style="overflow-x:auto;">
 <table class="rec-table">
 <thead><tr>
+<th id="thGwHawl">الحول (من → إلى)</th>
+<th id="thGwPerson">الشخص</th>
+<th id="thGwYear">السنة</th>
+<th id="thGwCarat">العيار</th>
+<th id="thGwWeight">الوزن (جرام)</th>
+<th id="thGwPrice">السعر (د.ب/جرام)</th>
+<th id="thGwTotal">الإجمالي</th>
+<th id="thGwZakat">الزكاة (÷40)</th>
+<th id="thGwNisab">بلغ النصاب؟</th>
+<th></th>
+</tr></thead>
+<tbody id="goldWearRecBody"></tbody>
+<tfoot><tr>
+<td colspan="6" id="tfGwTotal">المجموع</td>
+<td id="recTotalGoldWearFoot">0.000</td>
+<td id="recTotalGoldWearZakatFoot" style="font-weight:bold;color:var(--gold);">0.000</td>
+<td colspan="2"></td>
+</tr></tfoot>
+</table>
+</div>
+<button class="add-btn" onclick="addGoldWearRec()"><i class="fas fa-plus-circle"></i> <span id="btnAddGoldWearRec">إضافة قطعة ذهب ملبوس</span></button>
+<div class="important-note">
+<div class="note-title"><i class="fas fa-exclamation-circle"></i> <span id="noteGoldWearRecTitle">ملاحظة مهمة:</span></div>
+<div class="note-text" id="noteGoldWearRecText">يوجد <span class="highlight">اختلاف بين العلماء</span> في وجوب الزكاة على الذهب الملبوس.</div>
+</div>
+</div>
+
+<div class="section">
+<h2 id="recTitleYears"><i class="fas fa-calendar-check"></i> المبلغ الموجود في جميع البنوك</h2>
+<div style="overflow-x:auto;">
+<table class="rec-table">
+<thead><tr>
+<th id="thYrHawl">الحول (من → إلى)</th>
 <th id="thYrPerson">الشخص</th>
 <th id="thYrYear">السنة</th>
 <th id="thYrBank">المبلغ في البنك</th>
@@ -491,7 +384,7 @@ input::placeholder{color:var(--placeholder-color)}
 <tfoot><tr>
 <td colspan="3" style="text-align:right;font-weight:bold;" id="tfYrTotal">المجموع الكلي للزكاة</td>
 <td id="recTotalZakatFoot" style="font-weight:bold;color:var(--gold);">0.000</td>
-<td colspan="2"></td>
+<td colspan="3"></td>
 </tr></tfoot>
 </table>
 </div>
@@ -499,9 +392,35 @@ input::placeholder{color:var(--placeholder-color)}
 </div>
 
 <div class="section">
+<h2 id="recTitleInv"><i class="fas fa-chart-pie"></i> استثمارات وعقارات</h2>
+<div style="overflow-x:auto;">
+<table class="rec-table">
+<thead><tr>
+<th id="thIvHawl">الحول (من → إلى)</th>
+<th id="thIvPerson">الشخص</th>
+<th id="thIvYear">السنة</th>
+<th id="thIvName">الاسم / الوصف</th>
+<th id="thIvValue">القيمة</th>
+<th id="thIvZakat">الزكاة (÷40)</th>
+<th id="thIvReached">بلغ النصاب؟</th>
+<th></th>
+</tr></thead>
+<tbody id="investmentsRecBody"></tbody>
+<tfoot><tr>
+<td colspan="4" id="tfIvTotal">المجموع</td>
+<td id="recTotalInvFoot">0.000</td>
+<td id="recTotalInvZakatFoot" style="font-weight:bold;color:var(--gold);">0.000</td>
+<td colspan="2"></td>
+</tr></tfoot>
+</table>
+</div>
+<button class="add-btn" onclick="addInvestmentRec()"><i class="fas fa-plus-circle"></i> <span id="btnAddInvestmentRec">إضافة استثمار</span></button>
+</div>
+
+<div class="section">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
 <h2 id="recTitleSummary" style="margin:0;"><i class="fas fa-file-invoice-dollar"></i> ملخص الزكاة لكل شخص لجميع السنوات</h2>
-<label class="silver-eq-toggle" id="silverEqToggleLabel" title="عند التفعيل: يحسب الذهب بنصاب الفضة إذا لم يبلغ 85 جرام لكن قيمته كافية">
+<label class="silver-eq-toggle" id="silverEqToggleLabel">
 <input type="checkbox" id="silverEqToggle" checked onchange="toggleSilverEq(this.checked)"/>
 <span class="slider"></span>
 <span class="lbl-text" id="silverEqToggleText">احتساب نصاب الفضة</span>
@@ -513,14 +432,16 @@ input::placeholder{color:var(--placeholder-color)}
 <th id="thSmPerson">الشخص</th>
 <th id="thSmNisab">النصاب</th>
 <th id="thSmMetals">إجمالي المعادن</th>
+<th id="thSmGoldWear">الذهب الملبوس</th>
 <th id="thSmBank">إجمالي البنوك</th>
+<th id="thSmInv">الاستثمارات</th>
 <th id="thSmTotal">المجموع</th>
 <th id="thSmZakat">مجموع الزكاة</th>
 <th id="thSmExpand">التفاصيل</th>
 </tr></thead>
 <tbody id="summaryBody"></tbody>
 <tfoot><tr>
-<td colspan="5" style="text-align:right;font-weight:bold;">المجموع الكلي</td>
+<td colspan="7" style="text-align:right;font-weight:bold;">المجموع الكلي</td>
 <td id="smZakatFoot" style="font-weight:bold;color:var(--gold);">0.000</td>
 <td></td>
 </tr></tfoot>
@@ -676,24 +597,30 @@ recMainTitle:'سجل الزكاة السنوي',recMainNote:'أضف الأسما
 recResetBtnText:'إعادة ضبط السجل',recResetConfirm:'⚠️ سيتم مسح السجل بالكامل. هل أنت متأكد؟',
 rcBankLbl:'إجمالي أرصدة البنوك',rcMetalLbl:'إجمالي المعادن',rcZakatLbl:'إجمالي الزكاة',rcRcvLbl:'تم استلامه',
 recTitleNames:'إضافة الأسماء والسنوات',btnAddName:'إضافة اسم',
-recTitleMetals:'موجود المعادن و الملبوس',recTitleYears:'زكاة السنوات - أرصدة البنوك',
+recTitleMetals:'موجود المعادن',recTitleGoldWear:'الذهب الملبوس',recTitleYears:'المبلغ الموجود في جميع البنوك',
+recTitleInv:'استثمارات وعقارات',
 recTitleSummary:'ملخص الزكاة لكل شخص لجميع السنوات',recTitleDist:'توزيع الزكاة',recTitleHelp:'مساعدة',
 btnPrintHelp:'طباعة',lblHelpTotal:'إجمالي المساعدة:',
 lblHelpPayer:'المزكي',noteHelp:'قسم مستقل - يعتمد على الأسماء من قسم "إضافة الأسماء والسنوات". عند الطباعة يظهر بعنوان "زكاة".',
 btnAddHelp:'إضافة مستفيد',thHpDate:'التاريخ',thHpRecipient:'المستفيد',thHpRegion:'الجهة',thHpAmount:'المبلغ',thHpReceived:'استلم؟',thHpNote:'ملاحظات',
 thMtPerson:'الشخص',thMtYear:'السنة',thMtType:'النوع',thMtCarat:'العيار',thMtWeight:'الوزن (جرام)',
+thMtHawl:'الحول (من → إلى)',hawlCompleteShort:'✅ مكتمل',hawlIncompleteShort:'⚠️ غير مكتمل',hawlFirstMsg:'أدخل تاريخ الحول أولاً',
 thMtPrice:'السعر (د.ب/جرام)',thMtTotal:'الإجمالي',thMtZakat:'الزكاة (÷40)',tfMtTotal:'المجموع',thMtNisab:'بلغ النصاب؟',
-btnAddMetal:'إضافة معدن',btnAddBank:'إضافة سنة',btnAddDistribution:'إضافة مستفيد',
+thGwHawl:'الحول (من → إلى)',thGwPerson:'الشخص',thGwYear:'السنة',thGwCarat:'العيار',thGwWeight:'الوزن (جرام)',thGwPrice:'السعر (د.ب/جرام)',thGwTotal:'الإجمالي',thGwZakat:'الزكاة (÷40)',thGwNisab:'بلغ النصاب؟',
+btnAddMetal:'إضافة معدن',btnAddGoldWearRec:'إضافة قطعة ذهب ملبوس',btnAddInvestmentRec:'إضافة استثمار',
+btnAddBank:'إضافة سنة',btnAddDistribution:'إضافة مستفيد',
+thYrHawl:'الحول (من → إلى)',
+thIvHawl:'الحول (من → إلى)',thIvPerson:'الشخص',thIvYear:'السنة',thIvName:'الاسم / الوصف',thIvValue:'القيمة',thIvZakat:'الزكاة (÷40)',thIvReached:'بلغ النصاب؟',tfIvTotal:'المجموع',
 thYrPerson:'الشخص',thYrYear:'السنة',thYrBank:'المبلغ في البنك',thYrZakat:'الزكاة (÷40)',thYrReached:'بلغ النصاب؟',tfYrTotal:'المجموع الكلي للزكاة',
-thSmPerson:'الشخص',thSmNisab:'النصاب',thSmMetals:'إجمالي المعادن',thSmBank:'إجمالي البنوك',thSmTotal:'المجموع',
+thSmPerson:'الشخص',thSmNisab:'النصاب',thSmMetals:'المعادن',thSmGoldWear:'الذهب الملبوس',thSmBank:'البنوك',thSmInv:'الاستثمارات',thSmTotal:'المجموع',
 thSmZakat:'مجموع الزكاة',tfSmTotal:'المجموع الكلي',thSmExpand:'التفاصيل',
 expandYearsTitle:'سنوات الزكاة لهذا الشخص',
 expandYearCol:'السنة',
 expandBankCol:'المبلغ في البنك',
 expandZakatCol:'الزكاة (÷40)',
 expandReachedCol:'بلغ النصاب؟',
-expandNoYears:'لا توجد سنوات - أضف سنة من قسم "زكاة السنوات"',
-expandNoMetals:'لا توجد معادن - أضف معدن من قسم "موجود المعادن و الملبوس"',
+expandNoYears:'لا توجد سنوات',
+expandNoMetals:'لا توجد معادن',
 expandMetalTypeCol:'النوع',
 expandMetalCaratCol:'العيار',
 expandMetalWeightCol:'الوزن (جم)',
@@ -713,8 +640,7 @@ pdfGenerating:'⏳ جاري إنشاء PDF...',pdfError:'❌ حدث خطأ أث�
 invalidYear:'⚠️ الرجاء إدخال سنة من 4 أرقام بين 1900 و 2200',
 yearFinalZakat:'النتيجة النهائية للزكاة',
 silverEqBadge:'✅ بلغ كنصاب الفضة',
-silverEqToggleText:'احتساب نصاب الفضة',
-silverEqToggleTip:'عند التفعيل: إذا كان الذهب أقل من 85 جرام لكن قيمته كافية بنصاب الفضة → تُحسب زكاته'
+silverEqToggleText:'احتساب نصاب الفضة'
 },
 en:{
 pageTitle:'Zakat Calculator',langBtn:'🇸🇦 العربية',helpBtnText:'Guide',resetBtnText:'Reset',
@@ -722,8 +648,8 @@ saveBtnText:'Save',importBtnText:'Import',saveSuccess:'✅ Saved to file',import
 resetConfirm:'Are you sure?',resetSuccess:'Reset done',helpTitle:'Guide',helpCloseBtn:'Close',
 titleBanks:'Total in All Banks',lblBanks:'All Banks',banksHawlLabel:'Hawl',
 titleGoldWear:'Gold Jewelry',btnAddGoldWear:'Add Gold',totalGoldWearText:'Total Jewelry:',
-titleBullion:'Gold Bullion',btnAddBullion:'Add Bullion',totalBullionText:'Total Bullion:',
-titleInvestments:'Investments',btnAddInvestment:'Add Investment',noteInvestments:'Enter value...',
+titleBullion:'Gold Bullion (24K)',btnAddBullion:'Add Bullion',totalBullionText:'Total Bullion:',
+titleInvestments:'Investments & Properties',btnAddInvestment:'Add Investment',noteInvestments:'Enter value...',
 totalAssetsLabel:'Zakat Details',btnCalculate:'Calculate',
 goldName:'Name',goldCarat:'Carat',goldWeight:'Weight',goldPrice:'Price',
 btnFetch:'Fetch',autoLabel:'Auto 🌐',manualLabel:'Manual ✍️',remove:'Remove',
@@ -746,24 +672,30 @@ recMainTitle:'Annual Zakat Record',recMainNote:'Add names and years, then log me
 recResetBtnText:'Reset',recResetConfirm:'Clear entire record?',
 rcBankLbl:'Bank Total',rcMetalLbl:'Metals Total',rcZakatLbl:'Zakat Total',rcRcvLbl:'Received',
 recTitleNames:'Names & Years',btnAddName:'Add Name',
-recTitleMetals:'Metals & Jewelry Inventory',recTitleYears:'Yearly Bank Balances',
+recTitleMetals:'Metals',recTitleGoldWear:'Gold Jewelry',recTitleYears:'Total in All Banks',
+recTitleInv:'Investments & Properties',
 recTitleSummary:'Per-Person Zakat Summary for All Years',recTitleDist:'Distribution',recTitleHelp:'Help',
 btnPrintHelp:'Print',lblHelpTotal:'Help Total:',
 lblHelpPayer:'Payer',noteHelp:'Independent section - uses names from "Names" section. Prints as "Zakat".',
 btnAddHelp:'Add Recipient',thHpDate:'Date',thHpRecipient:'Recipient',thHpRegion:'Region',thHpAmount:'Amount',thHpReceived:'Received?',thHpNote:'Notes',
 thMtPerson:'Person',thMtYear:'Year',thMtType:'Type',thMtCarat:'Carat',thMtWeight:'Weight (g)',
+thMtHawl:'Hawl (From → To)',hawlCompleteShort:'✅ Complete',hawlIncompleteShort:'⚠️ Incomplete',hawlFirstMsg:'Enter Hawl dates first',
 thMtPrice:'Price (BHD/g)',thMtTotal:'Total',thMtZakat:'Zakat (÷40)',tfMtTotal:'Total',thMtNisab:'Nisab Reached?',
-btnAddMetal:'Add Metal',btnAddBank:'Add Year',btnAddDistribution:'Add Recipient',
+thGwHawl:'Hawl (From → To)',thGwPerson:'Person',thGwYear:'Year',thGwCarat:'Carat',thGwWeight:'Weight (g)',thGwPrice:'Price (BHD/g)',thGwTotal:'Total',thGwZakat:'Zakat (÷40)',thGwNisab:'Nisab Reached?',
+btnAddMetal:'Add Metal',btnAddGoldWearRec:'Add Gold Jewelry',btnAddInvestmentRec:'Add Investment',
+btnAddBank:'Add Year',btnAddDistribution:'Add Recipient',
+thYrHawl:'Hawl (From → To)',
+thIvHawl:'Hawl (From → To)',thIvPerson:'Person',thIvYear:'Year',thIvName:'Name / Description',thIvValue:'Value',thIvZakat:'Zakat (÷40)',thIvReached:'Nisab Reached?',tfIvTotal:'Total',
 thYrPerson:'Person',thYrYear:'Year',thYrBank:'Bank Amount',thYrZakat:'Zakat (÷40)',thYrReached:'Nisab Reached?',tfYrTotal:'Total Zakat',
-thSmPerson:'Person',thSmNisab:'Nisab',thSmMetals:'Metals',thSmBank:'Banks',thSmTotal:'Grand',
+thSmPerson:'Person',thSmNisab:'Nisab',thSmMetals:'Metals',thSmGoldWear:'Gold Jewelry',thSmBank:'Banks',thSmInv:'Investments',thSmTotal:'Grand',
 thSmZakat:'Zakat Total',tfSmTotal:'Grand Total',thSmExpand:'Details',
 expandYearsTitle:'Zakat Years for This Person',
 expandYearCol:'Year',
 expandBankCol:'Bank Amount',
 expandZakatCol:'Zakat (÷40)',
 expandReachedCol:'Nisab Reached?',
-expandNoYears:'No years - add a year from "Yearly Bank Balances"',
-expandNoMetals:'No metals - add a metal from "Metals & Jewelry Inventory"',
+expandNoYears:'No years',
+expandNoMetals:'No metals',
 expandMetalTypeCol:'Type',
 expandMetalCaratCol:'Carat',
 expandMetalWeightCol:'Weight (g)',
@@ -783,8 +715,7 @@ pdfGenerating:'⏳ Generating PDF...',pdfError:'❌ Failed to generate PDF',sele
 invalidYear:'⚠️ Please enter a 4-digit year between 1900 and 2200',
 yearFinalZakat:'Final Zakat Result',
 silverEqBadge:'✅ Silver Nisab Reached',
-silverEqToggleText:'Silver Nisab Calc',
-silverEqToggleTip:'When enabled: If gold is less than 85g but value reaches silver nisab → Zakat calculated'
+silverEqToggleText:'Silver Nisab Calc'
 }};
 
 let currentLang = 'ar';
@@ -800,6 +731,7 @@ appState.goldPrices['20'] = parseFloat((55.32*20/24).toFixed(4));
 appState.goldPrices['18'] = parseFloat((55.32*18/24).toFixed(4));
 
 let expandedPersons = {};
+let expandedYears = {};
 let silverEqEnabled = true;
 function getText(k){ return (translations[currentLang]||translations.ar)[k]||k; }
 
@@ -812,16 +744,31 @@ function fmtMoney2(n){
     return num.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
 }
 
+function checkHawlComplete(item){
+    if(!item || !item.hawlStart || !item.hawlEnd) return false;
+    const parts1 = String(item.hawlStart).split('-').map(Number);
+    const parts2 = String(item.hawlEnd).split('-').map(Number);
+    if(parts1.length !== 2 || parts2.length !== 2) return false;
+    const [sy, sm] = parts1;
+    const [ey, em] = parts2;
+    if(!sy || !sm || !ey || !em) return false;
+    return ((ey - sy) * 12 + (em - sm)) >= 12;
+}
+function getHawlMonths(item){
+    if(!item || !item.hawlStart || !item.hawlEnd) return 0;
+    const parts1 = String(item.hawlStart).split('-').map(Number);
+    const parts2 = String(item.hawlEnd).split('-').map(Number);
+    if(parts1.length !== 2 || parts2.length !== 2) return 0;
+    return (parts2[0] - parts1[0]) * 12 + (parts2[1] - parts1[1]);
+}
+
 function checkMetalNisab(m){
     const w = parseFloat(m.weight) || 0;
     if(w <= 0) return false;
-    if(m.type === 'silver'){
-        return w >= 595;
-    } else {
-        const carat = parseFloat(m.carat) || 24;
-        const nisabForCarat = 85 * 24 / carat;
-        return w >= nisabForCarat;
-    }
+    if(m.type === 'silver') return w >= 595;
+    const carat = parseFloat(m.carat) || 24;
+    const nisabForCarat = 85 * 24 / carat;
+    return w >= nisabForCarat;
 }
 function checkMetalNisabFlexible(m){
     const w = parseFloat(m.weight) || 0;
@@ -833,15 +780,48 @@ function checkMetalNisabFlexible(m){
     return value >= silverNisabValue;
 }
 function computeMetalZakat(m){
+    if(!checkHawlComplete(m)) return 0;
     if(!checkMetalNisab(m)) return 0;
     const w = parseFloat(m.weight) || 0;
     const p = parseFloat(m.price) || 0;
     return (w * p) / 40;
 }
 function computeMetalZakatFlexible(m){
+    if(!checkHawlComplete(m)) return 0;
     if(!checkMetalNisabFlexible(m)) return 0;
     const w = parseFloat(m.weight) || 0;
     const p = parseFloat(m.price) || 0;
+    return (w * p) / 40;
+}
+
+function checkGoldWearNisab(g){
+    const w = parseFloat(g.weight) || 0;
+    if(w <= 0) return false;
+    const carat = parseFloat(g.carat) || 21;
+    const nisabForCarat = 85 * 24 / carat;
+    return w >= nisabForCarat;
+}
+function checkGoldWearNisabFlexible(g){
+    const w = parseFloat(g.weight) || 0;
+    const p = parseFloat(g.price) || 0;
+    if(w <= 0) return false;
+    if(checkGoldWearNisab(g)) return true;
+    const value = w * p;
+    const silverNisabValue = (goldPrice24 / 85) * 595;
+    return value >= silverNisabValue;
+}
+function computeGoldWearZakat(g){
+    if(!checkHawlComplete(g)) return 0;
+    if(!checkGoldWearNisab(g)) return 0;
+    const w = parseFloat(g.weight) || 0;
+    const p = parseFloat(g.price) || 0;
+    return (w * p) / 40;
+}
+function computeGoldWearZakatFlexible(g){
+    if(!checkHawlComplete(g)) return 0;
+    if(!checkGoldWearNisabFlexible(g)) return 0;
+    const w = parseFloat(g.weight) || 0;
+    const p = parseFloat(g.price) || 0;
     return (w * p) / 40;
 }
 
@@ -901,10 +881,14 @@ function updateAllPriceFields(){
         if(src && src.value==='auto'){ const p = appState.goldPrices['24']||0; if(p>0){priceInput.value=p;priceInput.readOnly=true;} }
     });
     recData.metals.forEach(m=>{
-        if(m.type === 'gold'){ m.price = appState.goldPrices[m.carat] || m.price || 0; }
+        if(m.type === 'gold'){ m.price = appState.goldPrices['24'] || m.price || 0; }
         else { m.price = appState.silverPrice || silverPrice || SILVER_PRICE_DEFAULT; }
     });
+    recData.goldWearRec.forEach(g=>{
+        g.price = appState.goldPrices[g.carat] || g.price || 0;
+    });
     if(document.getElementById('metalsBody')) renderMetals();
+    if(document.getElementById('goldWearRecBody')) renderGoldWearRec();
     updateTotals();
 }
 
@@ -949,10 +933,389 @@ function checkHawl(section){
     }
 }
 
+/* ============== المبلغ الموجود في جميع البنوك ============== */
+function addBank(){
+    if(recData.names.length===0){ alert(getText('addNameFirst')); return; }
+    const first = recData.names[0];
+    recData.banks.push({id:recData.seq++, nameId:first.id, year:first.years[0]||'', amount:'', hawlStart:'', hawlEnd:''});
+    refreshRecord(); saveRecord();
+}
+function removeBank(id){ recData.banks = recData.banks.filter(b=>b.id!==id); refreshRecord(); saveRecord(); }
+
+function renderBanks(){
+    const tbody = document.getElementById('banksBody'); if(!tbody) return;
+    tbody.innerHTML='';
+    if(recData.names.length===0){
+        tbody.innerHTML = '<tr><td colspan="7" style="color:var(--text-sub);padding:14px;">'+getText('addNameFirst')+'</td></tr>';
+        recalcBanks(); return;
+    }
+    recData.banks.forEach(b=>{
+        const n = recData.names.find(x=>x.id===b.nameId);
+        const years = n ? n.years : [];
+        let yearOpts = years.map(y=>'<option value="'+y+'"'+(String(b.year)===String(y)?' selected':'')+'>'+y+'</option>').join('');
+        if(b.year && !years.includes(Number(b.year))) yearOpts = '<option value="'+b.year+'" selected>'+b.year+'</option>'+yearOpts;
+        if(!yearOpts) yearOpts = '<option value="">-</option>';
+        const nameOpts = recData.names.map(nn=>'<option value="'+nn.id+'"'+(nn.id===b.nameId?' selected':'')+'>'+escapeAttr(nn.name||'—')+'</option>').join('');
+        const nisabType = n ? n.nisabType : 'silver';
+        const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
+        const amt = parseFloat(b.amount)||0;
+        const reached = amt >= personNisab && amt > 0;
+        const badge = reached
+            ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
+            : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+        const hawlComplete = checkHawlComplete(b);
+        const hawlMonths = getHawlMonths(b);
+        let hawlBadge;
+        if(hawlComplete){
+            hawlBadge = '<span class="hawl-status-badge ok">'+getText('hawlCompleteShort')+' ('+hawlMonths+' '+(currentLang==='ar'?'شهر':'mo')+')</span>';
+        } else if(b.hawlStart && b.hawlEnd){
+            hawlBadge = '<span class="hawl-status-badge no">'+getText('hawlIncompleteShort')+' ('+hawlMonths+' '+(currentLang==='ar'?'شهر':'mo')+')</span>';
+        } else {
+            hawlBadge = '<span class="hawl-status-badge no">'+getText('hawlFirstMsg')+'</span>';
+        }
+        const rowClass = hawlComplete ? 'bank-row' : 'bank-row hawl-incomplete';
+        const tr = document.createElement('tr');
+        tr.className = rowClass; tr.dataset.id=b.id;
+        tr.innerHTML =
+            '<td><div class="hawl-cell">'+
+                '<div class="hawl-dates">'+
+                    '<input type="month" class="bn-hawl-start" value="'+escapeAttr(b.hawlStart||'')+'"/>'+
+                    '<span>→</span>'+
+                    '<input type="month" class="bn-hawl-end" value="'+escapeAttr(b.hawlEnd||'')+'"/>'+
+                '</div>'+
+                hawlBadge+
+            '</div></td>'+
+            '<td><select class="bn-name"'+(hawlComplete?'':' disabled')+'>'+nameOpts+'</select></td>'+
+            '<td><select class="bn-year"'+(hawlComplete?'':' disabled')+'>'+yearOpts+'</select></td>'+
+            '<td><input type="number" step="0.001" class="bn-amount" value="'+escapeAttr(b.amount)+'" placeholder="0.000"'+(hawlComplete?'':' disabled')+'/></td>'+
+            '<td class="bn-zakat" style="font-weight:bold;color:var(--gold);">0.000</td>'+
+            '<td class="bn-reached">'+badge+'</td>'+
+            '<td><button class="rec-del" onclick="removeBank('+b.id+')">✕</button></td>';
+        tbody.appendChild(tr);
+    });
+    recalcBanks();
+}
+function recalcBanks(){
+    let totalZ=0;
+    document.querySelectorAll('#banksBody tr.bank-row').forEach(tr=>{
+        const b = recData.banks.find(x=>x.id===Number(tr.dataset.id)); if(!b) return;
+        const amt = parseFloat(b.amount)||0;
+        const z = checkHawlComplete(b) ? amt/40 : 0;
+        totalZ += z;
+        const zEl = tr.querySelector('.bn-zakat'); if(zEl) zEl.textContent = fmtMoney(z);
+        const n = recData.names.find(x=>x.id===b.nameId);
+        const nisabType = n ? n.nisabType : 'silver';
+        const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
+        const reached = amt >= personNisab && amt > 0;
+        const reachedCell = tr.querySelector('.bn-reached');
+        if(reachedCell){
+            reachedCell.innerHTML = reached
+                ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
+                : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+        }
+    });
+    const foot = document.getElementById('recTotalZakatFoot');
+    if(foot) foot.textContent = fmtMoney(totalZ);
+    renderSummary();
+}
+
+/* ============== استثمارات وعقارات ============== */
+function addInvestmentRec(){
+    if(recData.names.length===0){ alert(getText('addNameFirst')); return; }
+    const first = recData.names[0];
+    recData.investments.push({id:recData.seq++, nameId:first.id, year:first.years[0]||'', name:'', value:'', hawlStart:'', hawlEnd:''});
+    refreshRecord(); saveRecord();
+}
+function removeInvestmentRec(id){ recData.investments = recData.investments.filter(x=>x.id!==id); refreshRecord(); saveRecord(); }
+
+function renderInvestmentsRec(){
+    const tbody = document.getElementById('investmentsRecBody'); if(!tbody) return;
+    tbody.innerHTML='';
+    if(recData.names.length===0){
+        tbody.innerHTML = '<tr><td colspan="8" style="color:var(--text-sub);padding:14px;">'+getText('addNameFirst')+'</td></tr>';
+        recalcInvestmentsRec(); return;
+    }
+    recData.investments.forEach(inv=>{
+        const n = recData.names.find(x=>x.id===inv.nameId);
+        const years = n ? n.years : [];
+        let yearOpts = years.map(y=>'<option value="'+y+'"'+(String(inv.year)===String(y)?' selected':'')+'>'+y+'</option>').join('');
+        if(inv.year && !years.includes(Number(inv.year))) yearOpts = '<option value="'+inv.year+'" selected>'+inv.year+'</option>'+yearOpts;
+        if(!yearOpts) yearOpts = '<option value="">-</option>';
+        const nameOpts = recData.names.map(nn=>'<option value="'+nn.id+'"'+(nn.id===inv.nameId?' selected':'')+'>'+escapeAttr(nn.name||'—')+'</option>').join('');
+        const nisabType = n ? n.nisabType : 'silver';
+        const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
+        const amt = parseFloat(inv.value)||0;
+        const reached = amt >= personNisab && amt > 0;
+        const badge = reached
+            ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
+            : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+        const hawlComplete = checkHawlComplete(inv);
+        const hawlMonths = getHawlMonths(inv);
+        let hawlBadge;
+        if(hawlComplete){
+            hawlBadge = '<span class="hawl-status-badge ok">'+getText('hawlCompleteShort')+' ('+hawlMonths+' '+(currentLang==='ar'?'شهر':'mo')+')</span>';
+        } else if(inv.hawlStart && inv.hawlEnd){
+            hawlBadge = '<span class="hawl-status-badge no">'+getText('hawlIncompleteShort')+' ('+hawlMonths+' '+(currentLang==='ar'?'شهر':'mo')+')</span>';
+        } else {
+            hawlBadge = '<span class="hawl-status-badge no">'+getText('hawlFirstMsg')+'</span>';
+        }
+        const rowClass = hawlComplete ? 'inv-row' : 'inv-row hawl-incomplete';
+        const tr = document.createElement('tr');
+        tr.className = rowClass; tr.dataset.id=inv.id;
+        tr.innerHTML =
+            '<td><div class="hawl-cell">'+
+                '<div class="hawl-dates">'+
+                    '<input type="month" class="iv-hawl-start" value="'+escapeAttr(inv.hawlStart||'')+'"/>'+
+                    '<span>→</span>'+
+                    '<input type="month" class="iv-hawl-end" value="'+escapeAttr(inv.hawlEnd||'')+'"/>'+
+                '</div>'+
+                hawlBadge+
+            '</div></td>'+
+            '<td><select class="iv-name-select"'+(hawlComplete?'':' disabled')+'>'+nameOpts+'</select></td>'+
+            '<td><select class="iv-year"'+(hawlComplete?'':' disabled')+'>'+yearOpts+'</select></td>'+
+            '<td><input type="text" class="iv-name" value="'+escapeAttr(inv.name)+'" placeholder="'+(currentLang==='ar'?'الاسم/الوصف':'Name')+'"'+(hawlComplete?'':' disabled')+'/></td>'+
+            '<td><input type="number" step="0.001" class="iv-value" value="'+escapeAttr(inv.value)+'" placeholder="0.000"'+(hawlComplete?'':' disabled')+'/></td>'+
+            '<td class="iv-zakat" style="font-weight:bold;color:var(--gold);">0.000</td>'+
+            '<td class="iv-reached">'+badge+'</td>'+
+            '<td><button class="rec-del" onclick="removeInvestmentRec('+inv.id+')">✕</button></td>';
+        tbody.appendChild(tr);
+    });
+    recalcInvestmentsRec();
+}
+function recalcInvestmentsRec(){
+    let total=0, totalZ=0;
+    document.querySelectorAll('#investmentsRecBody tr.inv-row').forEach(tr=>{
+        const inv = recData.investments.find(x=>x.id===Number(tr.dataset.id)); if(!inv) return;
+        const amt = parseFloat(inv.value)||0;
+        const z = checkHawlComplete(inv) ? amt/40 : 0;
+        total += amt; totalZ += z;
+        const zEl = tr.querySelector('.iv-zakat'); if(zEl) zEl.textContent = fmtMoney(z);
+        const n = recData.names.find(x=>x.id===inv.nameId);
+        const nisabType = n ? n.nisabType : 'silver';
+        const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
+        const reached = amt >= personNisab && amt > 0;
+        const reachedCell = tr.querySelector('.iv-reached');
+        if(reachedCell){
+            reachedCell.innerHTML = reached
+                ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
+                : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+        }
+    });
+    const f = document.getElementById('recTotalInvFoot'); if(f) f.textContent = fmtMoney(total);
+    const fz = document.getElementById('recTotalInvZakatFoot'); if(fz) fz.textContent = fmtMoney(totalZ);
+    renderSummary();
+}
+
+/* ============== موجود المعادن ============== */
+function addMetal(){
+    if(recData.names.length===0){ alert(getText('addNameFirst')); return; }
+    const first = recData.names[0];
+    const initialPrice = getCurrentMetalPrice('gold', '24');
+    recData.metals.push({
+        id: recData.seq++, nameId: first.id,
+        year: first.years[0]||'', type:'gold', carat:'24',
+        weight:'', price: initialPrice || '',
+        hawlStart:'', hawlEnd:''
+    });
+    refreshRecord(); saveRecord();
+}
+function removeMetal(id){ recData.metals = recData.metals.filter(m=>m.id!==id); refreshRecord(); saveRecord(); }
+
+function renderMetals(){
+    const tbody = document.getElementById('metalsBody'); if(!tbody) return;
+    tbody.innerHTML='';
+    if(recData.names.length===0){
+        tbody.innerHTML = '<tr><td colspan="11" style="color:var(--text-sub);padding:14px;">'+getText('addNameFirst')+'</td></tr>';
+        recalcMetals(); return;
+    }
+    recData.metals.forEach(m=>{
+        const n = recData.names.find(x=>x.id===m.nameId);
+        const years = n ? n.years : [];
+        let yearOpts = years.map(y=>'<option value="'+y+'"'+(String(m.year)===String(y)?' selected':'')+'>'+y+'</option>').join('');
+        if(m.year && !years.includes(Number(m.year))) yearOpts = '<option value="'+m.year+'" selected>'+m.year+'</option>'+yearOpts;
+        if(!yearOpts) yearOpts = '<option value="">-</option>';
+        const nameOpts = recData.names.map(nn=>'<option value="'+nn.id+'"'+(nn.id===m.nameId?' selected':'')+'>'+escapeAttr(nn.name||'—')+'</option>').join('');
+        const isGold = m.type==='gold';
+        const autoPrice = getCurrentMetalPrice(m.type, m.carat);
+        m.price = autoPrice;
+        const reached = checkMetalNisab(m);
+        const nisabBadge = reached
+            ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
+            : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+        const hawlComplete = checkHawlComplete(m);
+        const hawlMonths = getHawlMonths(m);
+        let hawlBadge;
+        if(hawlComplete){
+            hawlBadge = '<span class="hawl-status-badge ok">'+getText('hawlCompleteShort')+' ('+hawlMonths+' '+(currentLang==='ar'?'شهر':'mo')+')</span>';
+        } else if(m.hawlStart && m.hawlEnd){
+            hawlBadge = '<span class="hawl-status-badge no">'+getText('hawlIncompleteShort')+' ('+hawlMonths+' '+(currentLang==='ar'?'شهر':'mo')+')</span>';
+        } else {
+            hawlBadge = '<span class="hawl-status-badge no">'+getText('hawlFirstMsg')+'</span>';
+        }
+        const rowClass = hawlComplete ? 'metal-row' : 'metal-row hawl-incomplete';
+        const tr = document.createElement('tr');
+        tr.className = rowClass; tr.dataset.id=m.id;
+        const caratDisplay = isGold ? '<span style="font-weight:bold;color:var(--gold);">24</span>' : '<span style="color:var(--text-sub);">—</span>';
+        tr.innerHTML =
+            '<td><div class="hawl-cell">'+
+                '<div class="hawl-dates">'+
+                    '<input type="month" class="mt-hawl-start" value="'+escapeAttr(m.hawlStart||'')+'"/>'+
+                    '<span>→</span>'+
+                    '<input type="month" class="mt-hawl-end" value="'+escapeAttr(m.hawlEnd||'')+'"/>'+
+                '</div>'+
+                hawlBadge+
+            '</div></td>'+
+            '<td><select class="mt-name"'+(hawlComplete?'':' disabled')+'>'+nameOpts+'</select></td>'+
+            '<td><select class="mt-year"'+(hawlComplete?'':' disabled')+'>'+yearOpts+'</select></td>'+
+            '<td><select class="mt-type"'+(hawlComplete?'':' disabled')+'>'+
+                '<option value="gold"'+(isGold?' selected':'')+'>Gold (24)</option>'+
+                '<option value="silver"'+(!isGold?' selected':'')+'>Silver</option>'+
+            '</select></td>'+
+            '<td>'+caratDisplay+'</td>'+
+            '<td><input type="number" step="0.001" class="mt-weight" value="'+escapeAttr(m.weight)+'" placeholder="0.000"'+(hawlComplete?'':' disabled')+'/></td>'+
+            '<td><input type="number" step="0.001" class="mt-price price-readonly" readonly value="'+(autoPrice||'')+'" placeholder="0.000"/></td>'+
+            '<td class="mt-total" style="font-weight:bold;color:var(--green);">0.000</td>'+
+            '<td class="mt-zakat" style="font-weight:bold;color:var(--gold);">0.000</td>'+
+            '<td class="mt-nisab">'+nisabBadge+'</td>'+
+            '<td><button class="rec-del" onclick="removeMetal('+m.id+')">✕</button></td>';
+        tbody.appendChild(tr);
+    });
+    recalcMetals();
+}
+function recalcMetals(){
+    let total=0, totalZakat=0;
+    document.querySelectorAll('#metalsBody tr.metal-row').forEach(tr=>{
+        const m = recData.metals.find(x=>x.id===Number(tr.dataset.id)); if(!m) return;
+        const w = parseFloat(m.weight)||0; const p = parseFloat(m.price)||0;
+        const lt = w*p; total += lt;
+        const z = silverEqEnabled ? computeMetalZakatFlexible(m) : computeMetalZakat(m);
+        totalZakat += z;
+        const el = tr.querySelector('.mt-total'); if(el) el.textContent = fmtMoney(lt);
+        const zEl = tr.querySelector('.mt-zakat'); if(zEl) zEl.textContent = fmtMoney(z);
+        const nisabCell = tr.querySelector('.mt-nisab');
+        if(nisabCell){
+            const reachedGold = checkMetalNisab(m);
+            const reachedFlexible = checkMetalNisabFlexible(m);
+            if(reachedGold){
+                nisabCell.innerHTML = '<span class="badge-status ok">'+getText('reachedYes')+'</span>';
+            } else if(reachedFlexible && silverEqEnabled){
+                nisabCell.innerHTML = '<span class="badge-status silver-eq">'+getText('silverEqBadge')+'</span>';
+            } else {
+                nisabCell.innerHTML = '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+            }
+        }
+    });
+    const f = document.getElementById('recTotalMetalsFoot'); if(f) f.textContent = fmtMoney(total);
+    const fz = document.getElementById('recTotalMetalsZakatFoot'); if(fz) fz.textContent = fmtMoney(totalZakat);
+    const c = document.getElementById('recTotalMetals'); if(c) c.textContent = fmtMoney(total);
+    renderSummary();
+}
+
+/* ============== الذهب الملبوس ============== */
+function addGoldWearRec(){
+    if(recData.names.length===0){ alert(getText('addNameFirst')); return; }
+    const first = recData.names[0];
+    const initialPrice = getCurrentMetalPrice('gold', '21');
+    recData.goldWearRec.push({
+        id: recData.seq++, nameId: first.id,
+        year: first.years[0]||'', carat:'21',
+        weight:'', price: initialPrice || '',
+        hawlStart:'', hawlEnd:''
+    });
+    refreshRecord(); saveRecord();
+}
+function removeGoldWearRec(id){ recData.goldWearRec = recData.goldWearRec.filter(g=>g.id!==id); refreshRecord(); saveRecord(); }
+
+function renderGoldWearRec(){
+    const tbody = document.getElementById('goldWearRecBody'); if(!tbody) return;
+    tbody.innerHTML='';
+    if(recData.names.length===0){
+        tbody.innerHTML = '<tr><td colspan="10" style="color:var(--text-sub);padding:14px;">'+getText('addNameFirst')+'</td></tr>';
+        recalcGoldWearRec(); return;
+    }
+    recData.goldWearRec.forEach(g=>{
+        const n = recData.names.find(x=>x.id===g.nameId);
+        const years = n ? n.years : [];
+        let yearOpts = years.map(y=>'<option value="'+y+'"'+(String(g.year)===String(y)?' selected':'')+'>'+y+'</option>').join('');
+        if(g.year && !years.includes(Number(g.year))) yearOpts = '<option value="'+g.year+'" selected>'+g.year+'</option>'+yearOpts;
+        if(!yearOpts) yearOpts = '<option value="">-</option>';
+        const nameOpts = recData.names.map(nn=>'<option value="'+nn.id+'"'+(nn.id===g.nameId?' selected':'')+'>'+escapeAttr(nn.name||'—')+'</option>').join('');
+        const autoPrice = getCurrentMetalPrice('gold', g.carat);
+        g.price = autoPrice;
+        const reached = checkGoldWearNisab(g);
+        const nisabBadge = reached
+            ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
+            : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+        const hawlComplete = checkHawlComplete(g);
+        const hawlMonths = getHawlMonths(g);
+        let hawlBadge;
+        if(hawlComplete){
+            hawlBadge = '<span class="hawl-status-badge ok">'+getText('hawlCompleteShort')+' ('+hawlMonths+' '+(currentLang==='ar'?'شهر':'mo')+')</span>';
+        } else if(g.hawlStart && g.hawlEnd){
+            hawlBadge = '<span class="hawl-status-badge no">'+getText('hawlIncompleteShort')+' ('+hawlMonths+' '+(currentLang==='ar'?'شهر':'mo')+')</span>';
+        } else {
+            hawlBadge = '<span class="hawl-status-badge no">'+getText('hawlFirstMsg')+'</span>';
+        }
+        const caratOpts = ['18','20','21','22'].map(c=>'<option value="'+c+'"'+(String(g.carat)===c?' selected':'')+'>'+c+'</option>').join('');
+        const rowClass = hawlComplete ? 'metal-row' : 'metal-row hawl-incomplete';
+        const tr = document.createElement('tr');
+        tr.className = rowClass; tr.dataset.id=g.id;
+        tr.innerHTML =
+            '<td><div class="hawl-cell">'+
+                '<div class="hawl-dates">'+
+                    '<input type="month" class="gw-hawl-start" value="'+escapeAttr(g.hawlStart||'')+'"/>'+
+                    '<span>→</span>'+
+                    '<input type="month" class="gw-hawl-end" value="'+escapeAttr(g.hawlEnd||'')+'"/>'+
+                '</div>'+
+                hawlBadge+
+            '</div></td>'+
+            '<td><select class="gw-name-select"'+(hawlComplete?'':' disabled')+'>'+nameOpts+'</select></td>'+
+            '<td><select class="gw-year"'+(hawlComplete?'':' disabled')+'>'+yearOpts+'</select></td>'+
+            '<td><select class="gw-carat"'+(hawlComplete?'':' disabled')+'>'+caratOpts+'</select></td>'+
+            '<td><input type="number" step="0.001" class="gw-weight" value="'+escapeAttr(g.weight)+'" placeholder="0.000"'+(hawlComplete?'':' disabled')+'/></td>'+
+            '<td><input type="number" step="0.001" class="gw-price price-readonly" readonly value="'+(autoPrice||'')+'" placeholder="0.000"/></td>'+
+            '<td class="gw-total" style="font-weight:bold;color:var(--green);">0.000</td>'+
+            '<td class="gw-zakat" style="font-weight:bold;color:var(--gold);">0.000</td>'+
+            '<td class="gw-nisab">'+nisabBadge+'</td>'+
+            '<td><button class="rec-del" onclick="removeGoldWearRec('+g.id+')">✕</button></td>';
+        tbody.appendChild(tr);
+    });
+    recalcGoldWearRec();
+}
+function recalcGoldWearRec(){
+    let total=0, totalZakat=0;
+    document.querySelectorAll('#goldWearRecBody tr.metal-row').forEach(tr=>{
+        const g = recData.goldWearRec.find(x=>x.id===Number(tr.dataset.id)); if(!g) return;
+        const w = parseFloat(g.weight)||0; const p = parseFloat(g.price)||0;
+        const lt = w*p; total += lt;
+        const z = silverEqEnabled ? computeGoldWearZakatFlexible(g) : computeGoldWearZakat(g);
+        totalZakat += z;
+        const el = tr.querySelector('.gw-total'); if(el) el.textContent = fmtMoney(lt);
+        const zEl = tr.querySelector('.gw-zakat'); if(zEl) zEl.textContent = fmtMoney(z);
+        const nisabCell = tr.querySelector('.gw-nisab');
+        if(nisabCell){
+            const reachedGold = checkGoldWearNisab(g);
+            const reachedFlexible = checkGoldWearNisabFlexible(g);
+            if(reachedGold){
+                nisabCell.innerHTML = '<span class="badge-status ok">'+getText('reachedYes')+'</span>';
+            } else if(reachedFlexible && silverEqEnabled){
+                nisabCell.innerHTML = '<span class="badge-status silver-eq">'+getText('silverEqBadge')+'</span>';
+            } else {
+                nisabCell.innerHTML = '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+            }
+        }
+    });
+    const f = document.getElementById('recTotalGoldWearFoot'); if(f) f.textContent = fmtMoney(total);
+    const fz = document.getElementById('recTotalGoldWearZakatFoot'); if(fz) fz.textContent = fmtMoney(totalZakat);
+    renderSummary();
+}
+
+/* ============== الحاويات الخارجية (محذوفة مع تبويت الحاسبة) ============== */
 let goldWearCounter=0;
 function addGoldWearItem(skipSave){
     if(!hawlStates.goldWear) return;
-    const c=document.getElementById('goldWearContainer'); const id=goldWearCounter++;
+    const c=document.getElementById('goldWearContainer'); if(!c) return;
+    const id=goldWearCounter++;
     const div=document.createElement('div'); div.className='item-row gold-wear-item'; div.dataset.id=id;
     const defaultPrice = getCurrentMetalPrice('gold', '21');
     div.innerHTML=`
@@ -1010,7 +1373,8 @@ function updateGoldWearPrice(id){
 let bullionCounter=0;
 function addBullionItem(skipSave){
     if(!hawlStates.bullion) return;
-    const c=document.getElementById('bullionContainer'); const id=bullionCounter++;
+    const c=document.getElementById('bullionContainer'); if(!c) return;
+    const id=bullionCounter++;
     const defaultPrice = getCurrentMetalPrice('gold', '24');
     const div=document.createElement('div'); div.className='item-row bullion-item'; div.dataset.id=id;
     div.innerHTML=`
@@ -1050,7 +1414,7 @@ function toggleBullionSource(id){
 
 function addInvestment(skipSave){
     if(!hawlStates.investments) return;
-    const c=document.getElementById('investmentsContainer');
+    const c=document.getElementById('investmentsContainer'); if(!c) return;
     const div=document.createElement('div'); div.className='item-row';
     div.innerHTML=`
 <input type="text" placeholder="${getText('invName')}" class="inv-name" style="flex:2;min-width:80px;"/>
@@ -1070,12 +1434,12 @@ function updateTotals(){
     document.querySelectorAll('.gold-wear-item').forEach(it=>{
         g += (parseFloat(it.querySelector('.gw-weight').value)||0)*(parseFloat(it.querySelector('.gw-price').value)||0);
     });
-    document.getElementById('totalGoldWearValue').textContent = fmtMoney(g);
+    const tgwv = document.getElementById('totalGoldWearValue'); if(tgwv) tgwv.textContent = fmtMoney(g);
     let b=0;
     document.querySelectorAll('.bullion-item').forEach(it=>{
         b += (parseFloat(it.querySelector('.b-weight').value)||0)*(parseFloat(it.querySelector('.b-price').value)||0);
     });
-    document.getElementById('totalBullionValue').textContent = fmtMoney(b);
+    const tbv = document.getElementById('totalBullionValue'); if(tbv) tbv.textContent = fmtMoney(b);
 }
 
 function calculateAll(){
@@ -1083,7 +1447,7 @@ function calculateAll(){
     const tbody = document.getElementById('zakatDetailsBody'); if(!tbody) return;
     updateNisabBanner();
     tbody.innerHTML = '';
-    const bankVal = parseFloat(document.getElementById('bankTotal').value)||0;
+    const bankVal = parseFloat((document.getElementById('bankTotal')||{}).value)||0;
     const banksC = hawlStates.banks;
     let goldTotal=0;
     document.querySelectorAll('.gold-wear-item').forEach(it=>{
@@ -1122,7 +1486,7 @@ function calculateAll(){
         row.innerHTML = '<td class="section-name">'+sec.name+'</td><td>'+fmtMoney2(sec.amount)+'</td><td style="color:'+sc+';font-weight:bold;">'+st+'</td><td style="color:'+ec+';font-weight:bold;">'+et+'</td>';
         tbody.appendChild(row);
     });
-    document.getElementById('totalAssets').textContent = fmtMoney2(total)+' '+currency;
+    const taEl = document.getElementById('totalAssets'); if(taEl) taEl.textContent = fmtMoney2(total)+' '+currency;
     let zakat=0, status='', color='var(--gold)';
     if(hasHawl && total >= nisabValue){
         zakat = total/40;
@@ -1133,10 +1497,10 @@ function calculateAll(){
     } else {
         status = getText('zakatNotDueHawl');
     }
-    document.getElementById('zakatAmount').textContent = zakat>0?fmtMoney(zakat)+' '+currency:'0.000';
-    document.getElementById('zakatAmount').style.color = color;
-    document.getElementById('thZakatStatus').textContent = status;
-    document.getElementById('thZakatStatus').style.color = color;
+    const zaEl = document.getElementById('zakatAmount');
+    if(zaEl){ zaEl.textContent = zakat>0?fmtMoney(zakat)+' '+currency:'0.000'; zaEl.style.color = color; }
+    const tzEl = document.getElementById('thZakatStatus');
+    if(tzEl){ tzEl.textContent = status; tzEl.style.color = color; }
 }
 function updateNisabStatus(total){
     const s = document.getElementById('nisabStatus'); const st = document.getElementById('nisabStatusText');
@@ -1145,6 +1509,7 @@ function updateNisabStatus(total){
     else { s.className='nisab-status not-reached'; st.innerHTML='⚠️ '+getText('nisabNotReached'); }
 }
 
+/* ============== حفظ / استعادة / تصدير ============== */
 function collectCalcData(){
     const goldWear = [];
     document.querySelectorAll('.gold-wear-item').forEach(it=>{
@@ -1198,13 +1563,13 @@ function applyCalcData(d){
     set('gwStartMonth', d.gwStart); set('gwEndMonth', d.gwEnd);
     set('bullionStartMonth', d.bullionStart); set('bullionEndMonth', d.bullionEnd);
     set('invStartMonth', d.invStart); set('invEndMonth', d.invEnd);
-    
     const gwContainer = document.getElementById('goldWearContainer');
     if(gwContainer && Array.isArray(d.goldWear) && d.goldWear.length > 0){
         gwContainer.innerHTML = '';
         goldWearCounter = 0;
-        const wasDisabled = document.getElementById('goldWearSection').classList.contains('disabled');
-        if(wasDisabled) document.getElementById('goldWearSection').classList.remove('disabled');
+        const wasDisabled = document.getElementById('goldWearSection') ? document.getElementById('goldWearSection').classList.contains('disabled') : false;
+        const gwsEl = document.getElementById('goldWearSection');
+        if(wasDisabled && gwsEl) gwsEl.classList.remove('disabled');
         d.goldWear.forEach(item=>{
             addGoldWearItem(true);
             const lastItem = gwContainer.lastElementChild;
@@ -1219,22 +1584,17 @@ function applyCalcData(d){
             if(priceInp) priceInp.value = item.price || '';
             if(item.source){
                 const radio = lastItem.querySelector('input[name^="goldSource_"][value="'+item.source+'"]');
-                if(radio){
-                    radio.checked = true;
-                    if(item.source === 'manual'){
-                        if(priceInp){ priceInp.readOnly = false; }
-                    }
-                }
+                if(radio){ radio.checked = true; if(item.source === 'manual' && priceInp){ priceInp.readOnly = false; } }
             }
         });
     }
-    
     const bContainer = document.getElementById('bullionContainer');
     if(bContainer && Array.isArray(d.bullionItems) && d.bullionItems.length > 0){
         bContainer.innerHTML = '';
         bullionCounter = 0;
-        const wasDisabled = document.getElementById('bullionSection').classList.contains('disabled');
-        if(wasDisabled) document.getElementById('bullionSection').classList.remove('disabled');
+        const bsecEl = document.getElementById('bullionSection');
+        const wasDisabled = bsecEl ? bsecEl.classList.contains('disabled') : false;
+        if(wasDisabled && bsecEl) bsecEl.classList.remove('disabled');
         d.bullionItems.forEach(item=>{
             addBullionItem(true);
             const lastItem = bContainer.lastElementChild;
@@ -1245,21 +1605,16 @@ function applyCalcData(d){
             if(pInp) pInp.value = item.price || '';
             if(item.source){
                 const radio = lastItem.querySelector('input[name^="bullionSource_"][value="'+item.source+'"]');
-                if(radio){
-                    radio.checked = true;
-                    if(item.source === 'manual'){
-                        if(pInp){ pInp.readOnly = false; }
-                    }
-                }
+                if(radio){ radio.checked = true; if(item.source === 'manual' && pInp){ pInp.readOnly = false; } }
             }
         });
     }
-    
     const invContainer = document.getElementById('investmentsContainer');
     if(invContainer && Array.isArray(d.investments) && d.investments.length > 0){
         invContainer.innerHTML = '';
-        const wasDisabled = document.getElementById('investmentsSection').classList.contains('disabled');
-        if(wasDisabled) document.getElementById('investmentsSection').classList.remove('disabled');
+        const isecEl = document.getElementById('investmentsSection');
+        const wasDisabled = isecEl ? isecEl.classList.contains('disabled') : false;
+        if(wasDisabled && isecEl) isecEl.classList.remove('disabled');
         d.investments.forEach(item=>{
             addInvestment(true);
             const lastItem = invContainer.lastElementChild;
@@ -1270,55 +1625,28 @@ function applyCalcData(d){
             if(valInp) valInp.value = item.value || '';
         });
     }
-    
     updateTotals();
 }
-function saveData(){ 
-    try{ 
-        localStorage.setItem('zakatCalculatorData', JSON.stringify(collectCalcData())); 
-    }catch(e){ console.error('saveData error', e); }
-}
-function loadData(){ 
-    try{ 
-        const s=localStorage.getItem('zakatCalculatorData'); 
-        if(s) applyCalcData(JSON.parse(s)); 
-    }catch(e){ console.error('loadData error', e); }
-}
+function saveData(){ try{ localStorage.setItem('zakatCalculatorData', JSON.stringify(collectCalcData())); }catch(e){} }
+function loadData(){ try{ const s=localStorage.getItem('zakatCalculatorData'); if(s) applyCalcData(JSON.parse(s)); }catch(e){} }
 
-document.addEventListener('input', function(e){
-    const calcTab = document.getElementById('tab-calc');
-    if(calcTab && calcTab.contains(e.target)){
-        saveData();
-    }
-});
-document.addEventListener('change', function(e){
-    const calcTab = document.getElementById('tab-calc');
-    if(calcTab && calcTab.contains(e.target)){
-        saveData();
-    }
-});
-window.addEventListener('beforeunload', function(){
-    saveData();
-    saveRecord();
-});
+document.addEventListener('input', function(e){ const t=document.getElementById('tab-calc'); if(t&&t.contains(e.target)) saveData(); });
+document.addEventListener('change', function(e){ const t=document.getElementById('tab-calc'); if(t&&t.contains(e.target)) saveData(); });
+window.addEventListener('beforeunload', function(){ saveData(); saveRecord(); });
 
 function exportAllData(){
     try{
-        const data = { version: 2, exportedAt: new Date().toISOString(), calculator: collectCalcData(), record: recData };
+        const data = { version: 3, exportedAt: new Date().toISOString(), calculator: collectCalcData(), record: recData };
         const json = JSON.stringify(data, null, 2);
         const blob = new Blob([json], {type:'application/json'});
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'zakat-data-' + new Date().toISOString().slice(0,10) + '.json';
-        document.body.appendChild(a); a.click(); document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        const a = document.createElement('a'); a.href = url; a.download = 'zakat-data-' + new Date().toISOString().slice(0,10) + '.json';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
         alert(getText('saveSuccess'));
     }catch(e){ console.error(e); }
 }
 function importAllData(ev){
-    const file = ev.target.files && ev.target.files[0];
-    if(!file) return;
+    const file = ev.target.files && ev.target.files[0]; if(!file) return;
     const reader = new FileReader();
     reader.onload = function(e){
         try{
@@ -1327,32 +1655,17 @@ function importAllData(ev){
             if(data.record){
                 recData = {
                     names: Array.isArray(data.record.names)?data.record.names:[],
-                    metals: Array.isArray(data.record.metals)?data.record.metals:[],
-                    banks: Array.isArray(data.record.banks)?data.record.banks:[],
+                    metals: Array.isArray(data.record.metals)?data.record.metals.map(x=>({...x, hawlStart:x.hawlStart||'', hawlEnd:x.hawlEnd||'', carat:'24'})):[],
+                    goldWearRec: Array.isArray(data.record.goldWearRec)?data.record.goldWearRec.map(x=>({...x, hawlStart:x.hawlStart||'', hawlEnd:x.hawlEnd||'', carat:x.carat||'21'})):[],
+                    banks: Array.isArray(data.record.banks)?data.record.banks.map(x=>({...x, hawlStart:x.hawlStart||'', hawlEnd:x.hawlEnd||''})):[],
+                    investments: Array.isArray(data.record.investments)?data.record.investments.map(x=>({...x, hawlStart:x.hawlStart||'', hawlEnd:x.hawlEnd||''})):[],
                     distributions: Array.isArray(data.record.distributions)?data.record.distributions:[],
                     help: Array.isArray(data.record.help)?data.record.help:[],
                     seq: data.record.seq || 1
                 };
-                recData.names = recData.names.map(n=>({
-                    id: n.id, name: n.name||'',
-                    years: Array.isArray(n.years)?n.years:[],
-                    nisabType: n.nisabType||'silver'
-                }));
-                recData.distributions = recData.distributions.map(d=>({
-                    id: d.id, nameId: d.nameId||null, date: d.date||'',
-                    recipient: d.recipient||'', region: d.region||'bh',
-                    amount: d.amount||'', received: !!d.received, note: d.note||''
-                }));
-                recData.help = recData.help.map(h=>({
-                    id: h.id, nameId: h.nameId||(recData.names[0]&&recData.names[0].id)||null,
-                    date: h.date||'', recipient: h.recipient||'', region: h.region||'bh',
-                    amount: h.amount||'', received: !!h.received, note: h.note||''
-                }));
                 saveRecord();
             }
-            ['banks','goldWear','bullion','investments'].forEach(checkHawl);
-            refreshRecord();
-            calculateAll();
+            refreshRecord(); calculateAll();
             alert(getText('importSuccess'));
         }catch(err){ console.error(err); alert(getText('importError')); }
         finally { ev.target.value = ''; }
@@ -1363,17 +1676,14 @@ function importAllData(ev){
 function resetAll(){
     if(!confirm(getText('resetConfirm'))) return;
     document.querySelectorAll('input[type="number"],input[type="text"],input[type="month"]').forEach(el=>el.value='');
-    document.getElementById('goldWearContainer').innerHTML='';
-    document.getElementById('bullionContainer').innerHTML='';
-    document.getElementById('investmentsContainer').innerHTML='';
+    const gwc = document.getElementById('goldWearContainer'); if(gwc) gwc.innerHTML='';
+    const bc = document.getElementById('bullionContainer'); if(bc) bc.innerHTML='';
+    const ic = document.getElementById('investmentsContainer'); if(ic) ic.innerHTML='';
     goldWearCounter=0; bullionCounter=0;
     localStorage.removeItem('zakatCalculatorData');
     ['banks','goldWear','bullion','investments'].forEach(checkHawl);
-    addGoldWearItem(true);
-    addBullionItem(true);
-    addInvestment(true);
-    alert(getText('resetSuccess'));
-    calculateAll();
+    addGoldWearItem(true); addBullionItem(true); addInvestment(true);
+    alert(getText('resetSuccess')); calculateAll();
 }
 
 function toggleHelp(){ document.getElementById('helpModal').classList.toggle('show'); }
@@ -1393,13 +1703,10 @@ function setFontSize(s,btn){
     document.querySelectorAll('.font-btn').forEach(b=>b.classList.remove('active'));
     if(btn) btn.classList.add('active');
 }
-
-/* تبديل تفعيل/إلغاء نصاب الفضة للمعادن */
 function toggleSilverEq(enabled){
     silverEqEnabled = !!enabled;
     try{ localStorage.setItem('zakatSilverEqEnabled', silverEqEnabled ? '1' : '0'); }catch(e){}
-    renderSummary();
-    calculateAll();
+    renderSummary(); renderMetals(); renderGoldWearRec(); calculateAll();
 }
 
 function applyLanguage(){
@@ -1425,6 +1732,13 @@ function applyLanguage(){
     set('footerRights',t.footerRights); set('footerPray',t.footerPray);
     set('gwHawlLabel',t.gwHawlLabel); set('bullionHawlLabel',t.bullionHawlLabel); set('invHawlLabel',t.invHawlLabel);
     set('nisabLabel',t.nisabLabel);
+    // الملاحظة الجديدة في قسم الذهب الملبوس
+    const ngrT = document.getElementById('noteGoldWearRecTitle');
+    if(ngrT) ngrT.textContent = t.noteGoldWearTitle;
+    const ngrX = document.getElementById('noteGoldWearRecText');
+    if(ngrX) ngrX.innerHTML = currentLang==='ar'
+        ? 'يوجد <span class="highlight">اختلاف بين العلماء</span> في وجوب الزكاة على الذهب الملبوس.'
+        : 'Scholars differ on the obligation of zakat on worn gold.';
     document.querySelectorAll('.gold-carat-select option').forEach(o=>{ o.textContent=o.value+' '+t.caratLabel; });
     document.querySelectorAll('.label-suffix').forEach(el=>el.textContent=t.gramLabel);
     document.querySelectorAll('.currency-label').forEach(el=>el.textContent=t.currency);
@@ -1435,7 +1749,9 @@ function applyLanguage(){
     set('rcBankLbl',t.rcBankLbl); set('rcMetalLbl',t.rcMetalLbl); set('rcZakatLbl',t.rcZakatLbl); set('rcRcvLbl',t.rcRcvLbl);
     setHtml('recTitleNames','<i class="fas fa-users"></i> '+t.recTitleNames); set('btnAddName',t.btnAddName);
     setHtml('recTitleMetals','<i class="fas fa-gem"></i> '+t.recTitleMetals);
+    setHtml('recTitleGoldWear','<i class="fas fa-ring"></i> '+t.recTitleGoldWear);
     setHtml('recTitleYears','<i class="fas fa-calendar-check"></i> '+t.recTitleYears);
+    setHtml('recTitleInv','<i class="fas fa-chart-pie"></i> '+t.recTitleInv);
     setHtml('recTitleSummary','<i class="fas fa-file-invoice-dollar"></i> '+t.recTitleSummary);
     setHtml('recTitleDist','<i class="fas fa-hand-holding-heart"></i> '+t.recTitleDist);
     setHtml('recTitleHelp','<i class="fas fa-hand-holding-heart"></i> '+t.recTitleHelp);
@@ -1444,19 +1760,25 @@ function applyLanguage(){
     set('lblHelpTotal',t.lblHelpTotal); set('noteHelp',t.noteHelp); set('btnAddHelp',t.btnAddHelp);
     setHtml('lblHelpPayer','<i class="fas fa-user"></i> '+t.lblHelpPayer);
     set('thHpDate',t.thHpDate); set('thHpRecipient',t.thHpRecipient); set('thHpRegion',t.thHpRegion); set('thHpAmount',t.thHpAmount); set('thHpReceived',t.thHpReceived); set('thHpNote',t.thHpNote);
+    set('thMtHawl',t.thMtHawl);
     set('thMtPerson',t.thMtPerson); set('thMtYear',t.thMtYear); set('thMtType',t.thMtType); set('thMtCarat',t.thMtCarat);
     set('thMtWeight',t.thMtWeight); set('thMtPrice',t.thMtPrice); set('thMtTotal',t.thMtTotal); set('thMtZakat',t.thMtZakat); set('tfMtTotal',t.tfMtTotal); set('thMtNisab',t.thMtNisab);
-    set('btnAddMetal',t.btnAddMetal); set('btnAddBank',t.btnAddBank); set('btnAddDistribution',t.btnAddDistribution);
+    set('thGwHawl',t.thGwHawl); set('thGwPerson',t.thGwPerson); set('thGwYear',t.thGwYear); set('thGwCarat',t.thGwCarat);
+    set('thGwWeight',t.thGwWeight); set('thGwPrice',t.thGwPrice); set('thGwTotal',t.thGwTotal); set('thGwZakat',t.thGwZakat); set('thGwNisab',t.thGwNisab);
+    set('btnAddMetal',t.btnAddMetal); set('btnAddGoldWearRec',t.btnAddGoldWearRec); set('btnAddInvestmentRec',t.btnAddInvestmentRec);
+    set('btnAddBank',t.btnAddBank); set('btnAddDistribution',t.btnAddDistribution);
+    set('thYrHawl',t.thYrHawl);
     set('thYrPerson',t.thYrPerson); set('thYrYear',t.thYrYear); set('thYrBank',t.thYrBank); set('thYrZakat',t.thYrZakat); set('thYrReached',t.thYrReached); set('tfYrTotal',t.tfYrTotal);
-    set('thSmPerson',t.thSmPerson); set('thSmNisab',t.thSmNisab); set('thSmMetals',t.thSmMetals); set('thSmBank',t.thSmBank);
-    set('thSmTotal',t.thSmTotal); set('thSmZakat',t.thSmZakat); set('thSmExpand',t.thSmExpand);
+    set('thIvHawl',t.thIvHawl); set('thIvPerson',t.thIvPerson); set('thIvYear',t.thIvYear); set('thIvName',t.thIvName);
+    set('thIvValue',t.thIvValue); set('thIvZakat',t.thIvZakat); set('thIvReached',t.thIvReached); set('tfIvTotal',t.tfIvTotal);
+    set('thSmPerson',t.thSmPerson); set('thSmNisab',t.thSmNisab); set('thSmMetals',t.thSmMetals); set('thSmGoldWear',t.thSmGoldWear);
+    set('thSmBank',t.thSmBank); set('thSmInv',t.thSmInv); set('thSmTotal',t.thSmTotal);
+    set('thSmZakat',t.thSmZakat); set('thSmExpand',t.thSmExpand);
     set('thDsPerson',t.thDsPerson); set('thDsDate',t.thDsDate); set('thDsRecipient',t.thDsRecipient); set('thDsRegion',t.thDsRegion);
     set('thDsAmount',t.thDsAmount); set('thDsReceived',t.thDsReceived); set('thDsNote',t.thDsNote);
     setHtml('lblPrintPerson','<i class="fas fa-user"></i> '+t.lblPrintPerson); set('btnPrintReport',t.btnPrintReport);
     const sEqText = document.getElementById('silverEqToggleText');
     if(sEqText) sEqText.textContent = t.silverEqToggleText;
-    const sEqLabel = document.getElementById('silverEqToggleLabel');
-    if(sEqLabel) sEqLabel.title = t.silverEqToggleTip;
     document.dir = currentLang==='ar'?'rtl':'ltr';
     document.documentElement.lang = currentLang;
     ['banks','goldWear','bullion','investments'].forEach(checkHawl);
@@ -1471,7 +1793,7 @@ const REGIONS = [
     {v:'other',ar:'أخرى',en:'Other'}
 ];
 const SILVER_PRICE_DEFAULT = 0.30;
-let recData = {names:[], metals:[], banks:[], distributions:[], help:[], seq:1};
+let recData = {names:[], metals:[], goldWearRec:[], banks:[], investments:[], distributions:[], help:[], seq:1};
 
 function regionLabel(v){ const r=REGIONS.find(x=>x.v===v); return r?(currentLang==='ar'?r.ar:r.en):v; }
 function escapeAttr(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -1489,20 +1811,20 @@ function removeName(id){
     if(!confirm(getText('deletePersonConfirm'))) return;
     recData.names = recData.names.filter(n=>n.id!==id);
     recData.metals = recData.metals.filter(m=>m.nameId!==id);
+    recData.goldWearRec = recData.goldWearRec.filter(g=>g.nameId!==id);
     recData.banks = recData.banks.filter(b=>b.nameId!==id);
+    recData.investments = recData.investments.filter(x=>x.nameId!==id);
     recData.distributions = recData.distributions.filter(d=>d.nameId!==id);
     recData.help = recData.help.filter(h=>h.nameId!==id);
     delete expandedPersons[id];
+    delete expandedYears[id];
     refreshRecord(); saveRecord();
 }
 
 function addYearToName(nameId, year){
     const n = recData.names.find(x=>x.id===nameId); if(!n) return;
     const y = parseInt(year);
-    if(isNaN(y) || y < 1900 || y > 2200 || String(year).trim().length !== 4){
-        alert(getText('invalidYear'));
-        return;
-    }
+    if(isNaN(y) || y < 1900 || y > 2200 || String(year).trim().length !== 4){ alert(getText('invalidYear')); return; }
     if(n.years.includes(y)) return;
     n.years.push(y); n.years.sort((a,b)=>b-a);
     refreshRecord(); saveRecord();
@@ -1511,7 +1833,9 @@ function removeYearFromName(nameId, year){
     const n = recData.names.find(x=>x.id===nameId); if(!n) return;
     n.years = n.years.filter(y=>y!==year);
     recData.metals = recData.metals.filter(m=>!(m.nameId===nameId && Number(m.year)===Number(year)));
+    recData.goldWearRec = recData.goldWearRec.filter(g=>!(g.nameId===nameId && Number(g.year)===Number(year)));
     recData.banks = recData.banks.filter(b=>!(b.nameId===nameId && Number(b.year)===Number(year)));
+    recData.investments = recData.investments.filter(x=>!(x.nameId===nameId && Number(x.year)===Number(year)));
     refreshRecord(); saveRecord();
 }
 function addYearFromInput(nameId, btn){
@@ -1524,8 +1848,7 @@ function addYearFromInput(nameId, btn){
     if(raw.length !== 4){ alert(getText('invalidYear')); inp.value=''; inp.focus(); return; }
     const y = parseInt(raw);
     if(isNaN(y) || y < 1900 || y > 2200){ alert(getText('invalidYear')); inp.value=''; inp.focus(); return; }
-    inp.value = '';
-    if(sel) sel.value = '';
+    inp.value = ''; if(sel) sel.value = '';
     addYearToName(nameId, y);
 }
 
@@ -1537,13 +1860,12 @@ function renderNames(){
         return;
     }
     const nowY = new Date().getFullYear();
-    const yTop = 2050;
-    const yBottom = 1950;
+    const yTop = 2050, yBottom = 1950;
     recData.names.forEach(n=>{
         const card = document.createElement('div');
         card.className='name-card'; card.dataset.id=n.id;
         const yearChips = n.years.map(y=>
-            '<span class="year-chip" data-year="'+y+'">'+y+' <button onclick="removeYearFromName('+n.id+','+y+')" title="حذف">×</button></span>'
+            '<span class="year-chip" data-year="'+y+'">'+y+' <button onclick="removeYearFromName('+n.id+','+y+')">×</button></span>'
         ).join('');
         let yearOpts = '<option value="">'+getText('selectYear')+'</option>';
         for(let y = yTop; y >= yBottom; y--){
@@ -1557,182 +1879,242 @@ function renderNames(){
                     '<option value="silver"'+(n.nisabType==='silver'?' selected':'')+'>'+getText('nisabSilver')+' (595 جم)</option>'+
                     '<option value="gold"'+(n.nisabType==='gold'?' selected':'')+'>'+getText('nisabGold')+' (85 جم)</option>'+
                 '</select>'+
-                '<button class="rec-del" onclick="removeName('+n.id+')" title="حذف">✕</button>'+
+                '<button class="rec-del" onclick="removeName('+n.id+')">✕</button>'+
             '</div>'+
             '<div class="name-years">'+
                 '<span class="years-label">'+getText('yearLabel')+'</span>'+
                 (yearChips || '<span style="color:var(--text-sub);font-size:.82rem;">'+getText('noYears')+'</span>')+
                 '<select class="add-year-select">'+yearOpts+'</select>'+
                 '<span class="year-sep">أو</span>'+
-                '<input type="number" class="add-year-input" placeholder="'+getText('addYearPlaceholder')+'" min="1900" max="2200" step="1" oninput="if(this.value.length>4)this.value=this.value.slice(0,4);" />'+
-                '<button class="btn-add-year" onclick="addYearFromInput('+n.id+',this)" title="+">+</button>'+
+                '<input type="number" class="add-year-input" placeholder="'+getText('addYearPlaceholder')+'" min="1900" max="2200" oninput="if(this.value.length>4)this.value=this.value.slice(0,4);" />'+
+                '<button class="btn-add-year" onclick="addYearFromInput('+n.id+',this)">+</button>'+
             '</div>';
         el.appendChild(card);
     });
 }
 
-function addMetal(){
-    if(recData.names.length===0){ alert(getText('addNameFirst')); return; }
-    const first = recData.names[0];
-    const initialPrice = getCurrentMetalPrice('gold', '21');
-    recData.metals.push({
-        id: recData.seq++, nameId: first.id,
-        year: first.years[0]||'', type:'gold', carat:'21',
-        weight:'', price: initialPrice || ''
-    });
-    refreshRecord(); saveRecord();
+/* ============== الملخص ============== */
+function computeNameTotals(nameId){
+    const n = recData.names.find(x=>x.id===nameId);
+    const metalsTotal = recData.metals.filter(m=>m.nameId===nameId)
+        .reduce((s,m)=>s+((parseFloat(m.weight)||0)*(parseFloat(m.price)||0)),0);
+    const goldWearTotal = recData.goldWearRec.filter(g=>g.nameId===nameId)
+        .reduce((s,g)=>s+((parseFloat(g.weight)||0)*(parseFloat(g.price)||0)),0);
+    const bankTotal = recData.banks.filter(b=>b.nameId===nameId)
+        .reduce((s,b)=>s+(parseFloat(b.amount)||0),0);
+    const invTotal = recData.investments.filter(x=>x.nameId===nameId)
+        .reduce((s,x)=>s+(parseFloat(x.value)||0),0);
+    const grand = metalsTotal + goldWearTotal + bankTotal + invTotal;
+    const metalsZakat = recData.metals.filter(m=>m.nameId===nameId)
+        .reduce((s,m)=>s + (silverEqEnabled ? computeMetalZakatFlexible(m) : computeMetalZakat(m)), 0);
+    const goldWearZakat = recData.goldWearRec.filter(g=>g.nameId===nameId)
+        .reduce((s,g)=>s + (silverEqEnabled ? computeGoldWearZakatFlexible(g) : computeGoldWearZakat(g)), 0);
+    const banksZakat = recData.banks.filter(b=>b.nameId===nameId)
+        .reduce((s,b)=>s + (checkHawlComplete(b) ? ((parseFloat(b.amount)||0)/40) : 0), 0);
+    const invZakat = recData.investments.filter(x=>x.nameId===nameId)
+        .reduce((s,x)=>s + (checkHawlComplete(x) ? ((parseFloat(x.value)||0)/40) : 0), 0);
+    const zakatSum = metalsZakat + goldWearZakat + banksZakat + invZakat;
+    const nisabType = n ? n.nisabType : 'silver';
+    const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
+    const reached = grand >= personNisab && grand > 0;
+    const zakat = reached ? grand/40 : 0;
+    return {metalsTotal, goldWearTotal, bankTotal, invTotal, grand, zakat, zakatSum, personNisab, reached, nisabType, metalsZakat, goldWearZakat, banksZakat, invZakat};
 }
-function removeMetal(id){ recData.metals = recData.metals.filter(m=>m.id!==id); refreshRecord(); saveRecord(); }
 
-function renderMetals(){
-    const tbody = document.getElementById('metalsBody'); if(!tbody) return;
-    tbody.innerHTML='';
-    if(recData.names.length===0){
-        tbody.innerHTML = '<tr><td colspan="10" style="color:var(--text-sub);padding:14px;">'+getText('addNameFirst')+'</td></tr>';
-        recalcMetals(); return;
-    }
-    recData.metals.forEach(m=>{
-        const n = recData.names.find(x=>x.id===m.nameId);
-        const years = n ? n.years : [];
-        let yearOpts = years.map(y=>'<option value="'+y+'"'+(String(m.year)===String(y)?' selected':'')+'>'+y+'</option>').join('');
-        if(m.year && !years.includes(Number(m.year))) yearOpts = '<option value="'+m.year+'" selected>'+m.year+'</option>'+yearOpts;
-        if(!yearOpts) yearOpts = '<option value="">-</option>';
-        const nameOpts = recData.names.map(nn=>'<option value="'+nn.id+'"'+(nn.id===m.nameId?' selected':'')+'>'+escapeAttr(nn.name||'—')+'</option>').join('');
-        const isGold = m.type==='gold';
-        const caratOpts = ['18','20','21','22','24'].map(c=>'<option value="'+c+'"'+(String(m.carat)===c?' selected':'')+'>'+c+'</option>').join('');
-        const autoPrice = getCurrentMetalPrice(m.type, m.carat);
-        m.price = autoPrice;
-        const reached = checkMetalNisab(m);
-        const nisabBadge = reached
-            ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
-            : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
-        const tr = document.createElement('tr');
-        tr.className='metal-row'; tr.dataset.id=m.id;
-        tr.innerHTML =
-            '<td><select class="mt-name">'+nameOpts+'</select></td>'+
-            '<td><select class="mt-year">'+yearOpts+'</select></td>'+
-            '<td><select class="mt-type">'+
-                '<option value="gold"'+(isGold?' selected':'')+'>Gold</option>'+
-                '<option value="silver"'+(!isGold?' selected':'')+'>Silver</option>'+
-            '</select></td>'+
-            '<td><select class="mt-carat"'+(isGold?'':' disabled')+'>'+caratOpts+'</select></td>'+
-            '<td><input type="number" step="0.001" class="mt-weight" value="'+escapeAttr(m.weight)+'" placeholder="0.000"/></td>'+
-            '<td><input type="number" step="0.001" class="mt-price price-readonly" readonly value="'+(autoPrice||'')+'" placeholder="0.000" title="السعر العالمي التلقائي"/></td>'+
-            '<td class="mt-total" style="font-weight:bold;color:var(--green);">0.000</td>'+
-            '<td class="mt-zakat" style="font-weight:bold;color:var(--gold);">0.000</td>'+
-            '<td class="mt-nisab">'+nisabBadge+'</td>'+
-            '<td><button class="rec-del" onclick="removeMetal('+m.id+')">✕</button></td>';
-        tbody.appendChild(tr);
-    });
-    recalcMetals();
+function togglePersonExpand(id){
+    expandedPersons[id] = !expandedPersons[id];
+    renderSummary();
 }
-function recalcMetals(){
-    let total=0, totalZakat=0;
-    document.querySelectorAll('#metalsBody tr.metal-row').forEach(tr=>{
-        const m = recData.metals.find(x=>x.id===Number(tr.dataset.id)); if(!m) return;
-        const w = parseFloat(m.weight)||0; const p = parseFloat(m.price)||0;
-        const lt = w*p; total += lt;
-        const z = computeMetalZakat(m);
-        totalZakat += z;
-        const el = tr.querySelector('.mt-total'); if(el) el.textContent = fmtMoney(lt);
-        const zEl = tr.querySelector('.mt-zakat'); if(zEl) zEl.textContent = fmtMoney(z);
-        const nisabCell = tr.querySelector('.mt-nisab');
-        if(nisabCell){
-            const reached = checkMetalNisab(m);
-            nisabCell.innerHTML = reached
-                ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
-                : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
-        }
-    });
-    const f = document.getElementById('recTotalMetalsFoot'); if(f) f.textContent = fmtMoney(total);
-    const fz = document.getElementById('recTotalMetalsZakatFoot'); if(fz) fz.textContent = fmtMoney(totalZakat);
-    const c = document.getElementById('recTotalMetals'); if(c) c.textContent = fmtMoney(total);
+function toggleYearExpand(personId, year){
+    if(!expandedYears[personId]) expandedYears[personId] = {};
+    expandedYears[personId][year] = !expandedYears[personId][year];
     renderSummary();
 }
 
-function addBank(){
-    if(recData.names.length===0){ alert(getText('addNameFirst')); return; }
-    const first = recData.names[0];
-    recData.banks.push({id:recData.seq++, nameId:first.id, year:first.years[0]||'', amount:''});
-    refreshRecord(); saveRecord();
-}
-function removeBank(id){ recData.banks = recData.banks.filter(b=>b.id!==id); refreshRecord(); saveRecord(); }
-
-function renderBanks(){
-    const tbody = document.getElementById('banksBody'); if(!tbody) return;
-    tbody.innerHTML='';
-    if(recData.names.length===0){
-        tbody.innerHTML = '<tr><td colspan="6" style="color:var(--text-sub);padding:14px;">'+getText('addNameFirst')+'</td></tr>';
-        recalcBanks(); return;
+function buildYearDetailsHtml(personId, year, personNisab){
+    const pBanks = recData.banks.filter(b=>b.nameId===personId && String(b.year)===String(year));
+    const pMetals = recData.metals.filter(m=>m.nameId===personId && String(m.year)===String(year));
+    const pGoldWear = recData.goldWearRec.filter(g=>g.nameId===personId && String(g.year)===String(year));
+    const pInv = recData.investments.filter(x=>x.nameId===personId && String(x.year)===String(year));
+    let innerHtml = '';
+    
+    innerHtml += '<div class="expand-section-title">🏦 '+getText('recTitleYears')+'</div>';
+    let yBZ = 0;
+    if(pBanks.length === 0){ innerHtml += '<div class="empty-row">'+getText('expandNoYears')+'</div>'; }
+    else {
+        innerHtml += '<table class="expand-table"><thead><tr><th>'+getText('expandBankCol')+'</th><th>'+getText('expandZakatCol')+'</th><th>'+getText('expandReachedCol')+'</th></tr></thead><tbody>';
+        pBanks.forEach(b=>{
+            const amt = parseFloat(b.amount)||0; const z = checkHawlComplete(b)?amt/40:0; yBZ += z;
+            const r = amt >= personNisab && amt > 0;
+            innerHtml += '<tr><td>'+fmtMoney(amt)+'</td><td class="zakat-v">'+fmtMoney(z)+'</td><td>'+(r?'<span class="badge-status ok">'+getText('reachedYes')+'</span>':'<span class="badge-status no">'+getText('reachedNo')+'</span>')+'</td></tr>';
+        });
+        innerHtml += '<tr class="expand-total-row"><td>المجموع</td><td class="zakat-v">'+fmtMoney(yBZ)+'</td><td></td></tr></tbody></table>';
     }
-    recData.banks.forEach(b=>{
-        const n = recData.names.find(x=>x.id===b.nameId);
-        const years = n ? n.years : [];
-        let yearOpts = years.map(y=>'<option value="'+y+'"'+(String(b.year)===String(y)?' selected':'')+'>'+y+'</option>').join('');
-        if(b.year && !years.includes(Number(b.year))) yearOpts = '<option value="'+b.year+'" selected>'+b.year+'</option>'+yearOpts;
-        if(!yearOpts) yearOpts = '<option value="">-</option>';
-        const nameOpts = recData.names.map(nn=>'<option value="'+nn.id+'"'+(nn.id===b.nameId?' selected':'')+'>'+escapeAttr(nn.name||'—')+'</option>').join('');
-        const nisabType = n ? n.nisabType : 'silver';
-        const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
-        const amt = parseFloat(b.amount)||0;
-        const reached = amt >= personNisab && amt > 0;
-        const badge = reached
-            ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
-            : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
-        const tr = document.createElement('tr');
-        tr.className='bank-row'; tr.dataset.id=b.id;
-        tr.innerHTML =
-            '<td><select class="bn-name">'+nameOpts+'</select></td>'+
-            '<td><select class="bn-year">'+yearOpts+'</select></td>'+
-            '<td><input type="number" step="0.001" class="bn-amount" value="'+escapeAttr(b.amount)+'" placeholder="0.000"/></td>'+
-            '<td class="bn-zakat" style="font-weight:bold;color:var(--gold);">0.000</td>'+
-            '<td class="bn-reached">'+badge+'</td>'+
-            '<td><button class="rec-del" onclick="removeBank('+b.id+')">✕</button></td>';
-        tbody.appendChild(tr);
-    });
-    recalcBanks();
+    
+    innerHtml += '<div class="expand-section-title" style="margin-top:14px;">💎 '+getText('recTitleMetals')+'</div>';
+    let yMT = 0, yMZ = 0;
+    if(pMetals.length === 0){ innerHtml += '<div class="empty-row">'+getText('expandNoMetals')+'</div>'; }
+    else {
+        innerHtml += '<table class="expand-table"><thead><tr><th>'+getText('expandMetalTypeCol')+'</th><th>'+getText('expandMetalCaratCol')+'</th><th>'+getText('expandMetalWeightCol')+'</th><th>'+getText('expandMetalPriceCol')+'</th><th>'+getText('expandMetalTotalCol')+'</th><th>'+getText('expandMetalZakatCol')+'</th><th>'+getText('expandReachedCol')+'</th></tr></thead><tbody>';
+        pMetals.forEach(m=>{
+            const w = parseFloat(m.weight)||0; const p = parseFloat(m.price)||0;
+            const tt = w*p; const z = silverEqEnabled ? computeMetalZakatFlexible(m) : computeMetalZakat(m);
+            yMT += tt; yMZ += z;
+            const rg = checkMetalNisab(m); const rf = checkMetalNisabFlexible(m);
+            let bg;
+            if(rg) bg = '<span class="badge-status ok">'+getText('reachedYes')+'</span>';
+            else if(rf && silverEqEnabled) bg = '<span class="badge-status silver-eq">'+getText('silverEqBadge')+'</span>';
+            else bg = '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+            const tL = m.type==='gold'?'ذهب':'فضة';
+            const cL = m.type==='gold' ? '24' : '—';
+            innerHtml += '<tr><td>'+tL+'</td><td>'+cL+'</td><td>'+w.toFixed(3)+'</td><td>'+fmtMoney(p)+'</td><td>'+fmtMoney(tt)+'</td><td class="zakat-v">'+fmtMoney(z)+'</td><td>'+bg+'</td></tr>';
+        });
+        innerHtml += '<tr class="expand-total-row"><td colspan="4">المجموع</td><td>'+fmtMoney(yMT)+'</td><td class="zakat-v">'+fmtMoney(yMZ)+'</td><td></td></tr></tbody></table>';
+    }
+    
+    innerHtml += '<div class="expand-section-title" style="margin-top:14px;">💍 '+getText('recTitleGoldWear')+'</div>';
+    let yGT = 0, yGZ = 0;
+    if(pGoldWear.length === 0){ innerHtml += '<div class="empty-row">'+getText('expandNoMetals')+'</div>'; }
+    else {
+        innerHtml += '<table class="expand-table"><thead><tr><th>'+getText('expandMetalCaratCol')+'</th><th>'+getText('expandMetalWeightCol')+'</th><th>'+getText('expandMetalPriceCol')+'</th><th>'+getText('expandMetalTotalCol')+'</th><th>'+getText('expandMetalZakatCol')+'</th><th>'+getText('expandReachedCol')+'</th></tr></thead><tbody>';
+        pGoldWear.forEach(g=>{
+            const w = parseFloat(g.weight)||0; const p = parseFloat(g.price)||0;
+            const tt = w*p; const z = silverEqEnabled ? computeGoldWearZakatFlexible(g) : computeGoldWearZakat(g);
+            yGT += tt; yGZ += z;
+            const rg = checkGoldWearNisab(g); const rf = checkGoldWearNisabFlexible(g);
+            let bg;
+            if(rg) bg = '<span class="badge-status ok">'+getText('reachedYes')+'</span>';
+            else if(rf && silverEqEnabled) bg = '<span class="badge-status silver-eq">'+getText('silverEqBadge')+'</span>';
+            else bg = '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+            innerHtml += '<tr><td>'+g.carat+'</td><td>'+w.toFixed(3)+'</td><td>'+fmtMoney(p)+'</td><td>'+fmtMoney(tt)+'</td><td class="zakat-v">'+fmtMoney(z)+'</td><td>'+bg+'</td></tr>';
+        });
+        innerHtml += '<tr class="expand-total-row"><td colspan="3">المجموع</td><td>'+fmtMoney(yGT)+'</td><td class="zakat-v">'+fmtMoney(yGZ)+'</td><td></td></tr></tbody></table>';
+    }
+    
+    innerHtml += '<div class="expand-section-title" style="margin-top:14px;">📈 '+getText('recTitleInv')+'</div>';
+    let yIT = 0, yIZ = 0;
+    if(pInv.length === 0){ innerHtml += '<div class="empty-row">'+getText('expandNoYears')+'</div>'; }
+    else {
+        innerHtml += '<table class="expand-table"><thead><tr><th>'+getText('thIvName')+'</th><th>'+getText('thIvValue')+'</th><th>'+getText('expandZakatCol')+'</th><th>'+getText('expandReachedCol')+'</th></tr></thead><tbody>';
+        pInv.forEach(x=>{
+            const v = parseFloat(x.value)||0; const z = checkHawlComplete(x)?v/40:0;
+            yIT += v; yIZ += z;
+            const r = v >= personNisab && v > 0;
+            innerHtml += '<tr><td>'+(x.name||'—')+'</td><td>'+fmtMoney(v)+'</td><td class="zakat-v">'+fmtMoney(z)+'</td><td>'+(r?'<span class="badge-status ok">'+getText('reachedYes')+'</span>':'<span class="badge-status no">'+getText('reachedNo')+'</span>')+'</td></tr>';
+        });
+        innerHtml += '<tr class="expand-total-row"><td colspan="2">المجموع</td><td class="zakat-v">'+fmtMoney(yIZ)+'</td><td></td></tr></tbody></table>';
+    }
+    
+    const yearTotal = yBZ + yMZ + yGZ + yIZ;
+    innerHtml += '<div class="year-final-result"><span class="lbl">📊 '+getText('yearFinalZakat')+' — '+year+'</span><span class="val">'+fmtMoney(yearTotal)+' د.ب</span></div>';
+    
+    return innerHtml;
 }
-function recalcBanks(){
-    let totalZ=0;
-    document.querySelectorAll('#banksBody tr.bank-row').forEach(tr=>{
-        const b = recData.banks.find(x=>x.id===Number(tr.dataset.id)); if(!b) return;
-        const amt = parseFloat(b.amount)||0;
-        const z = amt/40;
-        totalZ += z;
-        const zEl = tr.querySelector('.bn-zakat'); if(zEl) zEl.textContent = fmtMoney(z);
-        const n = recData.names.find(x=>x.id===b.nameId);
-        const nisabType = n ? n.nisabType : 'silver';
-        const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
-        const reached = amt >= personNisab && amt > 0;
-        const reachedCell = tr.querySelector('.bn-reached');
-        if(reachedCell){
-            reachedCell.innerHTML = reached
-                ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
-                : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
+
+function renderSummary(){
+    const tbody = document.getElementById('summaryBody'); if(!tbody) return;
+    tbody.innerHTML='';
+    let tZakatSum=0;
+    recData.names.forEach(n=>{
+        const tot = computeNameTotals(n.id);
+        tZakatSum += tot.zakatSum;
+        const isOpen = !!expandedPersons[n.id];
+        const expandIcon = isOpen ? '×' : '+';
+        const expandClass = isOpen ? 'btn-expand open' : 'btn-expand';
+        const tr = document.createElement('tr');
+        tr.innerHTML =
+            '<td style="font-weight:bold;">'+escapeAttr(n.name||'—')+'</td>'+
+            '<td>'+(tot.nisabType==='gold'?getText('nisabGold'):getText('nisabSilver'))+'</td>'+
+            '<td>'+fmtMoney(tot.metalsTotal)+'</td>'+
+            '<td>'+fmtMoney(tot.goldWearTotal)+'</td>'+
+            '<td>'+fmtMoney(tot.bankTotal)+'</td>'+
+            '<td>'+fmtMoney(tot.invTotal)+'</td>'+
+            '<td style="font-weight:bold;">'+fmtMoney(tot.grand)+'</td>'+
+            '<td style="font-weight:bold;color:var(--gold);">'+fmtMoney(tot.zakatSum)+'</td>'+
+            '<td><button class="'+expandClass+'" onclick="togglePersonExpand('+n.id+')">'+expandIcon+'</button></td>';
+        tbody.appendChild(tr);
+
+        if(isOpen){
+            const personNisab = tot.nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
+            const pBanks = recData.banks.filter(b=>b.nameId===n.id);
+            const pMetals = recData.metals.filter(m=>m.nameId===n.id);
+            const pGoldWear = recData.goldWearRec.filter(g=>g.nameId===n.id);
+            const pInv = recData.investments.filter(x=>x.nameId===n.id);
+            const yearsSet = new Set();
+            [...pBanks, ...pMetals, ...pGoldWear, ...pInv].forEach(x=>{ if(x.year) yearsSet.add(String(x.year)); });
+            const years = Array.from(yearsSet).sort((a,b)=>Number(b)-Number(a));
+            
+            let innerHtml = '';
+            if(years.length === 0){
+                innerHtml = '<div class="empty-row">'+getText('expandNoYears')+'</div>';
+            } else {
+                innerHtml += '<div style="color:var(--text-sub);font-size:calc(.8rem*var(--font-scale));margin-bottom:10px;">'+
+                    (currentLang==='ar'?'اضغط على السنة لعرض تفاصيلها':'Click on a year to view its details')+
+                '</div>';
+                years.forEach(year=>{
+                    const isYearOpen = !!(expandedYears[n.id] && expandedYears[n.id][year]);
+                    const yBanks = pBanks.filter(b=>String(b.year)===year);
+                    const yMetals = pMetals.filter(m=>String(m.year)===year);
+                    const yGoldWear = pGoldWear.filter(g=>String(g.year)===year);
+                    const yInv = pInv.filter(x=>String(x.year)===year);
+                    let yTotal = 0;
+                    yBanks.forEach(b=>{ if(checkHawlComplete(b)) yTotal += (parseFloat(b.amount)||0)/40; });
+                    yMetals.forEach(m=>{ yTotal += silverEqEnabled ? computeMetalZakatFlexible(m) : computeMetalZakat(m); });
+                    yGoldWear.forEach(g=>{ yTotal += silverEqEnabled ? computeGoldWearZakatFlexible(g) : computeGoldWearZakat(g); });
+                    yInv.forEach(x=>{ if(checkHawlComplete(x)) yTotal += (parseFloat(x.value)||0)/40; });
+                    
+                    innerHtml += '<div class="year-row-collapsible" onclick="toggleYearExpand('+n.id+',\''+year+'\')">'+
+                        '<span class="year-title">'+
+                            '<span style="display:inline-block;width:26px;height:26px;line-height:24px;text-align:center;border-radius:50%;background:var(--green);color:#fff;font-weight:bold;font-size:1.1rem;transition:transform .2s;'+(isYearOpen?'transform:rotate(45deg);':'')+'">'+(isYearOpen?'×':'+')+'</span>'+
+                            '📅 '+year+
+                        '</span>'+
+                        '<span class="year-total-mini">💰 '+fmtMoney(yTotal)+' د.ب</span>'+
+                    '</div>';
+                    
+                    if(isYearOpen){
+                        innerHtml += '<div class="year-expanded-content">'+buildYearDetailsHtml(n.id, year, personNisab)+'</div>';
+                    }
+                });
+            }
+            const trExp = document.createElement('tr');
+            trExp.className = 'expand-row';
+            trExp.innerHTML = '<td colspan="9"><div class="expand-content"><div class="exp-title">📅 '+getText('expandYearsTitle')+' — '+escapeAttr(n.name||'—')+'</div>'+innerHtml+'</div></td>';
+            tbody.appendChild(trExp);
         }
     });
-    const foot = document.getElementById('recTotalZakatFoot');
-    if(foot) foot.textContent = fmtMoney(totalZ);
-    renderSummary();
+    const foot = document.getElementById('smZakatFoot'); if(foot) foot.textContent = fmtMoney(tZakatSum);
+    let tM=0, tG=0, tB=0, tI=0, tZ=0;
+    recData.names.forEach(n=>{
+        const t = computeNameTotals(n.id);
+        tM+=t.metalsTotal; tG+=t.goldWearTotal; tB+=t.bankTotal; tI+=t.invTotal; tZ+=t.zakatSum;
+    });
+    const set = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+    set('recTotalBank', fmtMoney(tB));
+    set('recTotalMetals', fmtMoney(tM));
+    set('recTotalZakat', fmtMoney(tZ));
+    let received = 0;
+    recData.distributions.forEach(d=>{ if(d.received) received += parseFloat(d.amount)||0; });
+    set('recTotalReceived', fmtMoney(received));
+    renderPrintDropdown();
+}
+function renderPrintDropdown(){
+    const sel = document.getElementById('printPersonSelect'); if(!sel) return;
+    const cur = sel.value;
+    sel.innerHTML = recData.names.map(n=>'<option value="'+n.id+'">'+escapeAttr(n.name||'—')+'</option>').join('');
+    if(cur && recData.names.some(n=>String(n.id)===cur)) sel.value = cur;
 }
 
+/* ============== توزيع الزكاة ============== */
 function addDistribution(){
     if(recData.names.length===0){ alert(getText('addNameFirst')); return; }
-    recData.distributions.push({
-        id:recData.seq++, nameId:recData.names[0].id, date:'',
-        recipient:'', region:'bh', amount:'', received:false, note:''
-    });
+    recData.distributions.push({id:recData.seq++, nameId:recData.names[0].id, date:'', recipient:'', region:'bh', amount:'', received:false, note:''});
     refreshRecord(); saveRecord();
 }
 function removeDistribution(id){ recData.distributions = recData.distributions.filter(d=>d.id!==id); refreshRecord(); saveRecord(); }
-
 function renderDist(){
     const tbody = document.getElementById('distBody'); if(!tbody) return;
     tbody.innerHTML='';
-    if(recData.names.length===0){
-        tbody.innerHTML = '<tr><td colspan="8" style="color:var(--text-sub);padding:14px;">'+getText('addNameFirst')+'</td></tr>';
-        return;
-    }
+    if(recData.names.length===0){ tbody.innerHTML = '<tr><td colspan="8" style="color:var(--text-sub);padding:14px;">'+getText('addNameFirst')+'</td></tr>'; return; }
     recData.distributions.forEach(d=>{
         const nameOpts = recData.names.map(n=>'<option value="'+n.id+'"'+(n.id===d.nameId?' selected':'')+'>'+escapeAttr(n.name||'—')+'</option>').join('');
         const regionOpts = REGIONS.map(g=>'<option value="'+g.v+'"'+(d.region===g.v?' selected':'')+'>'+regionLabel(g.v)+'</option>').join('');
@@ -1752,27 +2134,22 @@ function renderDist(){
     renderSummary();
 }
 
+/* ============== مساعدة ============== */
 function addHelp(){
     if(recData.names.length===0){ alert(getText('addNameFirst')); return; }
     const sel = document.getElementById('helpPayerSelect');
     const selId = sel && sel.value ? Number(sel.value) : null;
     const nameId = selId || recData.names[0].id;
-    recData.help.push({
-        id:recData.seq++, nameId: nameId, date:'',
-        recipient:'', region:'bh', amount:'', received:false, note:''
-    });
+    recData.help.push({id:recData.seq++, nameId: nameId, date:'', recipient:'', region:'bh', amount:'', received:false, note:''});
     refreshRecord(); saveRecord();
 }
 function removeHelp(id){ recData.help = recData.help.filter(h=>h.id!==id); refreshRecord(); saveRecord(); }
-
 function renderHelpPayerSelect(){
     const sel = document.getElementById('helpPayerSelect'); if(!sel) return;
     const cur = sel.value;
-    sel.innerHTML = '<option value="">'+getText('allOption')+'</option>' +
-        recData.names.map(n=>'<option value="'+n.id+'">'+escapeAttr(n.name||'—')+'</option>').join('');
+    sel.innerHTML = '<option value="">'+getText('allOption')+'</option>' + recData.names.map(n=>'<option value="'+n.id+'">'+escapeAttr(n.name||'—')+'</option>').join('');
     if(cur && (cur==='' || recData.names.some(n=>String(n.id)===cur))) sel.value = cur;
 }
-
 function renderHelp(){
     const tbody = document.getElementById('helpBody'); if(!tbody) return;
     tbody.innerHTML='';
@@ -1803,303 +2180,42 @@ function updateHelpTotal(){
     const el = document.getElementById('helpTotal'); if(el) el.textContent = fmtMoney(total);
 }
 
-function computeNameTotals(nameId){
-    const n = recData.names.find(x=>x.id===nameId);
-    const metalsTotal = recData.metals.filter(m=>m.nameId===nameId)
-        .reduce((s,m)=>s+((parseFloat(m.weight)||0)*(parseFloat(m.price)||0)),0);
-    const bankTotal = recData.banks.filter(b=>b.nameId===nameId)
-        .reduce((s,b)=>s+(parseFloat(b.amount)||0),0);
-    const grand = metalsTotal + bankTotal;
-    const metalsZakat = recData.metals.filter(m=>m.nameId===nameId)
-        .reduce((s,m)=>s + (silverEqEnabled ? computeMetalZakatFlexible(m) : computeMetalZakat(m)), 0);
-    const banksZakat = recData.banks.filter(b=>b.nameId===nameId)
-        .reduce((s,b)=>s + ((parseFloat(b.amount)||0)/40), 0);
-    const zakatSum = metalsZakat + banksZakat;
-    const nisabType = n ? n.nisabType : 'silver';
-    const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
-    const reached = grand >= personNisab && grand > 0;
-    const zakat = reached ? grand/40 : 0;
-    return {metalsTotal, bankTotal, grand, zakat, zakatSum, personNisab, reached, nisabType, metalsZakat, banksZakat};
-}
-
-function togglePersonExpand(id){
-    expandedPersons[id] = !expandedPersons[id];
-    renderSummary();
-}
-
-function renderSummary(){
-    const tbody = document.getElementById('summaryBody'); if(!tbody) return;
-    tbody.innerHTML='';
-    let tZakatSum=0;
-    recData.names.forEach(n=>{
-        const {metalsTotal, bankTotal, grand, nisabType, zakatSum} = computeNameTotals(n.id);
-        tZakatSum += zakatSum;
-        const isOpen = !!expandedPersons[n.id];
-        const expandIcon = isOpen ? '×' : '+';
-        const expandClass = isOpen ? 'btn-expand open' : 'btn-expand';
-        const tr = document.createElement('tr');
-        tr.innerHTML =
-            '<td style="font-weight:bold;">'+escapeAttr(n.name||'—')+'</td>'+
-            '<td>'+(nisabType==='gold'?getText('nisabGold'):getText('nisabSilver'))+'</td>'+
-            '<td>'+fmtMoney(metalsTotal)+'</td>'+
-            '<td>'+fmtMoney(bankTotal)+'</td>'+
-            '<td style="font-weight:bold;">'+fmtMoney(grand)+'</td>'+
-            '<td style="font-weight:bold;color:var(--gold);">'+fmtMoney(zakatSum)+'</td>'+
-            '<td><button class="'+expandClass+'" onclick="togglePersonExpand('+n.id+')" title="التفاصيل">'+expandIcon+'</button></td>';
-        tbody.appendChild(tr);
-
-        if(isOpen){
-            const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
-            const personBanks = recData.banks.filter(b=>b.nameId===n.id);
-            const personMetals = recData.metals.filter(m=>m.nameId===n.id);
-            
-            const yearsSet = new Set();
-            personBanks.forEach(b=>{ if(b.year) yearsSet.add(String(b.year)); });
-            personMetals.forEach(m=>{ if(m.year) yearsSet.add(String(m.year)); });
-            const years = Array.from(yearsSet).sort((a,b)=> Number(b) - Number(a));
-            
-            let innerHtml = '';
-            
-            if(years.length === 0){
-                innerHtml = '<div class="empty-row">'+getText('expandNoYears')+'</div>';
-            } else {
-                years.forEach(year=>{
-                    const yearBanks = personBanks.filter(b=>String(b.year)===year);
-                    const yearMetals = personMetals.filter(m=>String(m.year)===year);
-                    
-                    innerHtml += '<div class="year-group-header">📅 '+year+'</div>';
-                    
-                    innerHtml += '<div class="expand-section-title">🏦 '+getText('recTitleYears')+'</div>';
-                    let yearBankZakat = 0;
-                    if(yearBanks.length === 0){
-                        innerHtml += '<div class="empty-row">'+getText('expandNoYears')+'</div>';
-                    } else {
-                        innerHtml += '<table class="expand-table"><thead><tr>'+
-                            '<th>'+getText('expandBankCol')+'</th>'+
-                            '<th>'+getText('expandZakatCol')+'</th>'+
-                            '<th>'+getText('expandReachedCol')+'</th>'+
-                        '</tr></thead><tbody>';
-                        yearBanks.forEach(b=>{
-                            const amt = parseFloat(b.amount)||0;
-                            const z = amt/40;
-                            yearBankZakat += z;
-                            const reached = amt >= personNisab && amt > 0;
-                            const badge = reached
-                                ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
-                                : '<span class="badge-status no">'+getText('reachedNo')+'</span>';
-                            innerHtml += '<tr>'+
-                                '<td>'+fmtMoney(amt)+'</td>'+
-                                '<td class="zakat-v">'+fmtMoney(z)+'</td>'+
-                                '<td>'+badge+'</td>'+
-                            '</tr>';
-                        });
-                        innerHtml += '<tr class="expand-total-row">'+
-                            '<td>المجموع</td>'+
-                            '<td class="zakat-v">'+fmtMoney(yearBankZakat)+'</td>'+
-                            '<td></td>'+
-                        '</tr>';
-                        innerHtml += '</tbody></table>';
-                    }
-                    
-                    innerHtml += '<div class="expand-section-title" style="margin-top:14px;">💎 '+getText('recTitleMetals')+'</div>';
-                    let yearMetalTotal = 0, yearMetalZakat = 0;
-                    if(yearMetals.length === 0){
-                        innerHtml += '<div class="empty-row">'+getText('expandNoMetals')+'</div>';
-                    } else {
-                        innerHtml += '<table class="expand-table"><thead><tr>'+
-                            '<th>'+getText('expandMetalTypeCol')+'</th>'+
-                            '<th>'+getText('expandMetalCaratCol')+'</th>'+
-                            '<th>'+getText('expandMetalWeightCol')+'</th>'+
-                            '<th>'+getText('expandMetalPriceCol')+'</th>'+
-                            '<th>'+getText('expandMetalTotalCol')+'</th>'+
-                            '<th>'+getText('expandMetalZakatCol')+'</th>'+
-                            '<th>'+getText('expandReachedCol')+'</th>'+
-                        '</tr></thead><tbody>';
-                        yearMetals.forEach(m=>{
-                            const w = parseFloat(m.weight)||0;
-                            const p = parseFloat(m.price)||0;
-                            const total = w*p;
-                            const z = silverEqEnabled ? computeMetalZakatFlexible(m) : computeMetalZakat(m);
-                            yearMetalTotal += total;
-                            yearMetalZakat += z;
-                            const reachedGold = checkMetalNisab(m);
-                            const reachedFlexible = checkMetalNisabFlexible(m);
-                            let badge;
-                            if(reachedGold){
-                                badge = '<span class="badge-status ok">'+getText('reachedYes')+'</span>';
-                            } else if(reachedFlexible && silverEqEnabled){
-                                badge = '<span class="badge-status silver-eq">'+getText('silverEqBadge')+'</span>';
-                            } else {
-                                badge = '<span class="badge-status no">'+getText('reachedNo')+'</span>';
-                            }
-                            const typeLabel = m.type==='gold' ? 'ذهب' : 'فضة';
-                            const caratLabel = m.type==='gold' ? (m.carat||'-') : '—';
-                            innerHtml += '<tr>'+
-                                '<td>'+typeLabel+'</td>'+
-                                '<td>'+caratLabel+'</td>'+
-                                '<td>'+w.toFixed(3)+'</td>'+
-                                '<td>'+fmtMoney(p)+'</td>'+
-                                '<td>'+fmtMoney(total)+'</td>'+
-                                '<td class="zakat-v">'+fmtMoney(z)+'</td>'+
-                                '<td>'+badge+'</td>'+
-                            '</tr>';
-                        });
-                        innerHtml += '<tr class="expand-total-row">'+
-                            '<td colspan="4">المجموع</td>'+
-                            '<td>'+fmtMoney(yearMetalTotal)+'</td>'+
-                            '<td class="zakat-v">'+fmtMoney(yearMetalZakat)+'</td>'+
-                            '<td></td>'+
-                        '</tr>';
-                        innerHtml += '</tbody></table>';
-                    }
-                    
-                    const yearTotalZakat = yearBankZakat + yearMetalZakat;
-                    innerHtml += '<div class="year-final-result">'+
-                        '<span class="lbl">📊 '+getText('yearFinalZakat')+' — '+year+'</span>'+
-                        '<span class="val">'+fmtMoney(yearTotalZakat)+' د.ب</span>'+
-                    '</div>';
-                });
-            }
-
-            const trExp = document.createElement('tr');
-            trExp.className = 'expand-row';
-            trExp.innerHTML = '<td colspan="7"><div class="expand-content">'+
-                '<div class="exp-title">📅 '+getText('expandYearsTitle')+' — '+escapeAttr(n.name||'—')+'</div>'+
-                innerHtml+
-            '</div></td>';
-            tbody.appendChild(trExp);
-        }
-    });
-    const foot = document.getElementById('smZakatFoot');
-    if(foot) foot.textContent = fmtMoney(tZakatSum);
-
-    let tM=0, tB=0, tZ=0;
-    recData.names.forEach(n=>{
-        const {metalsTotal, bankTotal, zakatSum} = computeNameTotals(n.id);
-        tM+=metalsTotal; tB+=bankTotal; tZ+=zakatSum;
-    });
-    const set = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
-    set('recTotalBank', fmtMoney(tB));
-    set('recTotalZakat', fmtMoney(tZ));
-    let received = 0;
-    recData.distributions.forEach(d=>{ if(d.received) received += parseFloat(d.amount)||0; });
-    set('recTotalReceived', fmtMoney(received));
-    renderPrintDropdown();
-}
-function renderPrintDropdown(){
-    const sel = document.getElementById('printPersonSelect'); if(!sel) return;
-    const cur = sel.value;
-    sel.innerHTML = recData.names.map(n=>'<option value="'+n.id+'">'+escapeAttr(n.name||'—')+'</option>').join('');
-    if(cur && recData.names.some(n=>String(n.id)===cur)) sel.value = cur;
-}
-
 function refreshRecord(){
-    renderNames(); renderMetals(); renderBanks(); renderDist();
-    renderHelpPayerSelect(); renderHelp(); renderSummary(); renderPrintDropdown();
+    renderNames(); renderMetals(); renderGoldWearRec(); renderBanks(); renderInvestmentsRec();
+    renderDist(); renderHelpPayerSelect(); renderHelp(); renderSummary(); renderPrintDropdown();
 }
 
-/* ================== أدوات الطباعة والمشاركة ================== */
-const REPORT_STYLES =
-'body{font-family:"Segoe UI",Tahoma,sans-serif;padding:30px;color:#1a1a1a;background:#fff;line-height:1.6;}'+
-'.header{text-align:center;border-bottom:4px double #b8860b;padding-bottom:20px;margin-bottom:25px;}'+
-'.header h1{color:#2d4b2c;margin:0;font-size:28px;letter-spacing:1px;}'+
-'.header .brand{color:#b8860b;font-size:14px;margin-top:8px;letter-spacing:4px;font-weight:bold;}'+
-'.info-bar{display:flex;justify-content:space-between;background:#fefcf9;border:1px solid #ddd;border-right:4px solid #b8860b;padding:12px 18px;border-radius:10px;margin-bottom:20px;font-size:14px;flex-wrap:wrap;gap:8px;}'+
-'.info-bar strong{color:#2d4b2c;}'+
-'h2{color:#2d4b2c;font-size:17px;border-right:5px solid #b8860b;padding-right:12px;margin:25px 0 12px;}'+
-'table{width:100%;border-collapse:collapse;margin-bottom:15px;font-size:13px;}'+
-'th,td{border:1px solid #d0d0d0;padding:9px 12px;text-align:center;}'+
-'th{background:#f0ece6;color:#333;font-weight:bold;font-size:12px;letter-spacing:.5px;}'+
-'.total-row{background:#fff8e1;font-weight:bold;color:#b8860b;}'+
-'.summary-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px;}'+
-'.sum-card{background:#fefcf9;border:1px solid #ddd;border-right:4px solid #2d4b2c;border-radius:12px;padding:16px;text-align:center;}'+
-'.sum-card.gold{border-right-color:#b8860b;}'+
-'.sum-card.danger{border-right-color:#c62828;}'+
-'.sum-card .lbl{font-size:12px;color:#666;margin-bottom:6px;}'+
-'.sum-card .val{font-size:22px;font-weight:bold;color:#2d4b2c;}'+
-'.sum-card.gold .val{color:#b8860b;}'+
-'.sum-card.danger .val{color:#c62828;}'+
-'.zakat-final{grid-column:span 2;background:#2d4b2c;color:#fff;border-radius:14px;padding:25px;text-align:center;margin-top:10px;}'+
-'.zakat-final .lbl{color:#d4a843;font-size:14px;letter-spacing:1px;}'+
-'.zakat-final .val{color:#fff;font-size:40px;font-weight:900;margin-top:8px;}'+
-'.footer{margin-top:35px;text-align:center;color:#888;font-size:11px;border-top:2px solid #b8860b;padding-top:15px;}';
-
+/* ============== الطباعة ============== */
+const REPORT_STYLES = 'body{font-family:"Segoe UI",Tahoma,sans-serif;padding:30px;color:#1a1a1a;background:#fff;line-height:1.6}.header{text-align:center;border-bottom:4px double #b8860b;padding-bottom:20px;margin-bottom:25px}.header h1{color:#2d4b2c;margin:0;font-size:28px;letter-spacing:1px}.header .brand{color:#b8860b;font-size:14px;margin-top:8px;letter-spacing:4px;font-weight:bold}.info-bar{display:flex;justify-content:space-between;background:#fefcf9;border:1px solid #ddd;border-right:4px solid #b8860b;padding:12px 18px;border-radius:10px;margin-bottom:20px;font-size:14px;flex-wrap:wrap;gap:8px}.info-bar strong{color:#2d4b2c}h2{color:#2d4b2c;font-size:17px;border-right:5px solid #b8860b;padding-right:12px;margin:25px 0 12px}table{width:100%;border-collapse:collapse;margin-bottom:15px;font-size:13px}th,td{border:1px solid #d0d0d0;padding:9px 12px;text-align:center}th{background:#f0ece6;color:#333;font-weight:bold;font-size:12px}.total-row{background:#fff8e1;font-weight:bold;color:#b8860b}.summary-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px}.sum-card{background:#fefcf9;border:1px solid #ddd;border-right:4px solid #2d4b2c;border-radius:12px;padding:16px;text-align:center}.sum-card.gold{border-right-color:#b8860b}.sum-card.danger{border-right-color:#c62828}.sum-card .lbl{font-size:12px;color:#666;margin-bottom:6px}.sum-card .val{font-size:22px;font-weight:bold;color:#2d4b2c}.sum-card.gold .val{color:#b8860b}.sum-card.danger .val{color:#c62828}.zakat-final{grid-column:span 2;background:#2d4b2c;color:#fff;border-radius:14px;padding:25px;text-align:center;margin-top:10px}.zakat-final .lbl{color:#d4a843;font-size:14px}.zakat-final .val{color:#fff;font-size:40px;font-weight:900;margin-top:8px}.footer{margin-top:35px;text-align:center;color:#888;font-size:11px;border-top:2px solid #b8860b;padding-top:15px}';
 function buildReportHead(title){ return '<div class="header"><h1>'+title+'</h1><div class="brand">MUHARRAQI</div></div>'; }
-
 function printHtml(html){
     const cleanHtml = html.replace(/<scr[\s\S]*?<\/scr[^>]*>/gi, '');
     const iframe = document.createElement('iframe');
     iframe.setAttribute('aria-hidden','true');
-    iframe.style.position = 'fixed';
-    iframe.style.right = '0';
-    iframe.style.bottom = '0';
-    iframe.style.width = '0';
-    iframe.style.height = '0';
-    iframe.style.border = '0';
-    iframe.style.opacity = '0';
-    iframe.style.pointerEvents = 'none';
+    iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;opacity:0;pointer-events:none';
     document.body.appendChild(iframe);
     const doc = iframe.contentWindow.document;
     doc.open(); doc.write(cleanHtml); doc.close();
-    const doPrint = function(){
-        try{
-            iframe.contentWindow.focus();
-            iframe.contentWindow.print();
-        }catch(e){ console.error(e); }
-        setTimeout(function(){
-            if(document.body.contains(iframe)) document.body.removeChild(iframe);
-        }, 3000);
-    };
-    if(iframe.contentWindow.document.readyState === 'complete'){
-        setTimeout(doPrint, 400);
-    } else {
-        iframe.onload = function(){ setTimeout(doPrint, 400); };
-    }
+    const doPrint = function(){ try{ iframe.contentWindow.focus(); iframe.contentWindow.print(); }catch(e){} setTimeout(()=>{ if(document.body.contains(iframe)) document.body.removeChild(iframe); }, 3000); };
+    if(iframe.contentWindow.document.readyState === 'complete'){ setTimeout(doPrint, 400); } else { iframe.onload = ()=>setTimeout(doPrint, 400); }
 }
-
 async function generatePdfBlob(html, filename){
     if(!window.html2pdf){
-        await new Promise(function(resolve, reject){
-            const s = document.createElement('script');
-            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-            s.onload = resolve;
-            s.onerror = reject;
-            document.head.appendChild(s);
-        });
+        await new Promise((resolve, reject)=>{ const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'; s.onload=resolve; s.onerror=reject; document.head.appendChild(s); });
     }
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
     const styles = Array.from(doc.querySelectorAll('style')).map(s=>s.textContent).join('\n');
     const bodyContent = doc.body.innerHTML.replace(/<script[\s\S]*?<\/script>/gi, '');
     const wrapper = document.createElement('div');
-    wrapper.style.position = 'fixed';
-    wrapper.style.left = '-99999px';
-    wrapper.style.top = '0';
-    wrapper.style.width = '780px';
-    wrapper.style.background = '#fff';
-    wrapper.style.direction = 'rtl';
-    const styleEl = document.createElement('style');
-    styleEl.textContent = styles;
-    wrapper.appendChild(styleEl);
-    const content = document.createElement('div');
-    content.innerHTML = bodyContent;
-    wrapper.appendChild(content);
+    wrapper.style.cssText = 'position:fixed;left:-99999px;top:0;width:780px;background:#fff;direction:rtl';
+    const styleEl = document.createElement('style'); styleEl.textContent = styles; wrapper.appendChild(styleEl);
+    const content = document.createElement('div'); content.innerHTML = bodyContent; wrapper.appendChild(content);
     document.body.appendChild(wrapper);
     try{
-        const blob = await html2pdf().set({
-            margin: [8, 8, 8, 8],
-            filename: filename || 'zakat-report.pdf',
-            image: { type: 'jpeg', quality: 0.95 },
-            html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-        }).from(wrapper).outputPdf('blob');
-        return blob;
-    } finally {
-        if(document.body.contains(wrapper)) document.body.removeChild(wrapper);
-    }
+        return await html2pdf().set({margin:[8,8,8,8],filename:filename||'zakat-report.pdf',image:{type:'jpeg',quality:0.95},html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['avoid-all','css','legacy']}}).from(wrapper).outputPdf('blob');
+    } finally { if(document.body.contains(wrapper)) document.body.removeChild(wrapper); }
 }
-
 async function sharePdfViaWhatsApp(html, filename, shareText){
     const btn = event && event.currentTarget ? event.currentTarget : null;
     const originalHtml = btn ? btn.innerHTML : null;
@@ -2108,174 +2224,123 @@ async function sharePdfViaWhatsApp(html, filename, shareText){
         const blob = await generatePdfBlob(html, filename);
         const file = new File([blob], filename || 'zakat-report.pdf', { type: 'application/pdf' });
         if(navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share){
-            try{
-                await navigator.share({ files: [file], title: filename || 'تقرير الزكاة', text: shareText || 'تقرير الزكاة' });
-                return;
-            }catch(err){
-                if(err && err.name === 'AbortError') return;
-            }
+            try{ await navigator.share({files:[file], title:filename, text:shareText}); return; }catch(err){ if(err&&err.name==='AbortError') return; }
         }
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename || 'zakat-report.pdf';
-        document.body.appendChild(a); a.click(); document.body.removeChild(a);
-        setTimeout(function(){
-            URL.revokeObjectURL(url);
-            const text = encodeURIComponent(shareText || 'تقرير الزكاة - تم تنزيل الملف، يرجى إرفاقه');
-            window.open('https://wa.me/?text=' + text, '_blank');
-        }, 800);
-    }catch(e){
-        console.error(e);
-        alert(getText('pdfError'));
-    }finally{
-        if(btn){ btn.classList.remove('share-loading'); btn.innerHTML = originalHtml; }
-    }
+        const a = document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(()=>{ URL.revokeObjectURL(url); window.open('https://wa.me/?text='+encodeURIComponent(shareText||'تقرير الزكاة'),'_blank'); }, 800);
+    }catch(e){ console.error(e); alert(getText('pdfError')); }
+    finally{ if(btn){ btn.classList.remove('share-loading'); btn.innerHTML = originalHtml; } }
 }
 
 function buildFullReportHtml(nameId){
-    const n = recData.names.find(x=>x.id===nameId);
-    if(!n) return '';
+    const n = recData.names.find(x=>x.id===nameId); if(!n) return '';
     const currency = getText('currency');
     const metals = recData.metals.filter(m=>m.nameId===nameId);
+    const goldWear = recData.goldWearRec.filter(g=>g.nameId===nameId);
     const banks = recData.banks.filter(b=>b.nameId===nameId);
+    const invs = recData.investments.filter(x=>x.nameId===nameId);
     const dists = recData.distributions.filter(d=>d.nameId===nameId);
-    const totals = computeNameTotals(nameId);
-    const {metalsTotal, bankTotal, grand, zakat, reached, nisabType, personNisab, metalsZakat, banksZakat, zakatSum} = totals;
+    const tot = computeNameTotals(nameId);
     const totalAlloc = dists.reduce((s,d)=>s+(parseFloat(d.amount)||0),0);
     const totalRecv = dists.reduce((s,d)=>s+(d.received?(parseFloat(d.amount)||0):0),0);
-    const remaining = zakat - totalAlloc;
-    const nisabLabel = nisabType==='gold'?getText('nisabGold'):getText('nisabSilver');
-
-    let metalsZakatTotal = 0;
+    const remaining = tot.zakat - totalAlloc;
+    const nisabLabel = tot.nisabType==='gold'?getText('nisabGold'):getText('nisabSilver');
+    let mz = 0;
     const metalsRows = metals.map(m=>{
-        const tot = (parseFloat(m.weight)||0)*(parseFloat(m.price)||0);
-        const mr = checkMetalNisab(m);
-        const mbadge = mr ? '✅' : '⚠️';
-        const mz = silverEqEnabled ? computeMetalZakatFlexible(m) : computeMetalZakat(m);
-        metalsZakatTotal += mz;
-        return '<tr><td>'+(m.type==='gold'?'ذهب':'فضة')+'</td><td>'+(m.type==='gold'?m.carat:'-')+
-            '</td><td>'+escapeAttr(m.year)+'</td><td>'+(parseFloat(m.weight)||0).toFixed(3)+'</td><td>'+fmtMoney(m.price)+
-            '</td><td>'+fmtMoney(tot)+'</td><td>'+fmtMoney(mz)+'</td><td>'+mbadge+'</td></tr>';
+        const t = (parseFloat(m.weight)||0)*(parseFloat(m.price)||0);
+        const z = silverEqEnabled ? computeMetalZakatFlexible(m) : computeMetalZakat(m);
+        mz += z;
+        const hc = checkHawlComplete(m); const hm = getHawlMonths(m);
+        const hTxt = (m.hawlStart||'—')+' → '+(m.hawlEnd||'—')+'<br><small>('+(hc?'✅ مكتمل':'⚠️ غير مكتمل')+' '+hm+' شهر)</small>';
+        return '<tr><td style="font-size:11px;">'+hTxt+'</td><td>'+(m.type==='gold'?'ذهب':'فضة')+'</td><td>'+(m.type==='gold'?'24':'-')+'</td><td>'+escapeAttr(m.year)+'</td><td>'+(parseFloat(m.weight)||0).toFixed(3)+'</td><td>'+fmtMoney(m.price)+'</td><td>'+fmtMoney(t)+'</td><td>'+fmtMoney(z)+'</td></tr>';
     }).join('') || '<tr><td colspan="8" style="text-align:center;color:#999;">لا توجد معادن</td></tr>';
-
+    let gz = 0;
+    const goldWearRows = goldWear.map(g=>{
+        const t = (parseFloat(g.weight)||0)*(parseFloat(g.price)||0);
+        const z = silverEqEnabled ? computeGoldWearZakatFlexible(g) : computeGoldWearZakat(g);
+        gz += z;
+        const hc = checkHawlComplete(g); const hm = getHawlMonths(g);
+        const hTxt = (g.hawlStart||'—')+' → '+(g.hawlEnd||'—')+'<br><small>('+(hc?'✅ مكتمل':'⚠️ غير مكتمل')+' '+hm+' شهر)</small>';
+        return '<tr><td style="font-size:11px;">'+hTxt+'</td><td>'+g.carat+'</td><td>'+escapeAttr(g.year)+'</td><td>'+(parseFloat(g.weight)||0).toFixed(3)+'</td><td>'+fmtMoney(g.price)+'</td><td>'+fmtMoney(t)+'</td><td>'+fmtMoney(z)+'</td></tr>';
+    }).join('') || '<tr><td colspan="7" style="text-align:center;color:#999;">لا يوجد ذهب ملبوس</td></tr>';
     const banksRows = banks.map(b=>{
-        const z = (parseFloat(b.amount)||0)/40;
-        return '<tr><td>'+escapeAttr(b.year)+'</td><td>'+fmtMoney(b.amount)+'</td><td>'+fmtMoney(z)+'</td></tr>';
-    }).join('') || '<tr><td colspan="3" style="text-align:center;color:#999;">لا توجد أرصدة</td></tr>';
-
-    const distRows = dists.map(d=>{
-        return '<tr><td>'+escapeAttr(d.date)+'</td><td>'+escapeAttr(d.recipient)+'</td><td>'+regionLabel(d.region)+'</td><td>'+fmtMoney(d.amount)+
-            '</td><td>'+(d.received?'✅ نعم':'⏳ لا')+'</td><td>'+escapeAttr(d.note)+'</td></tr>';
-    }).join('') || '<tr><td colspan="6" style="text-align:center;color:#999;">لا يوجد مستفيدون</td></tr>';
-
-    const statusBadge = reached
-        ? '<span style="background:#e8f5e9;color:#2e7d32;border:1px solid #2e7d32;padding:3px 12px;border-radius:12px;font-weight:bold;">'+getText('reachedYes')+'</span>'
-        : '<span style="background:#fff8e1;color:#b8860b;border:1px solid #b8860b;padding:3px 12px;border-radius:12px;font-weight:bold;">'+getText('reachedNo')+'</span>';
-
-    return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>تقرير الزكاة - '+escapeAttr(n.name)+'</title>'+
-    '<style>'+REPORT_STYLES+'</style></head><body>'+
+        const z = checkHawlComplete(b) ? (parseFloat(b.amount)||0)/40 : 0;
+        const hc = checkHawlComplete(b); const hm = getHawlMonths(b);
+        const hTxt = (b.hawlStart||'—')+' → '+(b.hawlEnd||'—')+'<br><small>('+(hc?'✅ مكتمل':'⚠️ غير مكتمل')+' '+hm+' شهر)</small>';
+        return '<tr><td style="font-size:11px;">'+hTxt+'</td><td>'+escapeAttr(b.year)+'</td><td>'+fmtMoney(b.amount)+'</td><td>'+fmtMoney(z)+'</td></tr>';
+    }).join('') || '<tr><td colspan="4" style="text-align:center;color:#999;">لا توجد أرصدة</td></tr>';
+    let iz = 0;
+    const invRows = invs.map(x=>{
+        const z = checkHawlComplete(x) ? (parseFloat(x.value)||0)/40 : 0;
+        iz += z;
+        const hc = checkHawlComplete(x); const hm = getHawlMonths(x);
+        const hTxt = (x.hawlStart||'—')+' → '+(x.hawlEnd||'—')+'<br><small>('+(hc?'✅ مكتمل':'⚠️ غير مكتمل')+' '+hm+' شهر)</small>';
+        return '<tr><td style="font-size:11px;">'+hTxt+'</td><td>'+escapeAttr(x.name||'—')+'</td><td>'+escapeAttr(x.year)+'</td><td>'+fmtMoney(x.value)+'</td><td>'+fmtMoney(z)+'</td></tr>';
+    }).join('') || '<tr><td colspan="5" style="text-align:center;color:#999;">لا توجد استثمارات</td></tr>';
+    const distRows = dists.map(d=>'<tr><td>'+escapeAttr(d.date)+'</td><td>'+escapeAttr(d.recipient)+'</td><td>'+regionLabel(d.region)+'</td><td>'+fmtMoney(d.amount)+'</td><td>'+(d.received?'✅ نعم':'⏳ لا')+'</td><td>'+escapeAttr(d.note)+'</td></tr>').join('') || '<tr><td colspan="6" style="text-align:center;color:#999;">لا يوجد مستفيدون</td></tr>';
+    const statusBadge = tot.reached ? '<span style="background:#e8f5e9;color:#2e7d32;border:1px solid #2e7d32;padding:3px 12px;border-radius:12px;font-weight:bold;">'+getText('reachedYes')+'</span>' : '<span style="background:#fff8e1;color:#b8860b;border:1px solid #b8860b;padding:3px 12px;border-radius:12px;font-weight:bold;">'+getText('reachedNo')+'</span>';
+    return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>تقرير الزكاة - '+escapeAttr(n.name)+'</title><style>'+REPORT_STYLES+'</style></head><body>'+
     buildReportHead('تقرير الزكاة السنوي الشامل')+
-    '<div class="info-bar"><div><strong>الاسم:</strong> '+escapeAttr(n.name||'—')+'</div>'+
-    '<div><strong>النصاب:</strong> '+nisabLabel+' ('+fmtMoney2(personNisab)+' '+currency+')</div>'+
-    '<div><strong>الحالة:</strong> '+statusBadge+'</div>'+
-    '<div><strong>التاريخ:</strong> '+new Date().toLocaleDateString('ar-BH')+'</div></div>'+
-    '<h2>1. موجود المعادن و الملبوس</h2>'+
-    '<table><thead><tr><th>النوع</th><th>العيار</th><th>السنة</th><th>الوزن (جم)</th><th>السعر/جم ('+currency+')</th><th>الإجمالي ('+currency+')</th><th>الزكاة ('+currency+')</th><th>النصاب</th></tr></thead><tbody>'+metalsRows+'</tbody>'+
-    '<tfoot><tr class="total-row"><td colspan="5">المجموع</td><td>'+fmtMoney(metalsTotal)+'</td><td>'+fmtMoney(metalsZakatTotal)+'</td><td></td></tr></tfoot></table>'+
-    '<h2>2. زكاة السنوات - أرصدة البنوك</h2>'+
-    '<table><thead><tr><th>السنة</th><th>المبلغ ('+currency+')</th><th>الزكاة ÷40 ('+currency+')</th></tr></thead><tbody>'+banksRows+'</tbody>'+
-    '<tfoot><tr class="total-row"><td>المجموع</td><td>'+fmtMoney(bankTotal)+'</td><td>'+fmtMoney(bankTotal/40)+'</td></tr></tfoot></table>'+
-    '<h2>3. توزيع الزكاة</h2>'+
-    '<table><thead><tr><th>التاريخ</th><th>المستفيد</th><th>الجهة</th><th>المبلغ ('+currency+')</th><th>استلم؟</th><th>ملاحظات</th></tr></thead><tbody>'+distRows+'</tbody></table>'+
-    '<h2>4. الملخص النهائي</h2>'+
-    '<div class="summary-cards">'+
-    '<div class="sum-card"><div class="lbl">إجمالي المعادن</div><div class="val">'+fmtMoney(metalsTotal)+'</div></div>'+
-    '<div class="sum-card"><div class="lbl">إجمالي أرصدة البنوك</div><div class="val">'+fmtMoney(bankTotal)+'</div></div>'+
-    '<div class="sum-card gold"><div class="lbl">زكاة المعادن</div><div class="val">'+fmtMoney(metalsZakat)+'</div></div>'+
-    '<div class="sum-card gold"><div class="lbl">زكاة البنوك</div><div class="val">'+fmtMoney(banksZakat)+'</div></div>'+
-    '<div class="sum-card gold"><div class="lbl">إجمالي الأصول</div><div class="val">'+fmtMoney(grand)+'</div></div>'+
+    '<div class="info-bar"><div><strong>الاسم:</strong> '+escapeAttr(n.name||'—')+'</div><div><strong>النصاب:</strong> '+nisabLabel+' ('+fmtMoney2(tot.personNisab)+' '+currency+')</div><div><strong>الحالة:</strong> '+statusBadge+'</div><div><strong>التاريخ:</strong> '+new Date().toLocaleDateString('ar-BH')+'</div></div>'+
+    '<h2>1. موجود المعادن</h2><table><thead><tr><th>الحول</th><th>النوع</th><th>العيار</th><th>السنة</th><th>الوزن (جم)</th><th>السعر/جم</th><th>الإجمالي</th><th>الزكاة</th></tr></thead><tbody>'+metalsRows+'</tbody><tfoot><tr class="total-row"><td colspan="6">المجموع</td><td>'+fmtMoney(tot.metalsTotal)+'</td><td>'+fmtMoney(mz)+'</td></tr></tfoot></table>'+
+    '<h2>2. الذهب الملبوس</h2><table><thead><tr><th>الحول</th><th>العيار</th><th>السنة</th><th>الوزن (جم)</th><th>السعر/جم</th><th>الإجمالي</th><th>الزكاة</th></tr></thead><tbody>'+goldWearRows+'</tbody><tfoot><tr class="total-row"><td colspan="5">المجموع</td><td>'+fmtMoney(tot.goldWearTotal)+'</td><td>'+fmtMoney(gz)+'</td></tr></tfoot></table>'+
+    '<h2>3. المبلغ الموجود في جميع البنوك</h2><table><thead><tr><th>الحول</th><th>السنة</th><th>المبلغ</th><th>الزكاة (÷40)</th></tr></thead><tbody>'+banksRows+'</tbody></table>'+
+    '<h2>4. استثمارات وعقارات</h2><table><thead><tr><th>الحول</th><th>الاسم</th><th>السنة</th><th>القيمة</th><th>الزكاة (÷40)</th></tr></thead><tbody>'+invRows+'</tbody></table>'+
+    '<h2>5. توزيع الزكاة</h2><table><thead><tr><th>التاريخ</th><th>المستفيد</th><th>الجهة</th><th>المبلغ</th><th>استلم؟</th><th>ملاحظات</th></tr></thead><tbody>'+distRows+'</tbody></table>'+
+    '<h2>6. الملخص النهائي</h2><div class="summary-cards">'+
+    '<div class="sum-card"><div class="lbl">إجمالي المعادن</div><div class="val">'+fmtMoney(tot.metalsTotal)+'</div></div>'+
+    '<div class="sum-card"><div class="lbl">إجمالي الذهب الملبوس</div><div class="val">'+fmtMoney(tot.goldWearTotal)+'</div></div>'+
+    '<div class="sum-card"><div class="lbl">إجمالي البنوك</div><div class="val">'+fmtMoney(tot.bankTotal)+'</div></div>'+
+    '<div class="sum-card"><div class="lbl">إجمالي الاستثمارات</div><div class="val">'+fmtMoney(tot.invTotal)+'</div></div>'+
+    '<div class="sum-card gold"><div class="lbl">زكاة المعادن</div><div class="val">'+fmtMoney(tot.metalsZakat)+'</div></div>'+
+    '<div class="sum-card gold"><div class="lbl">زكاة الذهب الملبوس</div><div class="val">'+fmtMoney(tot.goldWearZakat)+'</div></div>'+
+    '<div class="sum-card gold"><div class="lbl">زكاة البنوك</div><div class="val">'+fmtMoney(tot.banksZakat)+'</div></div>'+
+    '<div class="sum-card gold"><div class="lbl">زكاة الاستثمارات</div><div class="val">'+fmtMoney(tot.invZakat)+'</div></div>'+
+    '<div class="sum-card gold"><div class="lbl">إجمالي الأصول</div><div class="val">'+fmtMoney(tot.grand)+'</div></div>'+
     '<div class="sum-card gold"><div class="lbl">إجمالي الموزّع</div><div class="val">'+fmtMoney(totalAlloc)+'</div></div>'+
     '<div class="sum-card"><div class="lbl">تم استلامه</div><div class="val">'+fmtMoney(totalRecv)+'</div></div>'+
     '<div class="sum-card '+(remaining<0?'danger':'')+'"><div class="lbl">المتبقي للتوزيع</div><div class="val">'+fmtMoney(remaining)+'</div></div>'+
-    '<div class="zakat-final"><div class="lbl">مجموع الزكاة (معادن + بنوك)</div><div class="val">'+fmtMoney(zakatSum)+' '+currency+'</div></div>'+
-    '</div>'+
-    '<div class="footer">تم إنشاؤه بواسطة حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div>'+
-    '</body></html>';
+    '<div class="zakat-final"><div class="lbl">مجموع الزكاة النهائي</div><div class="val">'+fmtMoney(tot.zakatSum)+' '+currency+'</div></div>'+
+    '</div><div class="footer">تم إنشاؤه بواسطة حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div></body></html>';
 }
-
 function buildHelpReportHtml(){
     const currency = getText('currency');
     const sel = document.getElementById('helpPayerSelect');
     const filterId = sel && sel.value ? Number(sel.value) : null;
     const list = filterId ? recData.help.filter(h=>h.nameId===filterId) : recData.help;
     const payerLabel = filterId ? (recData.names.find(n=>n.id===filterId)||{}).name : null;
-    const rows = list.map(h=>{
-        return '<tr><td>'+escapeAttr(h.date)+'</td><td>'+escapeAttr(h.recipient)+'</td><td>'+regionLabel(h.region)+'</td><td>'+fmtMoney(h.amount)+
-            '</td><td>'+(h.received?'✅ نعم':'⏳ لا')+'</td><td>'+escapeAttr(h.note)+'</td></tr>';
-    }).join('') || '<tr><td colspan="6" style="text-align:center;color:#999;">لا يوجد مستفيدون</td></tr>';
+    const rows = list.map(h=>'<tr><td>'+escapeAttr(h.date)+'</td><td>'+escapeAttr(h.recipient)+'</td><td>'+regionLabel(h.region)+'</td><td>'+fmtMoney(h.amount)+'</td><td>'+(h.received?'✅ نعم':'⏳ لا')+'</td><td>'+escapeAttr(h.note)+'</td></tr>').join('') || '<tr><td colspan="6" style="text-align:center;color:#999;">لا يوجد مستفيدون</td></tr>';
     const total = list.reduce((s,h)=>s+(parseFloat(h.amount)||0),0);
     const totalRecv = list.reduce((s,h)=>s+(h.received?(parseFloat(h.amount)||0):0),0);
-
-    return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>تقرير زكاة</title>'+
-    '<style>'+REPORT_STYLES+'</style></head><body>'+
+    return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>تقرير زكاة</title><style>'+REPORT_STYLES+'</style></head><body>'+
     buildReportHead('زكاة')+
-    '<div class="info-bar">'+(payerLabel?'<div><strong>المزكي:</strong> '+escapeAttr(payerLabel)+'</div>':'')+
-    '<div><strong>التاريخ:</strong> '+new Date().toLocaleDateString('ar-BH')+'</div></div>'+
-    '<table><thead><tr><th>التاريخ</th><th>المستفيد</th><th>الجهة</th><th>المبلغ ('+currency+')</th><th>استلم؟</th><th>ملاحظات</th></tr></thead><tbody>'+rows+'</tbody></table>'+
-    '<div class="summary-cards">'+
-    '<div class="sum-card"><div class="lbl">عدد المستفيدين</div><div class="val">'+list.length+'</div></div>'+
-    '<div class="sum-card"><div class="lbl">تم استلامه</div><div class="val">'+fmtMoney(totalRecv)+'</div></div>'+
-    '<div class="zakat-final"><div class="lbl">إجمالي الزكاة الموزّعة</div><div class="val">'+fmtMoney(total)+' '+currency+'</div></div>'+
-    '</div>'+
-    '<div class="footer">تم إنشاؤه بواسطة حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div>'+
-    '</body></html>';
+    '<div class="info-bar">'+(payerLabel?'<div><strong>المزكي:</strong> '+escapeAttr(payerLabel)+'</div>':'')+'<div><strong>التاريخ:</strong> '+new Date().toLocaleDateString('ar-BH')+'</div></div>'+
+    '<table><thead><tr><th>التاريخ</th><th>المستفيد</th><th>الجهة</th><th>المبلغ</th><th>استلم؟</th><th>ملاحظات</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+    '<div class="summary-cards"><div class="sum-card"><div class="lbl">عدد المستفيدين</div><div class="val">'+list.length+'</div></div><div class="sum-card"><div class="lbl">تم استلامه</div><div class="val">'+fmtMoney(totalRecv)+'</div></div><div class="zakat-final"><div class="lbl">إجمالي الزكاة الموزّعة</div><div class="val">'+fmtMoney(total)+' '+currency+'</div></div></div>'+
+    '<div class="footer">تم إنشاؤه بواسطة حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div></body></html>';
 }
-
-function printFullReport(){
-    const sel = document.getElementById('printPersonSelect');
-    const nameId = Number(sel.value);
-    const n = recData.names.find(x=>x.id===nameId);
-    if(!n){ alert(getText('selectPersonFirst')); return; }
-    printHtml(buildFullReportHtml(nameId));
-}
-function shareFullReportWhatsApp(){
-    const sel = document.getElementById('printPersonSelect');
-    const nameId = Number(sel.value);
-    const n = recData.names.find(x=>x.id===nameId);
-    if(!n){ alert(getText('selectPersonFirst')); return; }
-    const safeName = (n.name || 'report').replace(/[^\u0600-\u06FF\w\-]+/g,'_');
-    sharePdfViaWhatsApp(buildFullReportHtml(nameId), 'zakat-'+safeName+'.pdf', 'تقرير زكاة '+(n.name||''));
-}
+function printFullReport(){ const sel = document.getElementById('printPersonSelect'); const nameId = Number(sel.value); const n = recData.names.find(x=>x.id===nameId); if(!n){ alert(getText('selectPersonFirst')); return; } printHtml(buildFullReportHtml(nameId)); }
+function shareFullReportWhatsApp(){ const sel = document.getElementById('printPersonSelect'); const nameId = Number(sel.value); const n = recData.names.find(x=>x.id===nameId); if(!n){ alert(getText('selectPersonFirst')); return; } const safeName = (n.name||'report').replace(/[^\u0600-\u06FF\w\-]+/g,'_'); sharePdfViaWhatsApp(buildFullReportHtml(nameId), 'zakat-'+safeName+'.pdf', 'تقرير زكاة '+(n.name||'')); }
 function printHelp(){ printHtml(buildHelpReportHtml()); }
 function shareHelpWhatsApp(){ sharePdfViaWhatsApp(buildHelpReportHtml(), 'zakat-help.pdf', 'تقرير زكاة'); }
 
-function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV15', JSON.stringify(recData)); }catch(e){} }
-function seedRecord(){ recData = {names:[], metals:[], banks:[], distributions:[], help:[], seq:1}; }
+function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV22', JSON.stringify(recData)); }catch(e){} }
+function seedRecord(){ recData = {names:[], metals:[], goldWearRec:[], banks:[], investments:[], distributions:[], help:[], seq:1}; }
 function loadRecord(){
     let loaded = false;
     try{
-        const raw = localStorage.getItem('zakatRecordDataV15');
+        const raw = localStorage.getItem('zakatRecordDataV22');
         if(raw){
             const d = JSON.parse(raw);
             if(d && Array.isArray(d.names)){
-                recData.names = d.names.map(n=>({
-                    id: n.id, name: n.name||'',
-                    years: Array.isArray(n.years) ? n.years : [],
-                    nisabType: n.nisabType || 'silver'
-                }));
-                recData.metals = Array.isArray(d.metals) ? d.metals : [];
-                recData.banks = Array.isArray(d.banks) ? d.banks : [];
-                recData.distributions = Array.isArray(d.distributions) ? d.distributions.map(x=>({
-                    id: x.id, nameId: x.nameId||null, date: x.date||'',
-                    recipient: x.recipient||'', region: x.region||'bh',
-                    amount: x.amount||'', received: !!x.received, note: x.note||''
-                })) : [];
-                recData.help = Array.isArray(d.help) ? d.help.map(h=>({
-                    id: h.id, nameId: h.nameId || (recData.names[0] && recData.names[0].id) || null,
-                    date: h.date || '', recipient: h.recipient || '', region: h.region || 'bh',
-                    amount: h.amount || '', received: !!h.received, note: h.note || ''
-                })) : [];
+                recData.names = d.names.map(n=>({id:n.id, name:n.name||'', years:Array.isArray(n.years)?n.years:[], nisabType:n.nisabType||'silver'}));
+                recData.metals = (Array.isArray(d.metals)?d.metals:[]).map(x=>({...x, hawlStart:x.hawlStart||'', hawlEnd:x.hawlEnd||'', carat:'24'}));
+                recData.goldWearRec = (Array.isArray(d.goldWearRec)?d.goldWearRec:[]).map(x=>({...x, hawlStart:x.hawlStart||'', hawlEnd:x.hawlEnd||'', carat:x.carat||'21'}));
+                recData.banks = (Array.isArray(d.banks)?d.banks:[]).map(x=>({...x, hawlStart:x.hawlStart||'', hawlEnd:x.hawlEnd||''}));
+                recData.investments = (Array.isArray(d.investments)?d.investments:[]).map(x=>({...x, hawlStart:x.hawlStart||'', hawlEnd:x.hawlEnd||'', name:x.name||'', value:x.value||''}));
+                recData.distributions = Array.isArray(d.distributions)?d.distributions:[];
+                recData.help = Array.isArray(d.help)?d.help:[];
                 recData.seq = d.seq || 1;
                 loaded = true;
             }
@@ -2286,8 +2351,9 @@ function loadRecord(){
 }
 function resetRecord(){
     if(!confirm(getText('recResetConfirm'))) return;
-    recData = {names:[], metals:[], banks:[], distributions:[], help:[], seq:1};
+    recData = {names:[], metals:[], goldWearRec:[], banks:[], investments:[], distributions:[], help:[], seq:1};
     expandedPersons = {};
+    expandedYears = {};
     refreshRecord(); saveRecord();
 }
 
@@ -2297,17 +2363,21 @@ function resetRecord(){
         nl.addEventListener('input', function(ev){
             const card = ev.target.closest('.name-card'); if(!card) return;
             const n = recData.names.find(x=>x.id===Number(card.dataset.id)); if(!n) return;
-            if(ev.target.classList.contains('name-input')){
-                n.name = ev.target.value;
-                renderMetals(); renderBanks(); renderDist(); renderSummary();
-                renderHelpPayerSelect(); renderHelp();
-            }
+            if(ev.target.classList.contains('name-input')){ n.name = ev.target.value; renderMetals(); renderGoldWearRec(); renderBanks(); renderInvestmentsRec(); renderDist(); renderSummary(); renderHelpPayerSelect(); renderHelp(); }
             saveRecord();
         });
         nl.addEventListener('change', function(ev){
             const card = ev.target.closest('.name-card'); if(!card) return;
             const n = recData.names.find(x=>x.id===Number(card.dataset.id)); if(!n) return;
-            if(ev.target.classList.contains('nisab-select')){ n.nisabType = ev.target.value; renderSummary(); saveRecord(); }
+            if(ev.target.classList.contains('nisab-select')){ 
+                n.nisabType = ev.target.value; 
+                renderMetals(); 
+                renderGoldWearRec(); 
+                renderBanks(); 
+                renderInvestmentsRec(); 
+                renderSummary(); 
+                saveRecord(); 
+            }
         });
     }
     const mb = document.getElementById('metalsBody');
@@ -2316,27 +2386,41 @@ function resetRecord(){
             const tr = ev.target.closest('tr.metal-row'); if(!tr) return;
             const m = recData.metals.find(x=>x.id===Number(tr.dataset.id)); if(!m) return;
             const t = ev.target;
+            if(t.classList.contains('mt-hawl-start')){ m.hawlStart = t.value; renderMetals(); renderSummary(); saveRecord(); return; }
+            if(t.classList.contains('mt-hawl-end')){ m.hawlEnd = t.value; renderMetals(); renderSummary(); saveRecord(); return; }
             if(t.classList.contains('mt-name')){
                 m.nameId = Number(t.value);
                 const n = recData.names.find(x=>x.id===m.nameId);
-                if(n && !n.years.includes(Number(m.year))){ m.year = n.years[0]||''; }
+                if(n && !n.years.includes(Number(m.year))) m.year = n.years[0]||'';
                 renderMetals();
             }
             else if(t.classList.contains('mt-year')) m.year = t.value;
-            else if(t.classList.contains('mt-type')){
-                m.type = t.value;
-                m.price = getCurrentMetalPrice(m.type, m.carat);
-                renderMetals();
-            }
-            else if(t.classList.contains('mt-carat')){
-                m.carat = t.value;
-                if(m.type==='gold') m.price = getCurrentMetalPrice('gold', m.carat);
-                renderMetals();
-            }
+            else if(t.classList.contains('mt-type')){ m.type = t.value; m.price = getCurrentMetalPrice(m.type, m.carat); renderMetals(); }
             else if(t.classList.contains('mt-weight')) m.weight = t.value;
             recalcMetals(); renderSummary(); saveRecord();
         };
         mb.addEventListener('input', h); mb.addEventListener('change', h);
+    }
+    const gwb = document.getElementById('goldWearRecBody');
+    if(gwb){
+        const h = function(ev){
+            const tr = ev.target.closest('tr.metal-row'); if(!tr) return;
+            const g = recData.goldWearRec.find(x=>x.id===Number(tr.dataset.id)); if(!g) return;
+            const t = ev.target;
+            if(t.classList.contains('gw-hawl-start')){ g.hawlStart = t.value; renderGoldWearRec(); renderSummary(); saveRecord(); return; }
+            if(t.classList.contains('gw-hawl-end')){ g.hawlEnd = t.value; renderGoldWearRec(); renderSummary(); saveRecord(); return; }
+            if(t.classList.contains('gw-name-select')){
+                g.nameId = Number(t.value);
+                const n = recData.names.find(x=>x.id===g.nameId);
+                if(n && !n.years.includes(Number(g.year))) g.year = n.years[0]||'';
+                renderGoldWearRec();
+            }
+            else if(t.classList.contains('gw-year')) g.year = t.value;
+            else if(t.classList.contains('gw-carat')){ g.carat = t.value; g.price = getCurrentMetalPrice('gold', g.carat); renderGoldWearRec(); }
+            else if(t.classList.contains('gw-weight')) g.weight = t.value;
+            recalcGoldWearRec(); renderSummary(); saveRecord();
+        };
+        gwb.addEventListener('input', h); gwb.addEventListener('change', h);
     }
     const bb = document.getElementById('banksBody');
     if(bb){
@@ -2344,10 +2428,12 @@ function resetRecord(){
             const tr = ev.target.closest('tr.bank-row'); if(!tr) return;
             const b = recData.banks.find(x=>x.id===Number(tr.dataset.id)); if(!b) return;
             const t = ev.target;
+            if(t.classList.contains('bn-hawl-start')){ b.hawlStart = t.value; renderBanks(); renderSummary(); saveRecord(); return; }
+            if(t.classList.contains('bn-hawl-end')){ b.hawlEnd = t.value; renderBanks(); renderSummary(); saveRecord(); return; }
             if(t.classList.contains('bn-name')){
                 b.nameId = Number(t.value);
                 const n = recData.names.find(x=>x.id===b.nameId);
-                if(n && !n.years.includes(Number(b.year))){ b.year = n.years[0]||''; }
+                if(n && !n.years.includes(Number(b.year))) b.year = n.years[0]||'';
                 renderBanks();
             }
             else if(t.classList.contains('bn-year')) b.year = t.value;
@@ -2355,6 +2441,27 @@ function resetRecord(){
             recalcBanks(); renderSummary(); saveRecord();
         };
         bb.addEventListener('input', h); bb.addEventListener('change', h);
+    }
+    const ib = document.getElementById('investmentsRecBody');
+    if(ib){
+        const h = function(ev){
+            const tr = ev.target.closest('tr.inv-row'); if(!tr) return;
+            const x = recData.investments.find(y=>y.id===Number(tr.dataset.id)); if(!x) return;
+            const t = ev.target;
+            if(t.classList.contains('iv-hawl-start')){ x.hawlStart = t.value; renderInvestmentsRec(); renderSummary(); saveRecord(); return; }
+            if(t.classList.contains('iv-hawl-end')){ x.hawlEnd = t.value; renderInvestmentsRec(); renderSummary(); saveRecord(); return; }
+            if(t.classList.contains('iv-name-select')){
+                x.nameId = Number(t.value);
+                const n = recData.names.find(nn=>nn.id===x.nameId);
+                if(n && !n.years.includes(Number(x.year))) x.year = n.years[0]||'';
+                renderInvestmentsRec();
+            }
+            else if(t.classList.contains('iv-year')) x.year = t.value;
+            else if(t.classList.contains('iv-name')) x.name = t.value;
+            else if(t.classList.contains('iv-value')) x.value = t.value;
+            recalcInvestmentsRec(); renderSummary(); saveRecord();
+        };
+        ib.addEventListener('input', h); ib.addEventListener('change', h);
     }
     const db = document.getElementById('distBody');
     if(db){
@@ -2385,8 +2492,7 @@ function resetRecord(){
             else if(t.classList.contains('hp-amount')) x.amount = t.value;
             else if(t.classList.contains('hp-received')) x.received = t.checked;
             else if(t.classList.contains('hp-note')) x.note = t.value;
-            updateHelpTotal();
-            saveRecord();
+            updateHelpTotal(); saveRecord();
         };
         hb.addEventListener('input', h); hb.addEventListener('change', h);
     }
@@ -2396,40 +2502,18 @@ window.onload = function(){
     const today = new Date();
     const cm = String(today.getMonth()+1).padStart(2,'0');
     const cy = today.getFullYear();
-    const ds = (cy-1)+'-'+cm;
-    const de = cy+'-'+cm;
+    const ds = (cy-1)+'-'+cm, de = cy+'-'+cm;
     ['banks','gw','bullion','inv'].forEach(p=>{
-        const s = document.getElementById(p+'StartMonth');
-        const e = document.getElementById(p+'EndMonth');
+        const s = document.getElementById(p+'StartMonth'); const e = document.getElementById(p+'EndMonth');
         if(s) s.value = ds; if(e) e.value = de;
     });
     ['banks','goldWear','bullion','investments'].forEach(checkHawl);
-    
-    // استعادة حالة تفعيل نصاب الفضة
-    try{
-        const savedSilverEq = localStorage.getItem('zakatSilverEqEnabled');
-        if(savedSilverEq !== null){
-            silverEqEnabled = savedSilverEq === '1';
-            const toggleEl = document.getElementById('silverEqToggle');
-            if(toggleEl) toggleEl.checked = silverEqEnabled;
-        }
-    }catch(e){}
-    
+    try{ const s = localStorage.getItem('zakatSilverEqEnabled'); if(s!==null){ silverEqEnabled = s==='1'; const t = document.getElementById('silverEqToggle'); if(t) t.checked = silverEqEnabled; } }catch(e){}
     loadData();
     const savedCalc = localStorage.getItem('zakatCalculatorData');
-    if(!savedCalc){
-        addGoldWearItem(true);
-        addBullionItem(true);
-        addInvestment(true);
-    }
-    
+    if(!savedCalc){ addGoldWearItem(true); addBullionItem(true); addInvestment(true); }
     loadRecord();
-    
-    updateNisabBanner();
-    updateAllPriceFields();
-    calculateAll();
-    refreshRecord();
-    
+    updateNisabBanner(); updateAllPriceFields(); calculateAll(); refreshRecord();
     fetchGoldPrices();
 };
 
@@ -2459,8 +2543,12 @@ window.removeYearFromName = removeYearFromName;
 window.addYearFromInput = addYearFromInput;
 window.addMetal = addMetal;
 window.removeMetal = removeMetal;
+window.addGoldWearRec = addGoldWearRec;
+window.removeGoldWearRec = removeGoldWearRec;
 window.addBank = addBank;
 window.removeBank = removeBank;
+window.addInvestmentRec = addInvestmentRec;
+window.removeInvestmentRec = removeInvestmentRec;
 window.addDistribution = addDistribution;
 window.removeDistribution = removeDistribution;
 window.addHelp = addHelp;
@@ -2474,6 +2562,7 @@ window.resetRecord = resetRecord;
 window.exportAllData = exportAllData;
 window.importAllData = importAllData;
 window.togglePersonExpand = togglePersonExpand;
+window.toggleYearExpand = toggleYearExpand;
 window.toggleSilverEq = toggleSilverEq;
 </script>
 </body>
