@@ -348,6 +348,7 @@ input::placeholder{color:var(--placeholder-color)}
 <th id="thMtWeight">الوزن (جرام)</th>
 <th id="thMtPrice">السعر (د.ب/جرام)</th>
 <th id="thMtTotal">الإجمالي</th>
+<th id="thMtZakat">الزكاة (÷40)</th>
 <th id="thMtNisab">بلغ النصاب؟</th>
 <th></th>
 </tr></thead>
@@ -355,6 +356,7 @@ input::placeholder{color:var(--placeholder-color)}
 <tfoot><tr>
 <td colspan="6" id="tfMtTotal">المجموع</td>
 <td id="recTotalMetalsFoot">0.000</td>
+<td id="recTotalMetalsZakatFoot" style="font-weight:bold;color:var(--gold);">0.000</td>
 <td colspan="2"></td>
 </tr></tfoot>
 </table>
@@ -562,7 +564,7 @@ btnPrintHelp:'طباعة',lblHelpTotal:'إجمالي المساعدة:',
 lblHelpPayer:'المزكي',noteHelp:'قسم مستقل - يعتمد على الأسماء من قسم "إضافة الأسماء والسنوات". عند الطباعة يظهر بعنوان "زكاة".',
 btnAddHelp:'إضافة مستفيد',thHpDate:'التاريخ',thHpRecipient:'المستفيد',thHpRegion:'الجهة',thHpAmount:'المبلغ',thHpReceived:'استلم؟',thHpNote:'ملاحظات',
 thMtPerson:'الشخص',thMtYear:'السنة',thMtType:'النوع',thMtCarat:'العيار',thMtWeight:'الوزن (جرام)',
-thMtPrice:'السعر (د.ب/جرام)',thMtTotal:'الإجمالي',tfMtTotal:'المجموع',thMtNisab:'بلغ النصاب؟',
+thMtPrice:'السعر (د.ب/جرام)',thMtTotal:'الإجمالي',thMtZakat:'الزكاة (÷40)',tfMtTotal:'المجموع',thMtNisab:'بلغ النصاب؟',
 btnAddMetal:'إضافة معدن',btnAddBank:'إضافة سنة',btnAddDistribution:'إضافة مستفيد',
 thYrPerson:'الشخص',thYrYear:'السنة',thYrBank:'المبلغ في البنك',thYrZakat:'الزكاة (÷40)',thYrReached:'بلغ النصاب؟',tfYrTotal:'المجموع الكلي للزكاة',
 thSmPerson:'الشخص',thSmNisab:'النصاب',thSmMetals:'إجمالي المعادن',thSmBank:'إجمالي البنوك',thSmTotal:'المجموع',
@@ -621,7 +623,7 @@ btnPrintHelp:'Print',lblHelpTotal:'Help Total:',
 lblHelpPayer:'Payer',noteHelp:'Independent section - uses names from "Names" section. Prints as "Zakat".',
 btnAddHelp:'Add Recipient',thHpDate:'Date',thHpRecipient:'Recipient',thHpRegion:'Region',thHpAmount:'Amount',thHpReceived:'Received?',thHpNote:'Notes',
 thMtPerson:'Person',thMtYear:'Year',thMtType:'Type',thMtCarat:'Carat',thMtWeight:'Weight (g)',
-thMtPrice:'Price (BHD/g)',thMtTotal:'Total',tfMtTotal:'Total',thMtNisab:'Nisab Reached?',
+thMtPrice:'Price (BHD/g)',thMtTotal:'Total',thMtZakat:'Zakat (÷40)',tfMtTotal:'Total',thMtNisab:'Nisab Reached?',
 btnAddMetal:'Add Metal',btnAddBank:'Add Year',btnAddDistribution:'Add Recipient',
 thYrPerson:'Person',thYrYear:'Year',thYrBank:'Bank Amount',thYrZakat:'Zakat (÷40)',thYrReached:'Nisab Reached?',tfYrTotal:'Total Zakat',
 thSmPerson:'Person',thSmNisab:'Nisab',thSmMetals:'Metals',thSmBank:'Banks',thSmTotal:'Grand',
@@ -651,7 +653,7 @@ let nisabValue = 0;
 let goldPrice24 = 0;
 let silverPrice = 0.30;
 let appState = {theme:'light',fontSize:1,goldPrices:{'24':0,'22':0,'21':0,'20':0,'18':0}, silverPrice:0.30};
-let expandedPersons = {}; // لتتبع الأشخاص المفتوحين في جدول الملخص
+let expandedPersons = {};
 function getText(k){ return (translations[currentLang]||translations.ar)[k]||k; }
 
 function fmtMoney(n){
@@ -674,6 +676,14 @@ function checkMetalNisab(m){
         const nisabForCarat = 85 * 24 / carat;
         return w >= nisabForCarat;
     }
+}
+
+/* حساب زكاة معدن معين - فقط إذا بلغ النصاب */
+function computeMetalZakat(m){
+    if(!checkMetalNisab(m)) return 0;
+    const w = parseFloat(m.weight) || 0;
+    const p = parseFloat(m.price) || 0;
+    return (w * p) / 40;
 }
 
 async function fetchGoldPrices(){
@@ -1122,7 +1132,7 @@ function applyLanguage(){
     setHtml('lblHelpPayer','<i class="fas fa-user"></i> '+t.lblHelpPayer);
     set('thHpDate',t.thHpDate); set('thHpRecipient',t.thHpRecipient); set('thHpRegion',t.thHpRegion); set('thHpAmount',t.thHpAmount); set('thHpReceived',t.thHpReceived); set('thHpNote',t.thHpNote);
     set('thMtPerson',t.thMtPerson); set('thMtYear',t.thMtYear); set('thMtType',t.thMtType); set('thMtCarat',t.thMtCarat);
-    set('thMtWeight',t.thMtWeight); set('thMtPrice',t.thMtPrice); set('thMtTotal',t.thMtTotal); set('tfMtTotal',t.tfMtTotal); set('thMtNisab',t.thMtNisab);
+    set('thMtWeight',t.thMtWeight); set('thMtPrice',t.thMtPrice); set('thMtTotal',t.thMtTotal); set('thMtZakat',t.thMtZakat); set('tfMtTotal',t.tfMtTotal); set('thMtNisab',t.thMtNisab);
     set('btnAddMetal',t.btnAddMetal); set('btnAddBank',t.btnAddBank); set('btnAddDistribution',t.btnAddDistribution);
     set('thYrPerson',t.thYrPerson); set('thYrYear',t.thYrYear); set('thYrBank',t.thYrBank); set('thYrZakat',t.thYrZakat); set('thYrReached',t.thYrReached); set('tfYrTotal',t.tfYrTotal);
     set('thSmPerson',t.thSmPerson); set('thSmNisab',t.thSmNisab); set('thSmMetals',t.thSmMetals); set('thSmBank',t.thSmBank);
@@ -1261,7 +1271,7 @@ function renderMetals(){
     const tbody = document.getElementById('metalsBody'); if(!tbody) return;
     tbody.innerHTML='';
     if(recData.names.length===0){
-        tbody.innerHTML = '<tr><td colspan="9" style="color:var(--text-sub);padding:14px;">'+getText('addNameFirst')+'</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" style="color:var(--text-sub);padding:14px;">'+getText('addNameFirst')+'</td></tr>';
         recalcMetals(); return;
     }
     recData.metals.forEach(m=>{
@@ -1277,7 +1287,6 @@ function renderMetals(){
         const autoPrice = getCurrentMetalPrice(m.type, m.carat);
         m.price = autoPrice;
 
-        // ===== فحص بلوغ النصاب =====
         const reached = checkMetalNisab(m);
         const nisabBadge = reached
             ? '<span class="badge-status ok">'+getText('reachedYes')+'</span>'
@@ -1295,7 +1304,8 @@ function renderMetals(){
             '<td><select class="mt-carat"'+(isGold?'':' disabled')+'>'+caratOpts+'</select></td>'+
             '<td><input type="number" step="0.001" class="mt-weight" value="'+escapeAttr(m.weight)+'" placeholder="0.000"/></td>'+
             '<td><input type="number" step="0.001" class="mt-price price-readonly" readonly value="'+(autoPrice||'')+'" placeholder="0.000" title="السعر العالمي التلقائي"/></td>'+
-            '<td class="mt-total" style="font-weight:bold;color:var(--gold);">0.000</td>'+
+            '<td class="mt-total" style="font-weight:bold;color:var(--green);">0.000</td>'+
+            '<td class="mt-zakat" style="font-weight:bold;color:var(--gold);">0.000</td>'+
             '<td class="mt-nisab">'+nisabBadge+'</td>'+
             '<td><button class="rec-del" onclick="removeMetal('+m.id+')">✕</button></td>';
         tbody.appendChild(tr);
@@ -1303,13 +1313,15 @@ function renderMetals(){
     recalcMetals();
 }
 function recalcMetals(){
-    let total=0;
+    let total=0, totalZakat=0;
     document.querySelectorAll('#metalsBody tr.metal-row').forEach(tr=>{
         const m = recData.metals.find(x=>x.id===Number(tr.dataset.id)); if(!m) return;
         const w = parseFloat(m.weight)||0; const p = parseFloat(m.price)||0;
         const lt = w*p; total += lt;
+        const z = computeMetalZakat(m);
+        totalZakat += z;
         const el = tr.querySelector('.mt-total'); if(el) el.textContent = fmtMoney(lt);
-        // تحديث حالة النصاب
+        const zEl = tr.querySelector('.mt-zakat'); if(zEl) zEl.textContent = fmtMoney(z);
         const nisabCell = tr.querySelector('.mt-nisab');
         if(nisabCell){
             const reached = checkMetalNisab(m);
@@ -1319,6 +1331,7 @@ function recalcMetals(){
         }
     });
     const f = document.getElementById('recTotalMetalsFoot'); if(f) f.textContent = fmtMoney(total);
+    const fz = document.getElementById('recTotalMetalsZakatFoot'); if(fz) fz.textContent = fmtMoney(totalZakat);
     const c = document.getElementById('recTotalMetals'); if(c) c.textContent = fmtMoney(total);
     renderSummary();
 }
@@ -1478,21 +1491,30 @@ function updateHelpTotal(){
 
 function computeNameTotals(nameId){
     const n = recData.names.find(x=>x.id===nameId);
+    // إجمالي قيم المعادن
     const metalsTotal = recData.metals.filter(m=>m.nameId===nameId)
         .reduce((s,m)=>s+((parseFloat(m.weight)||0)*(parseFloat(m.price)||0)),0);
+    // إجمالي أرصدة البنوك
     const bankTotal = recData.banks.filter(b=>b.nameId===nameId)
         .reduce((s,b)=>s+(parseFloat(b.amount)||0),0);
     const grand = metalsTotal + bankTotal;
-    const zakatSum = recData.banks.filter(b=>b.nameId===nameId)
-        .reduce((s,b)=>s+((parseFloat(b.amount)||0)/40), 0);
+    
+    // ===== زكاة المعادن (فقط ما بلغ النصاب) =====
+    const metalsZakat = recData.metals.filter(m=>m.nameId===nameId)
+        .reduce((s,m)=>s + computeMetalZakat(m), 0);
+    // ===== زكاة البنوك =====
+    const banksZakat = recData.banks.filter(b=>b.nameId===nameId)
+        .reduce((s,b)=>s + ((parseFloat(b.amount)||0)/40), 0);
+    // ===== المجموع = زكاة المعادن + زكاة البنوك =====
+    const zakatSum = metalsZakat + banksZakat;
+    
     const nisabType = n ? n.nisabType : 'silver';
     const personNisab = nisabType==='gold' ? (goldPrice24*85) : ((goldPrice24/85)*595);
     const reached = grand >= personNisab && grand > 0;
     const zakat = reached ? grand/40 : 0;
-    return {metalsTotal, bankTotal, grand, zakat, zakatSum, personNisab, reached, nisabType};
+    return {metalsTotal, bankTotal, grand, zakat, zakatSum, personNisab, reached, nisabType, metalsZakat, banksZakat};
 }
 
-/* تبديل حالة الفتح/الإغلاق لشخص في جدول الملخص */
 function togglePersonExpand(id){
     expandedPersons[id] = !expandedPersons[id];
     renderSummary();
@@ -1521,7 +1543,6 @@ function renderSummary(){
             '<td><button class="'+expandClass+'" onclick="togglePersonExpand('+n.id+')" title="التفاصيل">'+expandIcon+'</button></td>';
         tbody.appendChild(tr);
 
-        // ===== صف تفاصيل السنوات إن كان مفتوحاً =====
         if(isOpen){
             const personBanks = recData.banks.filter(b=>b.nameId===n.id)
                 .slice().sort((a,b)=> (Number(b.year)||0) - (Number(a.year)||0));
@@ -1740,20 +1761,23 @@ function buildFullReportHtml(nameId){
     const banks = recData.banks.filter(b=>b.nameId===nameId);
     const dists = recData.distributions.filter(d=>d.nameId===nameId);
     const totals = computeNameTotals(nameId);
-    const {metalsTotal, bankTotal, grand, zakat, reached, nisabType, personNisab} = totals;
+    const {metalsTotal, bankTotal, grand, zakat, reached, nisabType, personNisab, metalsZakat, banksZakat, zakatSum} = totals;
     const totalAlloc = dists.reduce((s,d)=>s+(parseFloat(d.amount)||0),0);
     const totalRecv = dists.reduce((s,d)=>s+(d.received?(parseFloat(d.amount)||0):0),0);
     const remaining = zakat - totalAlloc;
     const nisabLabel = nisabType==='gold'?getText('nisabGold'):getText('nisabSilver');
 
+    let metalsZakatTotal = 0;
     const metalsRows = metals.map(m=>{
         const tot = (parseFloat(m.weight)||0)*(parseFloat(m.price)||0);
         const mr = checkMetalNisab(m);
         const mbadge = mr ? '✅' : '⚠️';
+        const mz = computeMetalZakat(m);
+        metalsZakatTotal += mz;
         return '<tr><td>'+(m.type==='gold'?'ذهب':'فضة')+'</td><td>'+(m.type==='gold'?m.carat:'-')+
             '</td><td>'+escapeAttr(m.year)+'</td><td>'+(parseFloat(m.weight)||0).toFixed(3)+'</td><td>'+fmtMoney(m.price)+
-            '</td><td>'+fmtMoney(tot)+'</td><td>'+mbadge+'</td></tr>';
-    }).join('') || '<tr><td colspan="7" style="text-align:center;color:#999;">لا توجد معادن</td></tr>';
+            '</td><td>'+fmtMoney(tot)+'</td><td>'+fmtMoney(mz)+'</td><td>'+mbadge+'</td></tr>';
+    }).join('') || '<tr><td colspan="8" style="text-align:center;color:#999;">لا توجد معادن</td></tr>';
 
     const banksRows = banks.map(b=>{
         const z = (parseFloat(b.amount)||0)/40;
@@ -1777,8 +1801,8 @@ function buildFullReportHtml(nameId){
     '<div><strong>الحالة:</strong> '+statusBadge+'</div>'+
     '<div><strong>التاريخ:</strong> '+new Date().toLocaleDateString('ar-BH')+'</div></div>'+
     '<h2>1. موجود المعادن و الملبوس</h2>'+
-    '<table><thead><tr><th>النوع</th><th>العيار</th><th>السنة</th><th>الوزن (جم)</th><th>السعر/جم ('+currency+')</th><th>الإجمالي ('+currency+')</th><th>النصاب</th></tr></thead><tbody>'+metalsRows+'</tbody>'+
-    '<tfoot><tr class="total-row"><td colspan="5">المجموع</td><td>'+fmtMoney(metalsTotal)+'</td><td></td></tr></tfoot></table>'+
+    '<table><thead><tr><th>النوع</th><th>العيار</th><th>السنة</th><th>الوزن (جم)</th><th>السعر/جم ('+currency+')</th><th>الإجمالي ('+currency+')</th><th>الزكاة ('+currency+')</th><th>النصاب</th></tr></thead><tbody>'+metalsRows+'</tbody>'+
+    '<tfoot><tr class="total-row"><td colspan="5">المجموع</td><td>'+fmtMoney(metalsTotal)+'</td><td>'+fmtMoney(metalsZakatTotal)+'</td><td></td></tr></tfoot></table>'+
     '<h2>2. زكاة السنوات - أرصدة البنوك</h2>'+
     '<table><thead><tr><th>السنة</th><th>المبلغ ('+currency+')</th><th>الزكاة ÷40 ('+currency+')</th></tr></thead><tbody>'+banksRows+'</tbody>'+
     '<tfoot><tr class="total-row"><td>المجموع</td><td>'+fmtMoney(bankTotal)+'</td><td>'+fmtMoney(bankTotal/40)+'</td></tr></tfoot></table>'+
@@ -1788,11 +1812,13 @@ function buildFullReportHtml(nameId){
     '<div class="summary-cards">'+
     '<div class="sum-card"><div class="lbl">إجمالي المعادن</div><div class="val">'+fmtMoney(metalsTotal)+'</div></div>'+
     '<div class="sum-card"><div class="lbl">إجمالي أرصدة البنوك</div><div class="val">'+fmtMoney(bankTotal)+'</div></div>'+
+    '<div class="sum-card gold"><div class="lbl">زكاة المعادن</div><div class="val">'+fmtMoney(metalsZakat)+'</div></div>'+
+    '<div class="sum-card gold"><div class="lbl">زكاة البنوك</div><div class="val">'+fmtMoney(banksZakat)+'</div></div>'+
     '<div class="sum-card gold"><div class="lbl">إجمالي الأصول</div><div class="val">'+fmtMoney(grand)+'</div></div>'+
     '<div class="sum-card gold"><div class="lbl">إجمالي الموزّع</div><div class="val">'+fmtMoney(totalAlloc)+'</div></div>'+
     '<div class="sum-card"><div class="lbl">تم استلامه</div><div class="val">'+fmtMoney(totalRecv)+'</div></div>'+
     '<div class="sum-card '+(remaining<0?'danger':'')+'"><div class="lbl">المتبقي للتوزيع</div><div class="val">'+fmtMoney(remaining)+'</div></div>'+
-    '<div class="zakat-final"><div class="lbl">الزكاة الواجبة (المجموع ÷ 40)</div><div class="val">'+fmtMoney(zakat)+' '+currency+'</div></div>'+
+    '<div class="zakat-final"><div class="lbl">مجموع الزكاة (معادن + بنوك)</div><div class="val">'+fmtMoney(zakatSum)+' '+currency+'</div></div>'+
     '</div>'+
     '<div class="footer">تم إنشاؤه بواسطة حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div>'+
     '</body></html>';
@@ -1844,12 +1870,12 @@ function shareFullReportWhatsApp(){
 function printHelp(){ printHtml(buildHelpReportHtml()); }
 function shareHelpWhatsApp(){ sharePdfViaWhatsApp(buildHelpReportHtml(), 'zakat-help.pdf', 'تقرير زكاة'); }
 
-function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV10', JSON.stringify(recData)); }catch(e){} }
+function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV11', JSON.stringify(recData)); }catch(e){} }
 function seedRecord(){ recData = {names:[], metals:[], banks:[], distributions:[], help:[], seq:1}; }
 function loadRecord(){
     let loaded = false;
     try{
-        const raw = localStorage.getItem('zakatRecordDataV10');
+        const raw = localStorage.getItem('zakatRecordDataV11');
         if(raw){
             const d = JSON.parse(raw);
             if(d && Array.isArray(d.names)){
