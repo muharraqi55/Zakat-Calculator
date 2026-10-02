@@ -34,7 +34,7 @@ body{background:var(--bg-body);padding:10px;display:flex;justify-content:center;
 .import-btn{background:#7b1fa2!important;color:#fff!important;border:none!important;font-size:calc(.8rem*var(--font-scale))}
 .import-btn:hover{background:#4a148c!important}
 h2{color:var(--green);font-size:calc(1.2rem*var(--font-scale));margin:18px 0 12px;border-right:4px solid var(--gold);padding-right:12px}
-.section{background:var(--bg-section);border-radius:16px;padding:15px;margin-bottom:18px;box-shadow:0 3px 10px rgba(0,0,0,.03);border:1px solid var(--border-color);position:relative}
+.section{background:var(--bg-section);border-radius:16px;padding:15px;margin-bottom:18px;box-shadow:0 3px 10px rgba(0,0,0,.03),0 0 0 1px rgba(184,134,11,.12);border:2px solid var(--gold);position:relative}
 .hawl-message{display:none;font-size:calc(.85rem*var(--font-scale));font-weight:bold;padding:6px 12px;border-radius:8px;margin-top:8px;text-align:center}
 .hawl-message.show{display:block}
 .hawl-message.incomplete{background:var(--bg-status-loading);color:var(--gold);border:1px solid var(--gold)}
@@ -1063,7 +1063,6 @@ function fmtMoney(n){
     const num = parseFloat(n)||0;
     return num.toLocaleString('en-US', {minimumFractionDigits:3, maximumFractionDigits:3});
 }
-/* إضافة د.ب تلقائياً */
 function fmtMoneyC(n){
     return fmtMoney(n) + ' ' + getText('currency');
 }
@@ -1645,7 +1644,6 @@ function getPersonLatestYearData(nameId){
     return {lastYear, years, metalsTotal, goldWearTotal, bankTotal, invTotal, grand, zakatLastYear, personNisab, reached, nisabType, metalsZakat, goldWearZakat, banksZakat, invZakat};
 }
 
-/* حساب مجموع الزكاة لجميع السنوات لكل شخص */
 function getPersonTotalZakatAllYears(nameId){
     let total = 0;
     recData.metals.filter(m=>m.nameId===nameId).forEach(m=>{
@@ -1844,7 +1842,6 @@ function renderSummary(){
     });
     const foot = document.getElementById('smZakatFoot'); if(foot) foot.textContent = fmtMoneyC(tZakatSum);
     
-    // كروت الملخص
     let tM=0, tG=0, tB=0, tI=0;
     recData.names.forEach(n=>{
         const t = getPersonLatestYearData(n.id);
