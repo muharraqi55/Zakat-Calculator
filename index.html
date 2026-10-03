@@ -33,6 +33,9 @@ body{background:var(--bg-body);padding:10px;display:flex;justify-content:center;
 .save-btn:hover{background:#0d47a1!important}
 .import-btn{background:#7b1fa2!important;color:#fff!important;border:none!important;font-size:calc(.8rem*var(--font-scale))}
 .import-btn:hover{background:#4a148c!important}
+.share-site-btn{background:#0d9488!important;color:#fff!important;border:none!important;font-size:calc(.8rem*var(--font-scale))}
+.share-site-btn:hover{background:#0f766e!important}
+.share-site-btn.copied{background:var(--success)!important}
 h2{color:var(--green);font-size:calc(1.2rem*var(--font-scale));margin:18px 0 12px;border-right:4px solid var(--gold);padding-right:12px}
 .section{background:var(--bg-section);border-radius:16px;padding:15px;margin-bottom:18px;box-shadow:0 3px 10px rgba(0,0,0,.03),0 0 0 1px rgba(184,134,11,.12);border:2px solid var(--gold);position:relative}
 .note{color:var(--text-sub);font-size:calc(.85rem*var(--font-scale));margin-top:4px}
@@ -76,7 +79,6 @@ label{display:block;font-weight:600;color:var(--text-sub);margin-bottom:4px;font
 input,select{padding:10px 12px;border:1px solid var(--input-border);border-radius:10px;font-size:calc(.95rem*var(--font-scale));background:var(--bg-input);color:var(--text-main)}
 input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(184,134,11,.15)}
 
-/* ==================== Accordion ==================== */
 .accordion-section{background:var(--bg-section);border-radius:16px;margin-bottom:14px;border:2px solid var(--gold);overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.03),0 0 0 1px rgba(184,134,11,.12);transition:box-shadow .2s}
 .accordion-section:hover{box-shadow:0 5px 15px rgba(184,134,11,.15)}
 .accordion-header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;cursor:pointer;background:var(--bg-section);user-select:none;gap:10px;flex-wrap:wrap;transition:background-color .2s}
@@ -92,7 +94,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 .accordion-body-inner{padding:0 14px 14px}
 .accordion-body-inner .add-btn{margin-top:10px}
 
-/* ==================== Modal إدارة الأسماء ==================== */
 .names-manage-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2500;justify-content:center;align-items:center;padding:20px}
 .names-manage-modal.show{display:flex}
 .names-manage-modal .nmm-box{background:var(--bg-card);border-radius:20px;max-width:900px;width:100%;max-height:90vh;overflow-y:auto;padding:24px;border:3px solid var(--gold);box-shadow:0 25px 60px rgba(0,0,0,.4)}
@@ -115,7 +116,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 [data-theme="dark"] .btn-manage-names{color:#0d1117}
 .btn-manage-names:hover{background:var(--gold-hover)}
 
-/* ==================== النوافذ المنبثقة ==================== */
 .year-del-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:3000;justify-content:center;align-items:center;padding:20px}
 .year-del-modal.show{display:flex}
 .year-del-modal .ydm-box{background:var(--bg-card);border-radius:20px;max-width:620px;width:100%;max-height:90vh;overflow-y:auto;padding:26px 24px;border:3px solid var(--danger);box-shadow:0 25px 60px rgba(0,0,0,.35)}
@@ -148,7 +148,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 .help-modal .help-section ul li{margin-bottom:4px;line-height:1.6;font-size:calc(.88rem*var(--font-scale))}
 .help-modal .help-note{font-size:calc(.85rem*var(--font-scale));color:var(--text-sub);margin-top:10px;padding:10px 14px;background:var(--bg-status-loading);border-radius:8px;border-right:4px solid var(--gold)}
 
-/* ==================== سنة قابلة للتعديل ==================== */
 .year-chip{display:inline-flex;align-items:center;gap:4px;background:var(--badge-bg);border:1px solid var(--badge-border);border-radius:20px;padding:3px 10px;font-size:calc(.82rem*var(--font-scale));font-weight:bold}
 .year-chip button{background:transparent;border:none;cursor:pointer;color:var(--danger);font-weight:bold;font-size:.95rem;padding:0 2px}
 .year-chip .year-chip-input{width:58px;padding:2px 4px;border:1px solid var(--border-color);border-radius:6px;background:transparent;color:var(--text-main);font-weight:bold;font-size:calc(.82rem*var(--font-scale));text-align:center;font-family:inherit}
@@ -166,7 +165,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 .btn-add-year{background:var(--green);color:#fff;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:bold;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
 .btn-add-year:hover{background:var(--green-hover)}
 
-/* ==================== badges ==================== */
 .badge-status{display:inline-block;padding:3px 10px;border-radius:12px;font-size:calc(.75rem*var(--font-scale));font-weight:bold;white-space:nowrap}
 .badge-status.ok{background:var(--success-bg);color:var(--success);border:1px solid var(--success)}
 .badge-status.no{background:var(--bg-status-loading);color:var(--gold);border:1px solid var(--gold)}
@@ -184,7 +182,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 .inv-row.hawl-incomplete .iv-name-select,.inv-row.hawl-incomplete .iv-year,.inv-row.hawl-incomplete .iv-name,.inv-row.hawl-incomplete .iv-value,
 .metal-row.hawl-incomplete .gw-name-select,.metal-row.hawl-incomplete .gw-year,.metal-row.hawl-incomplete .gw-carat,.metal-row.hawl-incomplete .gw-weight{opacity:.45;pointer-events:none;background:var(--bg-body)}
 
-/* ==================== شريط المجموع ==================== */
 .totals-bar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding:12px 16px;background:var(--bg-body);border-radius:12px;border:2px solid var(--gold);margin-bottom:14px;font-weight:bold;font-size:calc(.9rem*var(--font-scale))}
 .totals-bar .tb-item{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:var(--bg-card);border:1px solid var(--border-color)}
 .totals-bar .tb-item.bhd{color:var(--green);border-color:var(--success)}
@@ -192,7 +189,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 .totals-bar select{width:auto;padding:6px 12px;font-size:calc(.82rem*var(--font-scale));border-radius:20px;font-weight:bold;background:var(--bg-card);border:1px solid var(--gold);color:var(--gold);max-width:200px}
 .totals-bar .tb-eq{color:var(--text-sub);font-size:calc(.85rem*var(--font-scale))}
 
-/* ==================== أزرار الطباعة والمشاركة لكل شخص ==================== */
 .person-actions{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
 .person-actions .btn-print,.person-actions .btn-whatsapp{padding:5px 12px!important;font-size:calc(.72rem*var(--font-scale))!important;margin:0!important}
 
@@ -229,6 +225,7 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 <button class="save-btn" onclick="exportAllData()"><i class="fas fa-download"></i> <span id="saveBtnText">حفظ</span></button>
 <button class="import-btn" onclick="document.getElementById('importFileInput').click()"><i class="fas fa-upload"></i> <span id="importBtnText">استيراد</span></button>
 <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importAllData(event)"/>
+<button class="share-site-btn" onclick="shareWebsite(event)"><i class="fas fa-share-alt"></i> <span id="shareSiteBtnText">مشاركة الموقع</span></button>
 <button class="help-btn" onclick="toggleHelp()"><i class="fas fa-question-circle"></i> <span id="helpBtnText">تعليمات</span></button>
 <button class="reset-btn" onclick="resetRecord()"><i class="fas fa-undo"></i> <span id="recResetBtnText">إعادة ضبط السجل</span></button>
 </div>
@@ -248,7 +245,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 <div class="rec-card"><div class="lbl" id="rcRcvLbl">تم استلامه</div><div class="val" id="recTotalReceived">0.000 د.ب</div></div>
 </div>
 
-<!-- قسم الأسماء -->
 <div class="section">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
 <h2 id="recTitleNames" style="margin:0;border-right:none;padding-right:0;"><i class="fas fa-users"></i> إضافة الأسماء والسنوات</h2>
@@ -259,7 +255,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 <div class="compact-names-display" id="compactNamesDisplay"></div>
 </div>
 
-<!-- Accordion: موجود المعادن -->
 <div class="accordion-section" id="accordionMetals">
 <div class="accordion-header" onclick="toggleAccordion('accordionMetals')">
 <h2 id="recTitleMetals"><i class="fas fa-gem"></i> موجود المعادن</h2>
@@ -298,7 +293,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 </div></div>
 </div>
 
-<!-- Accordion: الذهب الملبوس -->
 <div class="accordion-section" id="accordionGoldWear">
 <div class="accordion-header" onclick="toggleAccordion('accordionGoldWear')">
 <h2 id="recTitleGoldWear"><i class="fas fa-ring"></i> الذهب الملبوس</h2>
@@ -340,7 +334,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 </div></div>
 </div>
 
-<!-- Accordion: البنوك -->
 <div class="accordion-section" id="accordionBanks">
 <div class="accordion-header" onclick="toggleAccordion('accordionBanks')">
 <h2 id="recTitleYears"><i class="fas fa-calendar-check"></i> المبلغ الموجود في جميع البنوك</h2>
@@ -374,7 +367,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 </div></div>
 </div>
 
-<!-- Accordion: الاستثمارات -->
 <div class="accordion-section" id="accordionInvestments">
 <div class="accordion-header" onclick="toggleAccordion('accordionInvestments')">
 <h2 id="recTitleInv"><i class="fas fa-chart-pie"></i> استثمارات وعقارات</h2>
@@ -410,7 +402,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 </div></div>
 </div>
 
-<!-- ملخص الزكاة -->
 <div class="section">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
 <h2 id="recTitleSummary" style="margin:0;"><i class="fas fa-file-invoice-dollar"></i> ملخص الزكاة لكل شخص لجميع السنوات</h2>
@@ -435,7 +426,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 </div>
 </div>
 
-<!-- توزيع الزكاة -->
 <div class="section">
 <h2 id="recTitleDist"><i class="fas fa-hand-holding-heart"></i> توزيع الزكاة</h2>
 
@@ -480,7 +470,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 <div id="distGroupsContainer"></div>
 </div>
 
-<!-- مساعدة -->
 <div class="section" style="border:2px solid var(--gold);">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
 <h2 id="recTitleHelp" style="margin:0;border-right:4px solid var(--gold);padding-right:12px;"><i class="fas fa-hand-holding-heart"></i> مساعدة</h2>
@@ -535,7 +524,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 
 </div>
 
-<!-- نافذة إدارة الأسماء -->
 <div class="names-manage-modal" id="namesManageModal">
 <div class="nmm-box">
 <div class="nmm-head">
@@ -551,7 +539,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 </div>
 </div>
 
-<!-- نافذة التعليمات -->
 <div class="help-modal" id="helpModal">
 <div class="help-content">
 <button class="close-help" onclick="toggleHelp()">✕</button>
@@ -580,7 +567,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 </div>
 </div>
 
-<!-- نافذة إعادة الضبط -->
 <div class="year-del-modal" id="resetRecordModal">
     <div class="ydm-box">
         <div class="ydm-head">
@@ -614,7 +600,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
     </div>
 </div>
 
-<!-- نافذة حذف السنة -->
 <div class="year-del-modal" id="yearDeleteModal">
     <div class="ydm-box">
         <div class="ydm-head">
@@ -652,7 +637,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
-/* ==================== الترجمات ==================== */
 const translations = {
 ar:{
 pageTitle:'حاسبة الزكاة الشاملة',langBtn:'🇬🇧 English',helpBtnText:'تعليمات',
@@ -704,6 +688,10 @@ pdfGenerating:'⏳ جاري إنشاء PDF...',pdfError:'❌ حدث خطأ',sele
 invalidYear:'⚠️ الرجاء إدخال سنة من 4 أرقام',
 yearFinalZakat:'النتيجة النهائية للزكاة',
 silverEqBadge:'✅ بلغ كنصاب الفضة',
+shareSiteBtnText:'مشاركة الموقع',
+shareSiteCopied:'✅ تم نسخ الرابط',
+shareSiteTitle:'حاسبة الزكاة الشاملة',
+shareSiteMessage:'🧮 جرّب حاسبة الزكاة الشاملة — احسب زكاة أموالك بسهولة ودقة',
 btnManageNamesText:'إدارة الأسماء',
 nmmTitle:'إدارة الأسماء والسنوات',
 nmmHint:'💡 أضف الأسماء والسنوات هنا. تُحدَّث البيانات فورياً.',
@@ -764,6 +752,10 @@ pdfGenerating:'⏳ Generating PDF...',pdfError:'❌ Error',selectPersonFirst:'Se
 invalidYear:'⚠️ Enter 4-digit year',
 yearFinalZakat:'Final Zakat Result',
 silverEqBadge:'✅ Silver Nisab',
+shareSiteBtnText:'Share Website',
+shareSiteCopied:'✅ Link copied',
+shareSiteTitle:'Zakat Calculator',
+shareSiteMessage:'🧮 Try the Zakat Calculator — Calculate your zakat easily',
 btnManageNamesText:'Manage Names',
 nmmTitle:'Manage Names & Years',
 nmmHint:'💡 Add names and years here. Data updates instantly.',
@@ -800,7 +792,6 @@ function fmtMoneyC(n){ return fmtMoney(n)+' '+getText('currency'); }
 function fmtMoney2(n){ const num=parseFloat(n)||0; return num.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function escapeAttr(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-/* ==================== العملات ==================== */
 const CURRENCIES = [
     {code:'BHD', ar:'دينار بحريني', en:'Bahraini Dinar',  sym:'د.ب'},
     {code:'INR', ar:'روبية هندية',  en:'Indian Rupee',   sym:'₹'},
@@ -875,7 +866,6 @@ function updateHelpTotals(){
     if(elF) elF.textContent = fmtAmountForeign(totalForeign, helpTotalCurrency);
 }
 
-/* ==================== دوال الزكاة ==================== */
 function checkHawlComplete(item){
     if(!item || !item.hawlStart || !item.hawlEnd) return false;
     const p1 = String(item.hawlStart).split('-').map(Number);
@@ -938,7 +928,6 @@ function getCurrentMetalPrice(type, carat){
     return appState.goldPrices[cn]||parseFloat(((appState.goldPrices['24']||55.32)*cn/24).toFixed(4));
 }
 
-/* ==================== Accordion / Modal ==================== */
 function toggleAccordion(id){
     const el = document.getElementById(id);
     if(el) el.classList.toggle('open');
@@ -974,7 +963,6 @@ function renderCompactNames(){
     });
 }
 
-/* ==================== BANKS ==================== */
 function addBank(){
     if(recData.names.length===0){ alert(getText('addNameFirst')); return; }
     const first = recData.names[0];
@@ -1047,7 +1035,6 @@ function recalcBanks(){
     renderSummary();
 }
 
-/* ==================== INVESTMENTS ==================== */
 function addInvestmentRec(){
     if(recData.names.length===0){ alert(getText('addNameFirst')); return; }
     const first = recData.names[0];
@@ -1121,7 +1108,6 @@ function recalcInvestmentsRec(){
     renderSummary();
 }
 
-/* ==================== METALS ==================== */
 function addMetal(){
     if(recData.names.length===0){ alert(getText('addNameFirst')); return; }
     const first = recData.names[0];
@@ -1212,7 +1198,6 @@ function recalcMetals(){
     renderSummary();
 }
 
-/* ==================== GOLD WEAR ==================== */
 function addGoldWearRec(){
     if(recData.names.length===0){ alert(getText('addNameFirst')); return; }
     const first = recData.names[0];
@@ -1297,7 +1282,6 @@ function recalcGoldWearRec(){
     renderSummary();
 }
 
-/* ==================== الحسابات المجمّعة ==================== */
 function getPersonLatestYearData(nameId){
     const n = recData.names.find(x=>x.id===nameId);
     const pBanks = recData.banks.filter(b=>b.nameId===nameId);
@@ -1510,7 +1494,6 @@ function renderPrintDropdown(){
     if(cur && recData.names.some(n=>String(n.id)===cur)) sel.value = cur;
 }
 
-/* ==================== توزيع الزكاة ==================== */
 function updateDistYearSelect(){
     const ps = document.getElementById('distPersonSelect');
     const ys = document.getElementById('distYearSelect');
@@ -1660,7 +1643,6 @@ function buildDistTableHtml(dists){
     return html;
 }
 
-/* ==================== مساعدة ==================== */
 function updateHelpYearSelect(){
     const ps = document.getElementById('helpPayerSelect');
     const ys = document.getElementById('helpYearSelect');
@@ -1820,7 +1802,6 @@ function refreshRecord(){
     renderDist(); renderHelp(); renderSummary(); renderPrintDropdown();
 }
 
-/* ==================== الطباعة ==================== */
 const REPORT_STYLES = 'body{font-family:"Segoe UI",Tahoma,sans-serif;padding:30px;color:#1a1a1a;background:#fff;line-height:1.6}.header{text-align:center;border-bottom:4px double #b8860b;padding-bottom:20px;margin-bottom:25px}.header h1{color:#2d4b2c;margin:0;font-size:28px;letter-spacing:1px}.header .brand{color:#b8860b;font-size:14px;margin-top:8px;letter-spacing:4px;font-weight:bold}.info-bar{display:flex;justify-content:space-between;background:#fefcf9;border:1px solid #ddd;border-right:4px solid #b8860b;padding:12px 18px;border-radius:10px;margin-bottom:20px;font-size:14px;flex-wrap:wrap;gap:8px}.info-bar strong{color:#2d4b2c}h2{color:#2d4b2c;font-size:17px;border-right:5px solid #b8860b;padding-right:12px;margin:25px 0 12px}table{width:100%;border-collapse:collapse;margin-bottom:15px;font-size:13px}th,td{border:1px solid #d0d0d0;padding:9px 12px;text-align:center}th{background:#f0ece6;color:#333;font-weight:bold;font-size:12px}.total-row{background:#fff8e1;font-weight:bold;color:#b8860b}.summary-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px}.sum-card{background:#fefcf9;border:1px solid #ddd;border-right:4px solid #2d4b2c;border-radius:12px;padding:16px;text-align:center}.sum-card.gold{border-right-color:#b8860b}.sum-card.danger{border-right-color:#c62828}.sum-card .lbl{font-size:12px;color:#666;margin-bottom:6px}.sum-card .val{font-size:22px;font-weight:bold;color:#2d4b2c}.sum-card.gold .val{color:#b8860b}.zakat-final{grid-column:span 2;background:#2d4b2c;color:#fff;border-radius:14px;padding:25px;text-align:center;margin-top:10px}.zakat-final .lbl{color:#d4a843;font-size:14px}.zakat-final .val{color:#fff;font-size:40px;font-weight:900;margin-top:8px}.footer{margin-top:35px;text-align:center;color:#888;font-size:11px;border-top:2px solid #b8860b;padding-top:15px}';
 function buildReportHead(title){ return '<div class="header"><h1>'+title+'</h1><div class="brand">MUHARRAQI</div></div>'; }
 function printHtml(html){
@@ -1923,8 +1904,6 @@ function buildFullReportHtml(nameId){
     '<div class="zakat-final"><div class="lbl">مجموع الزكاة لجميع السنوات</div><div class="val">'+fmtMoney(totalZakatAllYears)+' '+currency+'</div></div>'+
     '</div><div class="footer">حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div></body></html>';
 }
-
-/* ============ تقرير المساعدة الكامل (كل الأشخاص) ============ */
 function buildHelpReportHtml(){
     const currency = getText('currency');
     const list = recData.help;
@@ -1938,16 +1917,12 @@ function buildHelpReportHtml(){
     '<div class="summary-cards"><div class="sum-card"><div class="lbl">عدد المستفيدين</div><div class="val">'+list.length+'</div></div><div class="sum-card"><div class="lbl">تم استلامه</div><div class="val">'+fmtMoney(totalRecv)+'</div></div><div class="zakat-final"><div class="lbl">إجمالي الزكاة الموزّعة</div><div class="val">'+fmtMoney(total)+' '+currency+'</div></div></div>'+
     '<div class="footer">حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div></body></html>';
 }
-
-/* ============ تقرير المساعدة لشخص واحد فقط (جديد) ============ */
 function buildHelpPersonReportHtml(nameId){
     const n = recData.names.find(x=>x.id===nameId);
     if(!n) return '';
     const currency = getText('currency');
     const items = recData.help.filter(h=>h.nameId===nameId);
     if(items.length === 0) return '';
-    
-    // تجميع حسب السنة
     const yearsMap = {};
     items.forEach(h=>{
         const y = h.year ? String(h.year) : 'noYear';
@@ -1959,21 +1934,17 @@ function buildHelpPersonReportHtml(nameId){
         if(b==='noYear') return -1;
         return Number(b)-Number(a);
     });
-    
     let allRows = '';
     let grandTotalBHD = 0;
     let grandTotalRecv = 0;
     const foreignByCurrency = {};
     let recipientsCount = items.length;
-    
     yearKeys.forEach(yk=>{
         const yItems = yearsMap[yk];
         const yTotalBHD = yItems.reduce((s,h)=>s+(parseFloat(h.amount)||0),0);
         grandTotalBHD += yTotalBHD;
         const yLabel = yk === 'noYear' ? getText('noYearLabel') : yk;
-        
         allRows += '<tr style="background:#fff8e1;font-weight:bold;"><td colspan="8" style="text-align:right;">📅 '+yLabel+'</td><td style="color:#b8860b;">'+fmtMoney(yTotalBHD)+' د.ب</td></tr>';
-        
         yItems.forEach(h=>{
             const amt = parseFloat(h.amount)||0;
             const amtF = parseFloat(h.amountForeign)||0;
@@ -1995,13 +1966,10 @@ function buildHelpPersonReportHtml(nameId){
                 '</tr>';
         });
     });
-    
-    // بطاقات العملات الأجنبية
     let foreignCards = '';
     Object.keys(foreignByCurrency).forEach(code=>{
         foreignCards += '<div class="sum-card gold"><div class="lbl">'+currLabel(code)+' ('+code+')</div><div class="val">'+foreignByCurrency[code].toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+currSymbol(code)+'</div></div>';
     });
-    
     return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>'+getText('helpPersonReportTitle')+' - '+escapeAttr(n.name)+'</title><style>'+REPORT_STYLES+'</style></head><body>'+
     buildReportHead(getText('helpPersonReportTitle')+' — '+escapeAttr(n.name||'—'))+
     '<div class="info-bar">'+
@@ -2031,13 +1999,10 @@ function buildHelpPersonReportHtml(nameId){
     '<div class="footer">حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div></body></html>';
 }
 
-/* ============ دوال الطباعة والمشاركة للكل ============ */
 function printFullReport(){ const sel = document.getElementById('printPersonSelect'); const nameId = Number(sel.value); const n = recData.names.find(x=>x.id===nameId); if(!n){ alert(getText('selectPersonFirst')); return; } printHtml(buildFullReportHtml(nameId)); }
 function shareFullReportWhatsApp(){ const sel = document.getElementById('printPersonSelect'); const nameId = Number(sel.value); const n = recData.names.find(x=>x.id===nameId); if(!n){ alert(getText('selectPersonFirst')); return; } const safeName = (n.name||'report').replace(/[^\u0600-\u06FF\w\-]+/g,'_'); sharePdfViaWhatsApp(buildFullReportHtml(nameId), 'zakat-'+safeName+'.pdf', 'تقرير زكاة '+(n.name||'')); }
 function printHelp(){ printHtml(buildHelpReportHtml()); }
 function shareHelpWhatsApp(){ sharePdfViaWhatsApp(buildHelpReportHtml(), 'zakat-help.pdf', 'تقرير زكاة'); }
-
-/* ============ دوال الطباعة والمشاركة لكل شخص في المساعدة (جديد) ============ */
 function printHelpPerson(nameId){
     const html = buildHelpPersonReportHtml(nameId);
     if(!html){ alert(getText('noHelp')); return; }
@@ -2052,12 +2017,44 @@ function shareHelpPersonWhatsApp(nameId, btn){
     sharePdfViaWhatsApp(html, 'zakat-help-'+safeName+'.pdf', 'مساعدة - '+(n.name||''), btn);
 }
 
-/* ==================== التخزين ==================== */
-function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV24', JSON.stringify(recData)); }catch(e){} }
+async function shareWebsite(ev){
+    const btn = ev && ev.currentTarget ? ev.currentTarget : null;
+    const siteUrl = window.location.href;
+    const title = getText('shareSiteTitle');
+    const text = getText('shareSiteMessage') + '\n' + siteUrl;
+    if(navigator.share){
+        try{
+            await navigator.share({
+                title: title,
+                text: getText('shareSiteMessage'),
+                url: siteUrl
+            });
+            return;
+        }catch(err){
+            if(err && err.name === 'AbortError') return;
+        }
+    }
+    try{
+        if(navigator.clipboard && navigator.clipboard.writeText){
+            await navigator.clipboard.writeText(siteUrl);
+            if(btn){
+                const orig = btn.innerHTML;
+                btn.classList.add('copied');
+                btn.innerHTML = '<i class="fas fa-check"></i> ' + getText('shareSiteCopied');
+                setTimeout(()=>{ btn.classList.remove('copied'); btn.innerHTML = orig; }, 2200);
+            }
+        }
+    }catch(e){ /* ignore */ }
+    setTimeout(()=>{
+        window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+    }, 500);
+}
+
+function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV25', JSON.stringify(recData)); }catch(e){} }
 function loadRecord(){
     let loaded = false;
     try{
-        const raw = localStorage.getItem('zakatRecordDataV24') || localStorage.getItem('zakatRecordDataV23');
+        const raw = localStorage.getItem('zakatRecordDataV25') || localStorage.getItem('zakatRecordDataV24') || localStorage.getItem('zakatRecordDataV23');
         if(raw){
             const d = JSON.parse(raw);
             if(d && Array.isArray(d.names)){
@@ -2108,7 +2105,7 @@ function resetRecord(){
 function backupBeforeReset(){
     const ar = currentLang==='ar';
     try{
-        const backup = {type:'zakat-full-backup', version:6, exportedAt:new Date().toISOString(), record: recData};
+        const backup = {type:'zakat-full-backup', version:7, exportedAt:new Date().toISOString(), record: recData};
         const blob = new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href=url; a.download='zakat-backup-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2155,7 +2152,7 @@ function backupYearBeforeDelete(){
     if(!pendingYearDelete) return;
     const ar = currentLang==='ar';
     try{
-        const backup = {type:'zakat-full-backup', version:6, exportedAt:new Date().toISOString(), record: recData};
+        const backup = {type:'zakat-full-backup', version:7, exportedAt:new Date().toISOString(), record: recData};
         const blob = new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href=url; a.download='zakat-backup-year-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2260,7 +2257,6 @@ function renderNames(){
     });
 }
 
-/* ==================== الأحداث ==================== */
 (function bindRecordEvents(){
     const nl = document.getElementById('namesList');
     if(nl){
@@ -2384,7 +2380,6 @@ function renderNames(){
     }
 })();
 
-/* ==================== التهيئة ==================== */
 window.onload = function(){
     try{ const s = localStorage.getItem('zakatSilverEqEnabled'); if(s!==null){ silverEqEnabled = s==='1'; } }catch(e){}
     loadRecord();
@@ -2413,7 +2408,6 @@ async function fetchGoldPrices(){
     }catch(e){ console.warn('API failed, using defaults'); }
 }
 
-/* ==================== إضافات ==================== */
 function toggleTheme(){
     const cur = document.documentElement.getAttribute('data-theme')||'light';
     const tgt = cur==='dark'?'light':'dark';
@@ -2469,7 +2463,7 @@ function addYearToName(nameId, year){
 
 function exportAllData(){
     try{
-        const data = {version:6, exportedAt:new Date().toISOString(), record: recData};
+        const data = {version:7, exportedAt:new Date().toISOString(), record: recData};
         const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href=url; a.download='zakat-data-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2547,6 +2541,7 @@ function applyLanguage(){
     const nmmT = document.getElementById('nmmTitle'); if(nmmT) nmmT.textContent = t.nmmTitle;
     const nmmH = document.getElementById('nmmHint'); if(nmmH) nmmH.textContent = t.nmmHint;
     const nmmD = document.getElementById('nmmDoneText'); if(nmmD) nmmD.textContent = t.nmmDoneText;
+    const ssb = document.getElementById('shareSiteBtnText'); if(ssb) ssb.textContent = t.shareSiteBtnText;
     document.dir = currentLang==='ar'?'rtl':'ltr';
     document.documentElement.lang = currentLang;
     refreshRecord();
@@ -2572,7 +2567,6 @@ document.addEventListener('keydown', function(e){
     }
 });
 
-/* Expose to window */
 window.toggleAccordion = toggleAccordion;
 window.openNamesModal = openNamesModal;
 window.closeNamesModal = closeNamesModal;
@@ -2621,6 +2615,7 @@ window.confirmResetRecord = confirmResetRecord;
 window.cancelResetRecord = cancelResetRecord;
 window.onDistTotalCurrencyChange = onDistTotalCurrencyChange;
 window.onHelpTotalCurrencyChange = onHelpTotalCurrencyChange;
+window.shareWebsite = shareWebsite;
 </script>
 </body>
 </html>
