@@ -182,15 +182,12 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 .inv-row.hawl-incomplete .iv-name-select,.inv-row.hawl-incomplete .iv-year,.inv-row.hawl-incomplete .iv-name,.inv-row.hawl-incomplete .iv-value,
 .metal-row.hawl-incomplete .gw-name-select,.metal-row.hawl-incomplete .gw-year,.metal-row.hawl-incomplete .gw-carat,.metal-row.hawl-incomplete .gw-weight{opacity:.45;pointer-events:none;background:var(--bg-body)}
 
-.totals-bar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding:12px 16px;background:var(--bg-body);border-radius:12px;border:2px solid var(--gold);margin-bottom:14px;font-weight:bold;font-size:calc(.9rem*var(--font-scale))}
-.totals-bar .tb-item{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:var(--bg-card);border:1px solid var(--border-color)}
-.totals-bar .tb-item.bhd{color:var(--green);border-color:var(--success)}
-.totals-bar .tb-item.foreign{color:var(--gold);border-color:var(--gold)}
-.totals-bar select{width:auto;padding:6px 12px;font-size:calc(.82rem*var(--font-scale));border-radius:20px;font-weight:bold;background:var(--bg-card);border:1px solid var(--gold);color:var(--gold);max-width:200px}
-.totals-bar .tb-eq{color:var(--text-sub);font-size:calc(.85rem*var(--font-scale))}
-
 .person-actions{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
 .person-actions .btn-print,.person-actions .btn-whatsapp{padding:5px 12px!important;font-size:calc(.72rem*var(--font-scale))!important;margin:0!important}
+
+.currency-field{display:flex;align-items:stretch;width:100%}
+.currency-field input{flex:1;border-radius:8px 0 0 8px!important;border-right:none!important;text-align:center}
+.currency-field .curr-suffix{padding:6px 8px;background:var(--badge-bg);color:var(--gold);border:1px solid var(--input-border);border-radius:0 8px 8px 0;font-weight:bold;font-size:calc(.72rem*var(--font-scale));white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;min-width:52px;font-family:inherit}
 
 @media (max-width:600px){
     .container{padding:12px}
@@ -202,8 +199,8 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
     .compact-field{flex:1 1 100%;max-width:100%}
     .compact-select{max-width:100%}
     .names-manage-modal .nmm-box{padding:18px 14px}
-    .totals-bar{flex-direction:column;align-items:stretch;text-align:center}
     .person-actions{width:100%;justify-content:flex-start}
+    .currency-field .curr-suffix{min-width:44px;font-size:calc(.68rem*var(--font-scale))}
 }
 </style>
 </head>
@@ -429,13 +426,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 <div class="section">
 <h2 id="recTitleDist"><i class="fas fa-hand-holding-heart"></i> توزيع الزكاة</h2>
 
-<div class="totals-bar">
-<span class="tb-item bhd">💰 <span id="lblDistTotalBHD">إجمالي الدينار:</span> <strong id="distTotalBHD">0.000 د.ب</strong></span>
-<span class="tb-eq">|</span>
-<span class="tb-item foreign">🌍 <strong id="distTotalForeign">0.00</strong></span>
-<select id="distTotalCurrency" onchange="onDistTotalCurrencyChange()"></select>
-</div>
-
 <div class="add-bar">
 <div class="field" style="flex:0 0 200px;max-width:200px;min-width:0;">
 <label id="lblDistPerson"><i class="fas fa-user"></i> الشخص</label>
@@ -483,13 +473,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 </div>
 </div>
 <div class="note" style="margin-bottom:10px;" id="noteHelp">قسم مستقل - يعتمد على الأسماء من قسم "إضافة الأسماء والسنوات". لكل شخص زر طباعة ومشاركة خاص.</div>
-
-<div class="totals-bar">
-<span class="tb-item bhd">💰 <span id="lblHelpTotal2">إجمالي الدينار:</span> <strong id="helpTotal">0.000 د.ب</strong></span>
-<span class="tb-eq">|</span>
-<span class="tb-item foreign">🌍 <strong id="helpTotalForeign">0.00</strong></span>
-<select id="helpTotalCurrency" onchange="onHelpTotalCurrencyChange()"></select>
-</div>
 
 <div class="add-bar">
 <div class="field" style="flex:0 0 200px;max-width:200px;min-width:0;">
@@ -812,8 +795,7 @@ const CURRENCIES = [
     {code:'OTHER',ar:'أخرى',          en:'Other',          sym:''}
 ];
 
-let distTotalCurrency = 'INR';
-let helpTotalCurrency = 'INR';
+const DEFAULT_CURRENCY = 'INR';
 
 function currSymbol(code){
     const c = CURRENCIES.find(x=>x.code===code);
@@ -827,43 +809,9 @@ function currLabel(code){
 function buildCurrencyOptions(selected){
     return CURRENCIES.map(c=>'<option value="'+c.code+'"'+(c.code===selected?' selected':'')+'>'+c.code+' - '+(currentLang==='ar'?c.ar:c.en)+'</option>').join('');
 }
-function fmtAmountForeign(amount, code){
-    const num = parseFloat(amount)||0;
-    const dec = (code==='BHD'||code==='KWD'||code==='OMR') ? 3 : 2;
+function currDisplayLabel(code){
     const sym = currSymbol(code);
-    return num.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec}) + (sym?' '+sym:'');
-}
-function onDistTotalCurrencyChange(){
-    const sel = document.getElementById('distTotalCurrency');
-    if(sel) distTotalCurrency = sel.value;
-    updateDistTotals();
-}
-function onHelpTotalCurrencyChange(){
-    const sel = document.getElementById('helpTotalCurrency');
-    if(sel) helpTotalCurrency = sel.value;
-    updateHelpTotals();
-}
-function updateDistTotals(){
-    let totalBHD = 0, totalForeign = 0;
-    recData.distributions.forEach(d=>{
-        totalBHD += parseFloat(d.amount)||0;
-        totalForeign += parseFloat(d.amountForeign)||0;
-    });
-    const elBHD = document.getElementById('distTotalBHD');
-    if(elBHD) elBHD.textContent = fmtMoneyC(totalBHD);
-    const elF = document.getElementById('distTotalForeign');
-    if(elF) elF.textContent = fmtAmountForeign(totalForeign, distTotalCurrency);
-}
-function updateHelpTotals(){
-    let totalBHD = 0, totalForeign = 0;
-    recData.help.forEach(h=>{
-        totalBHD += parseFloat(h.amount)||0;
-        totalForeign += parseFloat(h.amountForeign)||0;
-    });
-    const elBHD = document.getElementById('helpTotal');
-    if(elBHD) elBHD.textContent = fmtMoneyC(totalBHD);
-    const elF = document.getElementById('helpTotalForeign');
-    if(elF) elF.textContent = fmtAmountForeign(totalForeign, helpTotalCurrency);
+    return code + (sym ? ' ' + sym : '');
 }
 
 function checkHawlComplete(item){
@@ -1293,28 +1241,15 @@ function getPersonLatestYearData(nameId){
     const years = Array.from(yearsSet).sort((a,b)=>Number(b)-Number(a));
     const lastYear = years[0]||'';
     let metalsTotal=0, goldWearTotal=0, bankTotal=0, invTotal=0;
-    let metalsZakat=0, goldWearZakat=0, banksZakat=0, invZakat=0;
     if(lastYear){
         pMetals.filter(m=>String(m.year)===lastYear).forEach(m=>{
-            const w = parseFloat(m.weight)||0, p = parseFloat(m.price)||0;
-            metalsTotal += w*p;
-            metalsZakat += silverEqEnabled?computeMetalZakatFlexible(m):computeMetalZakat(m);
+            metalsTotal += (parseFloat(m.weight)||0)*(parseFloat(m.price)||0);
         });
         pGoldWear.filter(g=>String(g.year)===lastYear).forEach(g=>{
-            const w = parseFloat(g.weight)||0, p = parseFloat(g.price)||0;
-            goldWearTotal += w*p;
-            goldWearZakat += silverEqEnabled?computeGoldWearZakatFlexible(g):computeGoldWearZakat(g);
+            goldWearTotal += (parseFloat(g.weight)||0)*(parseFloat(g.price)||0);
         });
-        pBanks.filter(b=>String(b.year)===lastYear).forEach(b=>{
-            const amt = parseFloat(b.amount)||0;
-            bankTotal += amt;
-            if(checkHawlComplete(b)) banksZakat += amt/40;
-        });
-        pInv.filter(x=>String(x.year)===lastYear).forEach(x=>{
-            const v = parseFloat(x.value)||0;
-            invTotal += v;
-            if(checkHawlComplete(x)) invZakat += v/40;
-        });
+        pBanks.filter(b=>String(b.year)===lastYear).forEach(b=>{ bankTotal += parseFloat(b.amount)||0; });
+        pInv.filter(x=>String(x.year)===lastYear).forEach(x=>{ invTotal += parseFloat(x.value)||0; });
     }
     const grand = metalsTotal + goldWearTotal + bankTotal + invTotal;
     const nisabType = n?n.nisabType:'silver';
@@ -1514,7 +1449,7 @@ function addDistributionWithPersonYear(){
     recData.distributions.push({
         id: recData.seq++, nameId: nameId, year: year,
         date:'', recipient:'', region:'bh', amount:'', amountForeign:'',
-        currency: distTotalCurrency || 'INR',
+        currency: DEFAULT_CURRENCY,
         received:false, note:''
     });
     expandedDistPersons[nameId] = true;
@@ -1539,7 +1474,6 @@ function renderDist(){
     container.innerHTML = '';
     if(recData.names.length===0){
         container.innerHTML = '<div style="color:var(--text-sub);padding:14px;text-align:center;">'+getText('addNameFirst')+'</div>';
-        updateDistTotals();
         return;
     }
     let hasAny = false;
@@ -1548,7 +1482,6 @@ function renderDist(){
         if(personDists.length===0) return;
         hasAny = true;
         const personTotalBHD = personDists.reduce((s,d)=>s+(parseFloat(d.amount)||0),0);
-        const personTotalForeign = personDists.reduce((s,d)=>s+(parseFloat(d.amountForeign)||0),0);
         const isPersonOpen = !!expandedDistPersons[n.id];
         const personRow = document.createElement('div');
         personRow.className = 'year-row-collapsible';
@@ -1556,7 +1489,7 @@ function renderDist(){
         personRow.onclick = function(e){ if(e.target.closest('button,input,select,a,label')) return; toggleDistPerson(n.id); };
         personRow.innerHTML =
             '<span class="year-title"><span style="display:inline-block;width:26px;height:26px;line-height:24px;text-align:center;border-radius:50%;background:var(--green);color:#fff;font-weight:bold;font-size:1.1rem;">'+(isPersonOpen?'×':'+')+'</span>👤 '+escapeAttr(n.name||'—')+'</span>'+
-            '<span class="year-total-mini">💰 '+fmtMoneyC(personTotalBHD)+(personTotalForeign>0?' | 🌍 '+fmtAmountForeign(personTotalForeign, distTotalCurrency):'')+'</span>';
+            '<span class="year-total-mini">💰 '+fmtMoneyC(personTotalBHD)+'</span>';
         container.appendChild(personRow);
         if(isPersonOpen){
             const yearsMap = {};
@@ -1573,7 +1506,6 @@ function renderDist(){
             yearKeys.forEach(yearKey=>{
                 const yearDists = yearsMap[yearKey];
                 const yearTotalBHD = yearDists.reduce((s,d)=>s+(parseFloat(d.amount)||0),0);
-                const yearTotalF = yearDists.reduce((s,d)=>s+(parseFloat(d.amountForeign)||0),0);
                 const yKey = n.id+'_'+yearKey;
                 const isYearOpen = !!expandedDistYears[yKey];
                 const yearLabel = yearKey==='noYear'?getText('noYearLabel'):yearKey;
@@ -1583,7 +1515,7 @@ function renderDist(){
                 yearRow.onclick = function(e){ if(e.target.closest('button,input,select,a,label')) return; toggleDistYear(n.id, yearKey); };
                 yearRow.innerHTML =
                     '<span class="year-title"><span style="display:inline-block;width:24px;height:24px;line-height:22px;text-align:center;border-radius:50%;background:var(--gold);color:#fff;font-weight:bold;font-size:1rem;">'+(isYearOpen?'×':'+')+'</span>📅 '+yearLabel+'</span>'+
-                    '<span class="year-total-mini">💰 '+fmtMoneyC(yearTotalBHD)+(yearTotalF>0?' | 🌍 '+fmtAmountForeign(yearTotalF, distTotalCurrency):'')+'</span>';
+                    '<span class="year-total-mini">💰 '+fmtMoneyC(yearTotalBHD)+'</span>';
                 container.appendChild(yearRow);
                 if(isYearOpen){
                     const wrap = document.createElement('div');
@@ -1598,7 +1530,6 @@ function renderDist(){
     if(!hasAny){
         container.innerHTML = '<div style="color:var(--text-sub);padding:14px;text-align:center;">'+getText('noDistributions')+'</div>';
     }
-    updateDistTotals();
     renderSummary();
 }
 function buildDistTableHtml(dists){
@@ -1610,8 +1541,8 @@ function buildDistTableHtml(dists){
         '<th>'+getText('thDsRecipient')+'</th>'+
         '<th>'+getText('thDsRegion')+'</th>'+
         '<th>'+getText('thDsYear')+'</th>'+
-        '<th>'+getText('thDsCurrency')+'</th>'+
         '<th>'+getText('thDsAmountBHD')+'</th>'+
+        '<th>'+getText('thDsCurrency')+'</th>'+
         '<th>'+getText('thDsAmountForeign')+'</th>'+
         '<th>'+getText('thDsReceived')+'</th>'+
         '<th>'+getText('thDsNote')+'</th>'+
@@ -1619,7 +1550,8 @@ function buildDistTableHtml(dists){
         '</tr></thead><tbody>';
     dists.forEach(d=>{
         const regionOpts = REGIONS.map(g=>'<option value="'+g.v+'"'+(d.region===g.v?' selected':'')+'>'+regionLabel(g.v)+'</option>').join('');
-        const curr = d.currency || 'INR';
+        const curr = d.currency || DEFAULT_CURRENCY;
+        const currBadge = currDisplayLabel(curr);
         let yearOpts = '<option value="">'+getText('noYearLabel')+'</option>' +
             availYears.map(y=>'<option value="'+y+'"'+(String(d.year)===String(y)?' selected':'')+'>'+y+'</option>').join('');
         if(d.year && !availYears.map(String).includes(String(d.year))){
@@ -1631,9 +1563,12 @@ function buildDistTableHtml(dists){
             '<td><input type="text" class="ds-recipient" value="'+escapeAttr(d.recipient)+'" placeholder="'+getText('recipient')+'"/></td>'+
             '<td><select class="ds-region">'+regionOpts+'</select></td>'+
             '<td><select class="ds-year">'+yearOpts+'</select></td>'+
-            '<td><select class="ds-currency">'+currencyOpts+'</select></td>'+
             '<td><input type="number" step="0.001" class="ds-amount" value="'+escapeAttr(d.amount)+'" placeholder="0.000"/></td>'+
-            '<td><input type="number" step="0.001" class="ds-amount-foreign" value="'+escapeAttr(d.amountForeign)+'" placeholder="0.000"/></td>'+
+            '<td><select class="ds-currency">'+currencyOpts+'</select></td>'+
+            '<td><div class="currency-field">'+
+                '<input type="number" step="0.001" class="ds-amount-foreign" value="'+escapeAttr(d.amountForeign)+'" placeholder="0.00"/>'+
+                '<span class="curr-suffix" title="'+escapeAttr(currLabel(curr))+'">'+escapeAttr(currBadge)+'</span>'+
+            '</div></td>'+
             '<td><input type="checkbox" class="ds-received"'+(d.received?' checked':'')+'/></td>'+
             '<td><input type="text" class="ds-note" value="'+escapeAttr(d.note)+'" placeholder="—"/></td>'+
             '<td><button class="rec-del" onclick="removeDistribution('+d.id+')">✕</button></td>'+
@@ -1663,7 +1598,7 @@ function addHelpWithPersonYear(){
     recData.help.push({
         id: recData.seq++, nameId: nameId, year: year,
         date:'', recipient:'', region:'bh', amount:'', amountForeign:'',
-        currency: helpTotalCurrency || 'INR',
+        currency: DEFAULT_CURRENCY,
         received:false, note:''
     });
     expandedHelpPersons[nameId] = true;
@@ -1688,7 +1623,6 @@ function renderHelp(){
     container.innerHTML = '';
     if(recData.names.length===0){
         container.innerHTML = '<div style="color:var(--text-sub);padding:14px;text-align:center;">'+getText('addNameFirst')+'</div>';
-        updateHelpTotals();
         return;
     }
     let hasAny = false;
@@ -1697,7 +1631,6 @@ function renderHelp(){
         if(personHelp.length===0) return;
         hasAny = true;
         const personTotalBHD = personHelp.reduce((s,h)=>s+(parseFloat(h.amount)||0),0);
-        const personTotalF = personHelp.reduce((s,h)=>s+(parseFloat(h.amountForeign)||0),0);
         const isPersonOpen = !!expandedHelpPersons[n.id];
         const personRow = document.createElement('div');
         personRow.className = 'year-row-collapsible';
@@ -1710,7 +1643,7 @@ function renderHelp(){
                     '<button class="btn-print" onclick="event.stopPropagation();printHelpPerson('+n.id+')" title="'+getText('btnHelpPersonPrint')+'"><i class="fas fa-print"></i> '+getText('btnHelpPersonPrint')+'</button>'+
                     '<button class="btn-whatsapp" onclick="event.stopPropagation();shareHelpPersonWhatsApp('+n.id+',this)" title="'+getText('btnHelpPersonShare')+'"><i class="fab fa-whatsapp"></i> '+getText('btnHelpPersonShare')+'</button>'+
                 '</span>'+
-                '<span class="year-total-mini">💰 '+fmtMoneyC(personTotalBHD)+(personTotalF>0?' | 🌍 '+fmtAmountForeign(personTotalF, helpTotalCurrency):'')+'</span>'+
+                '<span class="year-total-mini">💰 '+fmtMoneyC(personTotalBHD)+'</span>'+
             '</span>';
         container.appendChild(personRow);
         if(isPersonOpen){
@@ -1728,7 +1661,6 @@ function renderHelp(){
             yearKeys.forEach(yearKey=>{
                 const yearItems = yearsMap[yearKey];
                 const yearTotalBHD = yearItems.reduce((s,h)=>s+(parseFloat(h.amount)||0),0);
-                const yearTotalF = yearItems.reduce((s,h)=>s+(parseFloat(h.amountForeign)||0),0);
                 const yKey = n.id+'_'+yearKey;
                 const isYearOpen = !!expandedHelpYears[yKey];
                 const yearLabel = yearKey==='noYear'?getText('noYearLabel'):yearKey;
@@ -1738,7 +1670,7 @@ function renderHelp(){
                 yearRow.onclick = function(e){ if(e.target.closest('button,input,select,a,label')) return; toggleHelpYear(n.id, yearKey); };
                 yearRow.innerHTML =
                     '<span class="year-title"><span style="display:inline-block;width:24px;height:24px;line-height:22px;text-align:center;border-radius:50%;background:var(--gold);color:#fff;font-weight:bold;font-size:1rem;">'+(isYearOpen?'×':'+')+'</span>📅 '+yearLabel+'</span>'+
-                    '<span class="year-total-mini">💰 '+fmtMoneyC(yearTotalBHD)+(yearTotalF>0?' | 🌍 '+fmtAmountForeign(yearTotalF, helpTotalCurrency):'')+'</span>';
+                    '<span class="year-total-mini">💰 '+fmtMoneyC(yearTotalBHD)+'</span>';
                 container.appendChild(yearRow);
                 if(isYearOpen){
                     const wrap = document.createElement('div');
@@ -1753,7 +1685,6 @@ function renderHelp(){
     if(!hasAny){
         container.innerHTML = '<div style="color:var(--text-sub);padding:14px;text-align:center;">'+getText('noHelp')+'</div>';
     }
-    updateHelpTotals();
 }
 function buildHelpTableHtml(items){
     const nameId = items[0].nameId;
@@ -1764,8 +1695,8 @@ function buildHelpTableHtml(items){
         '<th>'+getText('thHpRecipient')+'</th>'+
         '<th>'+getText('thHpRegion')+'</th>'+
         '<th>'+getText('thDsYear')+'</th>'+
-        '<th>'+getText('thDsCurrency')+'</th>'+
         '<th>'+getText('thDsAmountBHD')+'</th>'+
+        '<th>'+getText('thDsCurrency')+'</th>'+
         '<th>'+getText('thDsAmountForeign')+'</th>'+
         '<th>'+getText('thHpReceived')+'</th>'+
         '<th>'+getText('thHpNote')+'</th>'+
@@ -1773,7 +1704,8 @@ function buildHelpTableHtml(items){
         '</tr></thead><tbody>';
     items.forEach(h=>{
         const regionOpts = REGIONS.map(g=>'<option value="'+g.v+'"'+(h.region===g.v?' selected':'')+'>'+regionLabel(g.v)+'</option>').join('');
-        const curr = h.currency || 'INR';
+        const curr = h.currency || DEFAULT_CURRENCY;
+        const currBadge = currDisplayLabel(curr);
         let yearOpts = '<option value="">'+getText('noYearLabel')+'</option>' +
             availYears.map(y=>'<option value="'+y+'"'+(String(h.year)===String(y)?' selected':'')+'>'+y+'</option>').join('');
         if(h.year && !availYears.map(String).includes(String(h.year))){
@@ -1785,9 +1717,12 @@ function buildHelpTableHtml(items){
             '<td><input type="text" class="hp-recipient" value="'+escapeAttr(h.recipient)+'" placeholder="'+getText('recipient')+'"/></td>'+
             '<td><select class="hp-region">'+regionOpts+'</select></td>'+
             '<td><select class="hp-year">'+yearOpts+'</select></td>'+
-            '<td><select class="hp-currency">'+currencyOpts+'</select></td>'+
             '<td><input type="number" step="0.001" class="hp-amount" value="'+escapeAttr(h.amount)+'" placeholder="0.000"/></td>'+
-            '<td><input type="number" step="0.001" class="hp-amount-foreign" value="'+escapeAttr(h.amountForeign)+'" placeholder="0.000"/></td>'+
+            '<td><select class="hp-currency">'+currencyOpts+'</select></td>'+
+            '<td><div class="currency-field">'+
+                '<input type="number" step="0.001" class="hp-amount-foreign" value="'+escapeAttr(h.amountForeign)+'" placeholder="0.00"/>'+
+                '<span class="curr-suffix" title="'+escapeAttr(currLabel(curr))+'">'+escapeAttr(currBadge)+'</span>'+
+            '</div></td>'+
             '<td><input type="checkbox" class="hp-received"'+(h.received?' checked':'')+'/></td>'+
             '<td><input type="text" class="hp-note" value="'+escapeAttr(h.note)+'" placeholder="—"/></td>'+
             '<td><button class="rec-del" onclick="removeHelp('+h.id+')">✕</button></td>'+
@@ -1883,7 +1818,7 @@ function buildFullReportHtml(nameId){
         const z = checkHawlComplete(x)?(parseFloat(x.value)||0)/40:0;
         return '<tr><td style="font-size:11px;">'+(x.hawlStart||'—')+' → '+(x.hawlEnd||'—')+'</td><td>'+escapeAttr(x.name||'—')+'</td><td>'+escapeAttr(x.year)+'</td><td>'+fmtMoney(x.value)+'</td><td>'+fmtMoney(z)+'</td></tr>';
     }).join('') || '<tr><td colspan="5" style="text-align:center;color:#999;">لا توجد استثمارات</td></tr>';
-    const distRows = dists.map(d=>'<tr><td>'+escapeAttr(d.date)+'</td><td>'+escapeAttr(d.recipient)+'</td><td>'+regionLabel(d.region)+'</td><td>'+escapeAttr(d.year||'—')+'</td><td>'+escapeAttr(d.currency||'')+'</td><td>'+fmtMoney(d.amount)+'</td><td>'+escapeAttr(d.amountForeign||'')+'</td><td>'+(d.received?'✅':'⏳')+'</td></tr>').join('') || '<tr><td colspan="8" style="text-align:center;color:#999;">لا يوجد مستفيدون</td></tr>';
+    const distRows = dists.map(d=>'<tr><td>'+escapeAttr(d.date)+'</td><td>'+escapeAttr(d.recipient)+'</td><td>'+regionLabel(d.region)+'</td><td>'+escapeAttr(d.year||'—')+'</td><td>'+fmtMoney(d.amount)+'</td><td>'+escapeAttr(d.currency||'')+'</td><td>'+escapeAttr(d.amountForeign||'')+'</td><td>'+(d.received?'✅':'⏳')+'</td></tr>').join('') || '<tr><td colspan="8" style="text-align:center;color:#999;">لا يوجد مستفيدون</td></tr>';
     return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>تقرير الزكاة - '+escapeAttr(n.name)+'</title><style>'+REPORT_STYLES+'</style></head><body>'+
     buildReportHead('تقرير الزكاة السنوي الشامل')+
     '<div class="info-bar"><div><strong>الاسم:</strong> '+escapeAttr(n.name||'—')+'</div><div><strong>آخر سنة:</strong> '+(tot.lastYear||'—')+'</div><div><strong>النصاب:</strong> '+fmtMoney2(tot.personNisab)+' '+currency+'</div><div><strong>التاريخ:</strong> '+new Date().toLocaleDateString('ar-BH')+'</div></div>'+
@@ -1891,7 +1826,7 @@ function buildFullReportHtml(nameId){
     '<h2>2. الذهب الملبوس</h2><table><thead><tr><th>الحول</th><th>العيار</th><th>السنة</th><th>الوزن</th><th>السعر</th><th>الإجمالي</th><th>الزكاة</th></tr></thead><tbody>'+gwRows+'</tbody><tfoot><tr class="total-row"><td colspan="5">المجموع</td><td>'+fmtMoney(tot.goldWearTotal)+'</td><td>'+fmtMoney(gz)+'</td></tr></tfoot></table>'+
     '<h2>3. البنوك</h2><table><thead><tr><th>الحول</th><th>السنة</th><th>المبلغ</th><th>الزكاة</th></tr></thead><tbody>'+banksRows+'</tbody></table>'+
     '<h2>4. الاستثمارات</h2><table><thead><tr><th>الحول</th><th>الاسم</th><th>السنة</th><th>القيمة</th><th>الزكاة</th></tr></thead><tbody>'+invRows+'</tbody></table>'+
-    '<h2>5. توزيع الزكاة</h2><table><thead><tr><th>التاريخ</th><th>المستفيد</th><th>الجهة</th><th>السنة</th><th>العملة</th><th>المبلغ د.ب</th><th>المبلغ بالعملة</th><th>استلم؟</th></tr></thead><tbody>'+distRows+'</tbody></table>'+
+    '<h2>5. توزيع الزكاة</h2><table><thead><tr><th>التاريخ</th><th>المستفيد</th><th>الجهة</th><th>السنة</th><th>مبلغ الدينار</th><th>العملة</th><th>المبلغ بالعملة</th><th>استلم؟</th></tr></thead><tbody>'+distRows+'</tbody></table>'+
     '<h2>6. الملخص النهائي</h2><div class="summary-cards">'+
     '<div class="sum-card"><div class="lbl">إجمالي المعادن</div><div class="val">'+fmtMoney(tot.metalsTotal)+'</div></div>'+
     '<div class="sum-card"><div class="lbl">إجمالي الذهب الملبوس</div><div class="val">'+fmtMoney(tot.goldWearTotal)+'</div></div>'+
@@ -1907,13 +1842,13 @@ function buildFullReportHtml(nameId){
 function buildHelpReportHtml(){
     const currency = getText('currency');
     const list = recData.help;
-    const rows = list.map(h=>'<tr><td>'+escapeAttr(h.date)+'</td><td>'+escapeAttr(h.recipient)+'</td><td>'+regionLabel(h.region)+'</td><td>'+escapeAttr(h.year||'')+'</td><td>'+escapeAttr(h.currency||'')+'</td><td>'+fmtMoney(h.amount)+'</td><td>'+escapeAttr(h.amountForeign||'')+'</td><td>'+(h.received?'✅':'⏳')+'</td></tr>').join('') || '<tr><td colspan="8" style="text-align:center;color:#999;">لا يوجد مستفيدون</td></tr>';
+    const rows = list.map(h=>'<tr><td>'+escapeAttr(h.date)+'</td><td>'+escapeAttr(h.recipient)+'</td><td>'+regionLabel(h.region)+'</td><td>'+escapeAttr(h.year||'')+'</td><td>'+fmtMoney(h.amount)+'</td><td>'+escapeAttr(h.currency||'')+'</td><td>'+escapeAttr(h.amountForeign||'')+'</td><td>'+(h.received?'✅':'⏳')+'</td></tr>').join('') || '<tr><td colspan="8" style="text-align:center;color:#999;">لا يوجد مستفيدون</td></tr>';
     const total = list.reduce((s,h)=>s+(parseFloat(h.amount)||0),0);
     const totalRecv = list.reduce((s,h)=>s+(h.received?(parseFloat(h.amount)||0):0),0);
     return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>تقرير زكاة</title><style>'+REPORT_STYLES+'</style></head><body>'+
     buildReportHead('زكاة')+
     '<div class="info-bar"><div><strong>التاريخ:</strong> '+new Date().toLocaleDateString('ar-BH')+'</div></div>'+
-    '<table><thead><tr><th>التاريخ</th><th>المستفيد</th><th>الجهة</th><th>السنة</th><th>العملة</th><th>المبلغ د.ب</th><th>المبلغ بالعملة</th><th>استلم؟</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+    '<table><thead><tr><th>التاريخ</th><th>المستفيد</th><th>الجهة</th><th>السنة</th><th>مبلغ الدينار</th><th>العملة</th><th>المبلغ بالعملة</th><th>استلم؟</th></tr></thead><tbody>'+rows+'</tbody></table>'+
     '<div class="summary-cards"><div class="sum-card"><div class="lbl">عدد المستفيدين</div><div class="val">'+list.length+'</div></div><div class="sum-card"><div class="lbl">تم استلامه</div><div class="val">'+fmtMoney(totalRecv)+'</div></div><div class="zakat-final"><div class="lbl">إجمالي الزكاة الموزّعة</div><div class="val">'+fmtMoney(total)+' '+currency+'</div></div></div>'+
     '<div class="footer">حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div></body></html>';
 }
@@ -1958,8 +1893,8 @@ function buildHelpPersonReportHtml(nameId){
                 '<td>'+escapeAttr(h.recipient||'—')+'</td>'+
                 '<td>'+regionLabel(h.region)+'</td>'+
                 '<td>'+escapeAttr(h.year||'—')+'</td>'+
-                '<td>'+escapeAttr(cur)+'</td>'+
                 '<td>'+fmtMoney(amt)+'</td>'+
+                '<td>'+escapeAttr(cur)+'</td>'+
                 '<td>'+escapeAttr(amtF>0?amtF.toFixed(2):'—')+'</td>'+
                 '<td>'+(h.received?'✅':'⏳')+'</td>'+
                 '<td>'+escapeAttr(h.note||'—')+'</td>'+
@@ -1983,8 +1918,8 @@ function buildHelpPersonReportHtml(nameId){
         '<th>المستفيد</th>'+
         '<th>الجهة</th>'+
         '<th>السنة</th>'+
+        '<th>مبلغ الدينار</th>'+
         '<th>العملة</th>'+
-        '<th>المبلغ (د.ب)</th>'+
         '<th>المبلغ بالعملة</th>'+
         '<th>استلم؟</th>'+
         '<th>ملاحظات</th>'+
@@ -2024,15 +1959,9 @@ async function shareWebsite(ev){
     const text = getText('shareSiteMessage') + '\n' + siteUrl;
     if(navigator.share){
         try{
-            await navigator.share({
-                title: title,
-                text: getText('shareSiteMessage'),
-                url: siteUrl
-            });
+            await navigator.share({ title: title, text: getText('shareSiteMessage'), url: siteUrl });
             return;
-        }catch(err){
-            if(err && err.name === 'AbortError') return;
-        }
+        }catch(err){ if(err && err.name === 'AbortError') return; }
     }
     try{
         if(navigator.clipboard && navigator.clipboard.writeText){
@@ -2045,16 +1974,14 @@ async function shareWebsite(ev){
             }
         }
     }catch(e){ /* ignore */ }
-    setTimeout(()=>{
-        window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
-    }, 500);
+    setTimeout(()=>{ window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank'); }, 500);
 }
 
-function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV25', JSON.stringify(recData)); }catch(e){} }
+function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV27', JSON.stringify(recData)); }catch(e){} }
 function loadRecord(){
     let loaded = false;
     try{
-        const raw = localStorage.getItem('zakatRecordDataV25') || localStorage.getItem('zakatRecordDataV24') || localStorage.getItem('zakatRecordDataV23');
+        const raw = localStorage.getItem('zakatRecordDataV27') || localStorage.getItem('zakatRecordDataV26') || localStorage.getItem('zakatRecordDataV25') || localStorage.getItem('zakatRecordDataV24') || localStorage.getItem('zakatRecordDataV23');
         if(raw){
             const d = JSON.parse(raw);
             if(d && Array.isArray(d.names)){
@@ -2105,7 +2032,7 @@ function resetRecord(){
 function backupBeforeReset(){
     const ar = currentLang==='ar';
     try{
-        const backup = {type:'zakat-full-backup', version:7, exportedAt:new Date().toISOString(), record: recData};
+        const backup = {type:'zakat-full-backup', version:9, exportedAt:new Date().toISOString(), record: recData};
         const blob = new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href=url; a.download='zakat-backup-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2152,7 +2079,7 @@ function backupYearBeforeDelete(){
     if(!pendingYearDelete) return;
     const ar = currentLang==='ar';
     try{
-        const backup = {type:'zakat-full-backup', version:7, exportedAt:new Date().toISOString(), record: recData};
+        const backup = {type:'zakat-full-backup', version:9, exportedAt:new Date().toISOString(), record: recData};
         const blob = new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href=url; a.download='zakat-backup-year-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2351,11 +2278,11 @@ function renderNames(){
             if(t.classList.contains('ds-date')){ d.date = t.value; saveRecord(); }
             else if(t.classList.contains('ds-recipient')){ d.recipient = t.value; saveRecord(); }
             else if(t.classList.contains('ds-region')){ d.region = t.value; saveRecord(); }
-            else if(t.classList.contains('ds-amount')){ d.amount = t.value; saveRecord(); updateDistTotals(); }
-            else if(t.classList.contains('ds-amount-foreign')){ d.amountForeign = t.value; saveRecord(); updateDistTotals(); }
+            else if(t.classList.contains('ds-amount')){ d.amount = t.value; saveRecord(); }
+            else if(t.classList.contains('ds-amount-foreign')){ d.amountForeign = t.value; saveRecord(); }
             else if(t.classList.contains('ds-received')){ d.received = t.checked; saveRecord(); }
             else if(t.classList.contains('ds-note')){ d.note = t.value; saveRecord(); }
-            else if(t.classList.contains('ds-currency')){ d.currency = t.value; saveRecord(); updateDistTotals(); return; }
+            else if(t.classList.contains('ds-currency')){ d.currency = t.value; saveRecord(); renderDist(); return; }
             else if(t.classList.contains('ds-year')){ d.year = t.value; saveRecord(); renderDist(); return; }
         };
         dgc.addEventListener('input', h); dgc.addEventListener('change', h);
@@ -2369,11 +2296,11 @@ function renderNames(){
             if(t.classList.contains('hp-date')){ x.date = t.value; saveRecord(); }
             else if(t.classList.contains('hp-recipient')){ x.recipient = t.value; saveRecord(); }
             else if(t.classList.contains('hp-region')){ x.region = t.value; saveRecord(); }
-            else if(t.classList.contains('hp-amount')){ x.amount = t.value; saveRecord(); updateHelpTotals(); }
-            else if(t.classList.contains('hp-amount-foreign')){ x.amountForeign = t.value; saveRecord(); updateHelpTotals(); }
+            else if(t.classList.contains('hp-amount')){ x.amount = t.value; saveRecord(); }
+            else if(t.classList.contains('hp-amount-foreign')){ x.amountForeign = t.value; saveRecord(); }
             else if(t.classList.contains('hp-received')){ x.received = t.checked; saveRecord(); }
             else if(t.classList.contains('hp-note')){ x.note = t.value; saveRecord(); }
-            else if(t.classList.contains('hp-currency')){ x.currency = t.value; saveRecord(); updateHelpTotals(); return; }
+            else if(t.classList.contains('hp-currency')){ x.currency = t.value; saveRecord(); renderHelp(); return; }
             else if(t.classList.contains('hp-year')){ x.year = t.value; saveRecord(); renderHelp(); return; }
         };
         hgc.addEventListener('input', h); hgc.addEventListener('change', h);
@@ -2383,11 +2310,6 @@ function renderNames(){
 window.onload = function(){
     try{ const s = localStorage.getItem('zakatSilverEqEnabled'); if(s!==null){ silverEqEnabled = s==='1'; } }catch(e){}
     loadRecord();
-    const dcs = document.getElementById('distTotalCurrency');
-    if(dcs){ dcs.innerHTML = buildCurrencyOptions(distTotalCurrency); dcs.value = distTotalCurrency; }
-    const hcs = document.getElementById('helpTotalCurrency');
-    if(hcs){ hcs.innerHTML = buildCurrencyOptions(helpTotalCurrency); hcs.value = helpTotalCurrency; }
-    updateDistTotals(); updateHelpTotals();
     fetchGoldPrices();
 };
 
@@ -2463,7 +2385,7 @@ function addYearToName(nameId, year){
 
 function exportAllData(){
     try{
-        const data = {version:7, exportedAt:new Date().toISOString(), record: recData};
+        const data = {version:9, exportedAt:new Date().toISOString(), record: recData};
         const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href=url; a.download='zakat-data-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2535,8 +2457,6 @@ function applyLanguage(){
     set('thSmPerson',t.thSmPerson); set('thSmNisab',t.thSmNisab); set('thSmLastYear',t.thSmLastYear);
     set('thSmTotal',t.thSmTotal); set('thSmZakat',t.thSmZakat); set('thSmExpand',t.thSmExpand);
     setH('lblPrintPerson','<i class="fas fa-user"></i> '+t.lblPrintPerson); set('btnPrintReport',t.btnPrintReport);
-    set('lblDistTotalBHD',t.lblDistTotalBHD);
-    const ht2 = document.getElementById('lblHelpTotal2'); if(ht2) ht2.textContent = t.lblHelpTotal;
     const bmn = document.getElementById('btnManageNamesText'); if(bmn) bmn.textContent = t.btnManageNamesText;
     const nmmT = document.getElementById('nmmTitle'); if(nmmT) nmmT.textContent = t.nmmTitle;
     const nmmH = document.getElementById('nmmHint'); if(nmmH) nmmH.textContent = t.nmmHint;
@@ -2613,8 +2533,6 @@ window.cancelYearDelete = cancelYearDelete;
 window.backupBeforeReset = backupBeforeReset;
 window.confirmResetRecord = confirmResetRecord;
 window.cancelResetRecord = cancelResetRecord;
-window.onDistTotalCurrencyChange = onDistTotalCurrencyChange;
-window.onHelpTotalCurrencyChange = onHelpTotalCurrencyChange;
 window.shareWebsite = shareWebsite;
 </script>
 </body>
