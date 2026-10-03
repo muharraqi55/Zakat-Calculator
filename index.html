@@ -146,7 +146,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 .help-modal .help-section{margin-bottom:20px;padding:15px;background:var(--bg-body);border-radius:12px;border-right:4px solid var(--gold)}
 .help-modal .help-section p{margin-bottom:6px;line-height:1.7;font-size:calc(.9rem*var(--font-scale))}
 .help-modal .help-section ul li{margin-bottom:4px;line-height:1.6;font-size:calc(.88rem*var(--font-scale))}
-.help-modal .help-section em{color:var(--gold);font-style:normal;font-weight:bold}
 .help-modal .help-note{font-size:calc(.85rem*var(--font-scale));color:var(--text-sub);margin-top:10px;padding:10px 14px;background:var(--bg-status-loading);border-radius:8px;border-right:4px solid var(--gold)}
 
 /* ==================== سنة قابلة للتعديل ==================== */
@@ -193,6 +192,10 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 .totals-bar select{width:auto;padding:6px 12px;font-size:calc(.82rem*var(--font-scale));border-radius:20px;font-weight:bold;background:var(--bg-card);border:1px solid var(--gold);color:var(--gold);max-width:200px}
 .totals-bar .tb-eq{color:var(--text-sub);font-size:calc(.85rem*var(--font-scale))}
 
+/* ==================== أزرار الطباعة والمشاركة لكل شخص ==================== */
+.person-actions{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
+.person-actions .btn-print,.person-actions .btn-whatsapp{padding:5px 12px!important;font-size:calc(.72rem*var(--font-scale))!important;margin:0!important}
+
 @media (max-width:600px){
     .container{padding:12px}
     .header-tools{flex-direction:column;align-items:stretch}
@@ -204,6 +207,7 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
     .compact-select{max-width:100%}
     .names-manage-modal .nmm-box{padding:18px 14px}
     .totals-bar{flex-direction:column;align-items:stretch;text-align:center}
+    .person-actions{width:100%;justify-content:flex-start}
 }
 </style>
 </head>
@@ -435,7 +439,6 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 <div class="section">
 <h2 id="recTitleDist"><i class="fas fa-hand-holding-heart"></i> توزيع الزكاة</h2>
 
-<!-- شريط المجموع لتوزيع الزكاة -->
 <div class="totals-bar">
 <span class="tb-item bhd">💰 <span id="lblDistTotalBHD">إجمالي الدينار:</span> <strong id="distTotalBHD">0.000 د.ب</strong></span>
 <span class="tb-eq">|</span>
@@ -483,16 +486,15 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 <h2 id="recTitleHelp" style="margin:0;border-right:4px solid var(--gold);padding-right:12px;"><i class="fas fa-hand-holding-heart"></i> مساعدة</h2>
 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
 <button class="btn-print" onclick="printHelp()" style="padding:8px 18px!important;font-size:.85rem!important;">
-<i class="fas fa-print"></i> <span id="btnPrintHelp">طباعة</span>
+<i class="fas fa-print"></i> <span id="btnPrintHelp">طباعة الكل</span>
 </button>
 <button class="btn-whatsapp" onclick="shareHelpWhatsApp()" style="padding:8px 18px!important;font-size:.85rem!important;">
-<i class="fab fa-whatsapp"></i> <span id="btnShareHelp">مشاركة واتساب PDF</span>
+<i class="fab fa-whatsapp"></i> <span id="btnShareHelp">مشاركة الكل</span>
 </button>
 </div>
 </div>
-<div class="note" style="margin-bottom:10px;" id="noteHelp">قسم مستقل - يعتمد على الأسماء من قسم "إضافة الأسماء والسنوات". عند الطباعة يظهر بعنوان "زكاة".</div>
+<div class="note" style="margin-bottom:10px;" id="noteHelp">قسم مستقل - يعتمد على الأسماء من قسم "إضافة الأسماء والسنوات". لكل شخص زر طباعة ومشاركة خاص.</div>
 
-<!-- شريط المجموع للمساعدة -->
 <div class="totals-bar">
 <span class="tb-item bhd">💰 <span id="lblHelpTotal2">إجمالي الدينار:</span> <strong id="helpTotal">0.000 د.ب</strong></span>
 <span class="tb-eq">|</span>
@@ -666,7 +668,7 @@ recTitleNames:'إضافة الأسماء والسنوات',btnAddName:'إضاف�
 recTitleMetals:'موجود المعادن',recTitleGoldWear:'الذهب الملبوس',recTitleYears:'المبلغ الموجود في جميع البنوك',
 recTitleInv:'استثمارات وعقارات',
 recTitleSummary:'ملخص الزكاة لكل شخص لجميع السنوات',recTitleDist:'توزيع الزكاة',recTitleHelp:'مساعدة',
-btnPrintHelp:'طباعة',lblHelpTotal:'إجمالي الدينار:',
+btnPrintHelp:'طباعة الكل',lblHelpTotal:'إجمالي الدينار:',
 lblHelpPayer:'المزكي',lblHelpYear:'السنة',
 btnAddHelp:'إضافة مستفيد',
 thHpDate:'التاريخ',thHpRecipient:'المستفيد',thHpRegion:'الجهة',thHpAmount:'المبلغ',thHpReceived:'استلم؟',thHpNote:'ملاحظات',
@@ -689,7 +691,7 @@ thDsDate:'التاريخ',thDsRecipient:'المستفيد',thDsRegion:'الجه�
 thDsYear:'السنة',thDsCurrency:'العملة',thDsAmountBHD:'مبلغ الدينار',thDsAmountForeign:'المبلغ بالعملة',
 lblDistTotalBHD:'إجمالي الدينار:',
 lblPrintPerson:'طباعة تقرير كامل لشخص',btnPrintReport:'طباعة التقرير',
-btnShareDist:'مشاركة واتساب PDF',btnShareHelp:'مشاركة واتساب PDF',
+btnShareDist:'مشاركة واتساب PDF',btnShareHelp:'مشاركة الكل',
 personName:'اسم الشخص',addYearPlaceholder:'يدوي',yearLabel:'السنوات:',
 noNames:'لا توجد أسماء. اضغط "إضافة اسم".',addNameFirst:'أضف اسماً أولاً',
 nisabSilver:'فضة',nisabGold:'ذهب',deletePersonConfirm:'حذف هذا الاسم وكل بياناته؟',
@@ -705,7 +707,12 @@ silverEqBadge:'✅ بلغ كنصاب الفضة',
 btnManageNamesText:'إدارة الأسماء',
 nmmTitle:'إدارة الأسماء والسنوات',
 nmmHint:'💡 أضف الأسماء والسنوات هنا. تُحدَّث البيانات فورياً.',
-nmmDoneText:'تم'
+nmmDoneText:'تم',
+btnHelpPersonPrint:'طباعة',
+btnHelpPersonShare:'مشاركة',
+helpPersonReportTitle:'تقرير المساعدة',
+helpPersonReportRecipients:'عدد المستفيدين',
+helpPersonReportTotalLabel:'إجمالي المساعدة'
 },
 en:{
 pageTitle:'Zakat Calculator',langBtn:'🇸🇦 العربية',helpBtnText:'Guide',
@@ -721,7 +728,7 @@ recTitleNames:'Names & Years',btnAddName:'Add Name',
 recTitleMetals:'Metals',recTitleGoldWear:'Gold Jewelry',recTitleYears:'Total in All Banks',
 recTitleInv:'Investments & Properties',
 recTitleSummary:'Per-Person Zakat Summary',recTitleDist:'Distribution',recTitleHelp:'Help',
-btnPrintHelp:'Print',lblHelpTotal:'BHD Total:',
+btnPrintHelp:'Print All',lblHelpTotal:'BHD Total:',
 lblHelpPayer:'Payer',lblHelpYear:'Year',
 btnAddHelp:'Add Recipient',
 thHpDate:'Date',thHpRecipient:'Recipient',thHpRegion:'Region',thHpAmount:'Amount',thHpReceived:'Received?',thHpNote:'Notes',
@@ -744,7 +751,7 @@ thDsDate:'Date',thDsRecipient:'Recipient',thDsRegion:'Region',thDsAmount:'Amount
 thDsYear:'Year',thDsCurrency:'Currency',thDsAmountBHD:'BHD Amount',thDsAmountForeign:'Foreign Amount',
 lblDistTotalBHD:'BHD Total:',
 lblPrintPerson:'Print full report',btnPrintReport:'Print Report',
-btnShareDist:'Share PDF',btnShareHelp:'Share PDF',
+btnShareDist:'Share PDF',btnShareHelp:'Share All',
 personName:'Person name',addYearPlaceholder:'Manual',yearLabel:'Years:',
 noNames:'No names. Click "Add Name".',addNameFirst:'Add a name first',
 nisabSilver:'Silver',nisabGold:'Gold',deletePersonConfirm:'Delete this name?',
@@ -760,7 +767,12 @@ silverEqBadge:'✅ Silver Nisab',
 btnManageNamesText:'Manage Names',
 nmmTitle:'Manage Names & Years',
 nmmHint:'💡 Add names and years here. Data updates instantly.',
-nmmDoneText:'Done'
+nmmDoneText:'Done',
+btnHelpPersonPrint:'Print',
+btnHelpPersonShare:'Share',
+helpPersonReportTitle:'Help Report',
+helpPersonReportRecipients:'Recipients Count',
+helpPersonReportTotalLabel:'Total Help'
 }};
 
 let currentLang = 'ar';
@@ -788,7 +800,7 @@ function fmtMoneyC(n){ return fmtMoney(n)+' '+getText('currency'); }
 function fmtMoney2(n){ const num=parseFloat(n)||0; return num.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function escapeAttr(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-/* ==================== العملات (أسماء فقط - بدون تحويل) ==================== */
+/* ==================== العملات ==================== */
 const CURRENCIES = [
     {code:'BHD', ar:'دينار بحريني', en:'Bahraini Dinar',  sym:'د.ب'},
     {code:'INR', ar:'روبية هندية',  en:'Indian Rupee',   sym:'₹'},
@@ -1711,7 +1723,13 @@ function renderHelp(){
         personRow.onclick = function(e){ if(e.target.closest('button,input,select,a,label')) return; toggleHelpPerson(n.id); };
         personRow.innerHTML =
             '<span class="year-title"><span style="display:inline-block;width:26px;height:26px;line-height:24px;text-align:center;border-radius:50%;background:var(--green);color:#fff;font-weight:bold;font-size:1.1rem;">'+(isPersonOpen?'×':'+')+'</span>👤 '+escapeAttr(n.name||'—')+'</span>'+
-            '<span class="year-total-mini">💰 '+fmtMoneyC(personTotalBHD)+(personTotalF>0?' | 🌍 '+fmtAmountForeign(personTotalF, helpTotalCurrency):'')+'</span>';
+            '<span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-right:auto;">'+
+                '<span class="person-actions">'+
+                    '<button class="btn-print" onclick="event.stopPropagation();printHelpPerson('+n.id+')" title="'+getText('btnHelpPersonPrint')+'"><i class="fas fa-print"></i> '+getText('btnHelpPersonPrint')+'</button>'+
+                    '<button class="btn-whatsapp" onclick="event.stopPropagation();shareHelpPersonWhatsApp('+n.id+',this)" title="'+getText('btnHelpPersonShare')+'"><i class="fab fa-whatsapp"></i> '+getText('btnHelpPersonShare')+'</button>'+
+                '</span>'+
+                '<span class="year-total-mini">💰 '+fmtMoneyC(personTotalBHD)+(personTotalF>0?' | 🌍 '+fmtAmountForeign(personTotalF, helpTotalCurrency):'')+'</span>'+
+            '</span>';
         container.appendChild(personRow);
         if(isPersonOpen){
             const yearsMap = {};
@@ -1833,10 +1851,10 @@ async function generatePdfBlob(html, filename){
         return await html2pdf().set({margin:[8,8,8,8],filename:filename||'zakat-report.pdf',image:{type:'jpeg',quality:0.95},html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['avoid-all','css','legacy']}}).from(wrapper).outputPdf('blob');
     } finally { if(document.body.contains(wrapper)) document.body.removeChild(wrapper); }
 }
-async function sharePdfViaWhatsApp(html, filename, shareText){
-    const btn = event && event.currentTarget ? event.currentTarget : null;
+async function sharePdfViaWhatsApp(html, filename, shareText, explicitBtn){
+    const btn = explicitBtn || (event && event.currentTarget ? event.currentTarget : null);
     const orig = btn ? btn.innerHTML : null;
-    if(btn){ btn.style.opacity = '.6'; btn.style.pointerEvents = 'none'; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> '+getText('pdfGenerating'); }
+    if(btn){ btn.style.opacity = '.6'; btn.style.pointerEvents = 'none'; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
     try{
         const blob = await generatePdfBlob(html, filename);
         const file = new File([blob], filename || 'zakat-report.pdf', { type: 'application/pdf' });
@@ -1905,6 +1923,8 @@ function buildFullReportHtml(nameId){
     '<div class="zakat-final"><div class="lbl">مجموع الزكاة لجميع السنوات</div><div class="val">'+fmtMoney(totalZakatAllYears)+' '+currency+'</div></div>'+
     '</div><div class="footer">حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div></body></html>';
 }
+
+/* ============ تقرير المساعدة الكامل (كل الأشخاص) ============ */
 function buildHelpReportHtml(){
     const currency = getText('currency');
     const list = recData.help;
@@ -1918,17 +1938,126 @@ function buildHelpReportHtml(){
     '<div class="summary-cards"><div class="sum-card"><div class="lbl">عدد المستفيدين</div><div class="val">'+list.length+'</div></div><div class="sum-card"><div class="lbl">تم استلامه</div><div class="val">'+fmtMoney(totalRecv)+'</div></div><div class="zakat-final"><div class="lbl">إجمالي الزكاة الموزّعة</div><div class="val">'+fmtMoney(total)+' '+currency+'</div></div></div>'+
     '<div class="footer">حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div></body></html>';
 }
+
+/* ============ تقرير المساعدة لشخص واحد فقط (جديد) ============ */
+function buildHelpPersonReportHtml(nameId){
+    const n = recData.names.find(x=>x.id===nameId);
+    if(!n) return '';
+    const currency = getText('currency');
+    const items = recData.help.filter(h=>h.nameId===nameId);
+    if(items.length === 0) return '';
+    
+    // تجميع حسب السنة
+    const yearsMap = {};
+    items.forEach(h=>{
+        const y = h.year ? String(h.year) : 'noYear';
+        if(!yearsMap[y]) yearsMap[y] = [];
+        yearsMap[y].push(h);
+    });
+    const yearKeys = Object.keys(yearsMap).sort((a,b)=>{
+        if(a==='noYear') return 1;
+        if(b==='noYear') return -1;
+        return Number(b)-Number(a);
+    });
+    
+    let allRows = '';
+    let grandTotalBHD = 0;
+    let grandTotalRecv = 0;
+    const foreignByCurrency = {};
+    let recipientsCount = items.length;
+    
+    yearKeys.forEach(yk=>{
+        const yItems = yearsMap[yk];
+        const yTotalBHD = yItems.reduce((s,h)=>s+(parseFloat(h.amount)||0),0);
+        grandTotalBHD += yTotalBHD;
+        const yLabel = yk === 'noYear' ? getText('noYearLabel') : yk;
+        
+        allRows += '<tr style="background:#fff8e1;font-weight:bold;"><td colspan="8" style="text-align:right;">📅 '+yLabel+'</td><td style="color:#b8860b;">'+fmtMoney(yTotalBHD)+' د.ب</td></tr>';
+        
+        yItems.forEach(h=>{
+            const amt = parseFloat(h.amount)||0;
+            const amtF = parseFloat(h.amountForeign)||0;
+            if(h.received) grandTotalRecv += amt;
+            const cur = h.currency || '';
+            if(amtF > 0 && cur && cur !== 'OTHER') {
+                foreignByCurrency[cur] = (foreignByCurrency[cur]||0) + amtF;
+            }
+            allRows += '<tr>'+
+                '<td>'+escapeAttr(h.date||'—')+'</td>'+
+                '<td>'+escapeAttr(h.recipient||'—')+'</td>'+
+                '<td>'+regionLabel(h.region)+'</td>'+
+                '<td>'+escapeAttr(h.year||'—')+'</td>'+
+                '<td>'+escapeAttr(cur)+'</td>'+
+                '<td>'+fmtMoney(amt)+'</td>'+
+                '<td>'+escapeAttr(amtF>0?amtF.toFixed(2):'—')+'</td>'+
+                '<td>'+(h.received?'✅':'⏳')+'</td>'+
+                '<td>'+escapeAttr(h.note||'—')+'</td>'+
+                '</tr>';
+        });
+    });
+    
+    // بطاقات العملات الأجنبية
+    let foreignCards = '';
+    Object.keys(foreignByCurrency).forEach(code=>{
+        foreignCards += '<div class="sum-card gold"><div class="lbl">'+currLabel(code)+' ('+code+')</div><div class="val">'+foreignByCurrency[code].toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+currSymbol(code)+'</div></div>';
+    });
+    
+    return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>'+getText('helpPersonReportTitle')+' - '+escapeAttr(n.name)+'</title><style>'+REPORT_STYLES+'</style></head><body>'+
+    buildReportHead(getText('helpPersonReportTitle')+' — '+escapeAttr(n.name||'—'))+
+    '<div class="info-bar">'+
+        '<div><strong>الاسم:</strong> '+escapeAttr(n.name||'—')+'</div>'+
+        '<div><strong>'+getText('helpPersonReportRecipients')+':</strong> '+recipientsCount+'</div>'+
+        '<div><strong>التاريخ:</strong> '+new Date().toLocaleDateString('ar-BH')+'</div>'+
+    '</div>'+
+    '<h2>📋 تفاصيل المساعدة</h2>'+
+    '<table><thead><tr>'+
+        '<th>التاريخ</th>'+
+        '<th>المستفيد</th>'+
+        '<th>الجهة</th>'+
+        '<th>السنة</th>'+
+        '<th>العملة</th>'+
+        '<th>المبلغ (د.ب)</th>'+
+        '<th>المبلغ بالعملة</th>'+
+        '<th>استلم؟</th>'+
+        '<th>ملاحظات</th>'+
+    '</tr></thead><tbody>'+allRows+'</tbody></table>'+
+    '<h2>💰 الملخص</h2>'+
+    '<div class="summary-cards">'+
+        '<div class="sum-card"><div class="lbl">'+getText('helpPersonReportRecipients')+'</div><div class="val">'+recipientsCount+'</div></div>'+
+        '<div class="sum-card"><div class="lbl">تم استلامه</div><div class="val">'+fmtMoney(grandTotalRecv)+'</div></div>'+
+        foreignCards+
+        '<div class="zakat-final"><div class="lbl">'+getText('helpPersonReportTotalLabel')+'</div><div class="val">'+fmtMoney(grandTotalBHD)+' '+currency+'</div></div>'+
+    '</div>'+
+    '<div class="footer">حاسبة الزكاة الشاملة - Muharraqi © '+new Date().getFullYear()+'</div></body></html>';
+}
+
+/* ============ دوال الطباعة والمشاركة للكل ============ */
 function printFullReport(){ const sel = document.getElementById('printPersonSelect'); const nameId = Number(sel.value); const n = recData.names.find(x=>x.id===nameId); if(!n){ alert(getText('selectPersonFirst')); return; } printHtml(buildFullReportHtml(nameId)); }
 function shareFullReportWhatsApp(){ const sel = document.getElementById('printPersonSelect'); const nameId = Number(sel.value); const n = recData.names.find(x=>x.id===nameId); if(!n){ alert(getText('selectPersonFirst')); return; } const safeName = (n.name||'report').replace(/[^\u0600-\u06FF\w\-]+/g,'_'); sharePdfViaWhatsApp(buildFullReportHtml(nameId), 'zakat-'+safeName+'.pdf', 'تقرير زكاة '+(n.name||'')); }
 function printHelp(){ printHtml(buildHelpReportHtml()); }
 function shareHelpWhatsApp(){ sharePdfViaWhatsApp(buildHelpReportHtml(), 'zakat-help.pdf', 'تقرير زكاة'); }
 
+/* ============ دوال الطباعة والمشاركة لكل شخص في المساعدة (جديد) ============ */
+function printHelpPerson(nameId){
+    const html = buildHelpPersonReportHtml(nameId);
+    if(!html){ alert(getText('noHelp')); return; }
+    printHtml(html);
+}
+function shareHelpPersonWhatsApp(nameId, btn){
+    const n = recData.names.find(x=>x.id===nameId);
+    if(!n) return;
+    const html = buildHelpPersonReportHtml(nameId);
+    if(!html){ alert(getText('noHelp')); return; }
+    const safeName = (n.name||'help').replace(/[^\u0600-\u06FF\w\-]+/g,'_');
+    sharePdfViaWhatsApp(html, 'zakat-help-'+safeName+'.pdf', 'مساعدة - '+(n.name||''), btn);
+}
+
 /* ==================== التخزين ==================== */
-function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV23', JSON.stringify(recData)); }catch(e){} }
+function saveRecord(){ try{ localStorage.setItem('zakatRecordDataV24', JSON.stringify(recData)); }catch(e){} }
 function loadRecord(){
     let loaded = false;
     try{
-        const raw = localStorage.getItem('zakatRecordDataV23');
+        const raw = localStorage.getItem('zakatRecordDataV24') || localStorage.getItem('zakatRecordDataV23');
         if(raw){
             const d = JSON.parse(raw);
             if(d && Array.isArray(d.names)){
@@ -1979,7 +2108,7 @@ function resetRecord(){
 function backupBeforeReset(){
     const ar = currentLang==='ar';
     try{
-        const backup = {type:'zakat-full-backup', version:5, exportedAt:new Date().toISOString(), record: recData};
+        const backup = {type:'zakat-full-backup', version:6, exportedAt:new Date().toISOString(), record: recData};
         const blob = new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href=url; a.download='zakat-backup-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2026,7 +2155,7 @@ function backupYearBeforeDelete(){
     if(!pendingYearDelete) return;
     const ar = currentLang==='ar';
     try{
-        const backup = {type:'zakat-full-backup', version:5, exportedAt:new Date().toISOString(), record: recData};
+        const backup = {type:'zakat-full-backup', version:6, exportedAt:new Date().toISOString(), record: recData};
         const blob = new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href=url; a.download='zakat-backup-year-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2340,7 +2469,7 @@ function addYearToName(nameId, year){
 
 function exportAllData(){
     try{
-        const data = {version:5, exportedAt:new Date().toISOString(), record: recData};
+        const data = {version:6, exportedAt:new Date().toISOString(), record: recData};
         const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href=url; a.download='zakat-data-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2397,7 +2526,7 @@ function applyLanguage(){
     set('btnPrintHelp',t.btnPrintHelp);
     set('btnShareDist',t.btnShareDist); set('btnShareHelp',t.btnShareHelp);
     set('lblHelpPayer',t.lblHelpPayer); set('lblHelpYear',t.lblHelpYear);
-    set('btnAddHelp',t.btnAddHelp); set('noteHelp',t.noteHelp||'');
+    set('btnAddHelp',t.btnAddHelp);
     set('lblDistPerson',t.lblDistPerson); set('lblDistYear',t.lblDistYear);
     set('thHpDate',t.thHpDate); set('thHpRecipient',t.thHpRecipient); set('thHpRegion',t.thHpRegion); set('thHpAmount',t.thHpAmount); set('thHpReceived',t.thHpReceived); set('thHpNote',t.thHpNote);
     set('thMtHawl',t.thMtHawl); set('thMtPerson',t.thMtPerson); set('thMtYear',t.thMtYear); set('thMtType',t.thMtType); set('thMtCarat',t.thMtCarat);
@@ -2469,8 +2598,10 @@ window.removeHelp = removeHelp;
 window.updateHelpYearSelect = updateHelpYearSelect;
 window.printFullReport = printFullReport;
 window.printHelp = printHelp;
+window.printHelpPerson = printHelpPerson;
 window.shareFullReportWhatsApp = shareFullReportWhatsApp;
 window.shareHelpWhatsApp = shareHelpWhatsApp;
+window.shareHelpPersonWhatsApp = shareHelpPersonWhatsApp;
 window.refreshRecord = refreshRecord;
 window.resetRecord = resetRecord;
 window.exportAllData = exportAllData;
