@@ -38,6 +38,17 @@ body{background:var(--bg-body);padding:10px;display:flex;justify-content:center;
 .share-site-btn.copied{background:var(--success)!important}
 .tb-btn.xlsx-export{background:#1D6F42!important;color:#fff!important;border:none!important;font-size:calc(.8rem*var(--font-scale));cursor:pointer;font-weight:bold;display:inline-flex;align-items:center;gap:4px;border-radius:20px}
 .tb-btn.xlsx-export:hover{background:#155d34!important;opacity:.92}
+.auto-currency-wrap{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.auto-currency-label{font-size:calc(.8rem*var(--font-scale));font-weight:bold;color:var(--text-sub);white-space:nowrap}
+.auto-currency-btn{background:var(--bg-card)!important;color:var(--text-main)!important;border:2px solid var(--border-color)!important;font-size:calc(.82rem*var(--font-scale))!important;display:inline-flex!important;align-items:center!important;gap:5px!important;font-weight:bold!important;position:relative;transition:all .25s ease;padding:6px 14px!important;border-radius:25px!important;cursor:pointer}
+.auto-currency-btn.active{background:var(--success)!important;color:#fff!important;border-color:var(--success)!important;box-shadow:0 0 0 3px rgba(46,125,50,.2)}
+.auto-currency-btn.loading{opacity:.7;pointer-events:none}
+.auto-currency-btn.loading i{animation:spin 1s linear infinite}
+.auto-currency-btn:hover{border-color:var(--gold)!important}
+.auto-currency-btn .status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#bbb;margin-right:2px}
+.auto-currency-btn.active .status-dot{background:#a5d6a7;box-shadow:0 0 6px #a5d6a7;animation:pulse 2s infinite}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 h2{color:var(--green);font-size:calc(1.2rem*var(--font-scale));margin:18px 0 12px;border-right:4px solid var(--gold);padding-right:12px}
 .section{background:var(--bg-section);border-radius:16px;padding:15px;margin-bottom:18px;box-shadow:0 3px 10px rgba(0,0,0,.03),0 0 0 1px rgba(184,134,11,.12);border:2px solid var(--gold);position:relative}
 .note{color:var(--text-sub);font-size:calc(.85rem*var(--font-scale));margin-top:4px}
@@ -181,6 +192,13 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 .currency-field{display:flex;align-items:stretch;width:100%}
 .currency-field input{flex:1;border-radius:8px 0 0 8px!important;border-right:none!important;text-align:center}
 .currency-field .curr-suffix{padding:6px 8px;background:var(--badge-bg);color:var(--gold);border:1px solid var(--input-border);border-radius:0 8px 8px 0;font-weight:bold;font-size:calc(.72rem*var(--font-scale));white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;min-width:52px;font-family:inherit}
+.currency-field input.auto-filled{background:#e8f5e9!important;border-color:#2e7d32!important;font-weight:bold;transition:background-color .3s}
+[data-theme="dark"] .currency-field input.auto-filled{background:#1a3a20!important;border-color:#58a6ff!important}
+.combined-row td{vertical-align:middle}
+.combined-row .foreign-cell{font-size:calc(.74rem*var(--font-scale));line-height:1.7;text-align:right}
+.combined-row .foreign-cell div{padding:1px 0;white-space:nowrap}
+.combined-row .foreign-cell .curr-code{color:var(--text-sub);font-size:calc(.68rem*var(--font-scale));font-weight:bold}
+.combined-row .foreign-cell .curr-sym{color:var(--gold);font-weight:bold;margin-left:3px}
 @media (max-width:600px){
     .container{padding:12px}
     .header-tools{flex-direction:column;align-items:stretch}
@@ -211,6 +229,14 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 <button class="font-btn active" onclick="setFontSize(1,this)">أ</button>
 <button class="font-btn" onclick="setFontSize(1.2,this)">أ+</button>
 <button class="btn-theme" onclick="toggleTheme()"><span id="themeIcon">🌙</span> <span id="themeText">ليلي</span></button>
+<span class="auto-currency-wrap">
+    <span class="auto-currency-label" id="autoCurrencyLabel">جلب أسعار تحويل العملات:</span>
+    <button class="auto-currency-btn" onclick="toggleAutoCurrency()" id="autoCurrencyBtn" title="اضغط للتفعيل">
+        <span class="status-dot"></span>
+        <i class="fas fa-sync-alt" id="autoCurrencyIcon"></i>
+        <span id="autoCurrencyBtnText">معطل</span>
+    </button>
+</span>
 <button class="save-btn" onclick="exportAllData()"><i class="fas fa-download"></i> <span id="saveBtnText">حفظ</span></button>
 <button class="import-btn" onclick="document.getElementById('importFileInput').click()"><i class="fas fa-upload"></i> <span id="importBtnText">استيراد</span></button>
 <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importAllData(event)"/>
@@ -492,6 +518,30 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 <div id="helpGroupsContainer"></div>
 </div>
 
+<!-- ============ ملخص مجموع التوزيع الزكاة والمساعدة ============ -->
+<div class="section" id="combinedSummarySection" style="border:2px solid var(--gold);">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+<h2 id="recTitleCombined" style="margin:0;border-right:4px solid var(--gold);padding-right:12px;">
+<i class="fas fa-calculator"></i> ملخص مجموع التوزيع الزكاة و المساعدة
+</h2>
+<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+<button class="btn-print" onclick="printCombinedSummary()" style="padding:8px 18px!important;font-size:.85rem!important;">
+<i class="fas fa-print"></i> <span id="btnPrintCombined">طباعة</span>
+</button>
+<button class="tb-btn xlsx-export" onclick="exportCombinedSummaryToExcel()" style="padding:8px 18px!important;font-size:.85rem!important;">
+📊 Excel
+</button>
+<button class="btn-whatsapp" onclick="shareCombinedSummaryWhatsApp()" style="padding:8px 18px!important;font-size:.85rem!important;">
+<i class="fab fa-whatsapp"></i> <span id="btnShareCombined">مشاركة</span>
+</button>
+</div>
+</div>
+<div class="note" style="margin-bottom:10px;" id="noteCombined">
+💡 يجمع هذا القسم جميع المبالغ لكل مستفيد من قسمي <strong>توزيع الزكاة</strong> و <strong>المساعدة</strong>، مع مراعاة رموز العملات الأجنبية.
+</div>
+<div id="combinedSummaryContainer"></div>
+</div>
+
 </div>
 
 <div class="footer">
@@ -543,6 +593,10 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
 <div class="help-section">
 <h3>📅 مسألة المال المستفاد أثناء الحول</h3>
 <p>الزكاة تُحسب على المبلغ الكامل عند تمام حول الأصل — وهذا مذهب جمهور الفقهاء.</p>
+</div>
+<div class="help-section">
+<h3>🔄 جلب أسعار تحويل العملات</h3>
+<p>زر <strong>"جلب أسعار تحويل العملات"</strong> (الافتراضي معطل): عند تفعيله يجلب أسعار الصرف الحقيقية ويحوّل المبلغ الأجنبي إلى الدينار البحريني والعكس تلقائياً في قسمي <strong>توزيع الزكاة</strong> و <strong>مساعدة</strong>.</p>
 </div>
 <div class="help-note"><strong>📌 تنبيه:</strong> ينبغي لكل مسلم أن يستشير أهل العلم والثقة.</div>
 <div style="text-align:center;margin-top:15px;"><button class="btn" onclick="toggleHelp()"><i class="fas fa-times"></i> <span id="helpCloseBtn">إغلاق</span></button></div>
@@ -630,15 +684,27 @@ themeNight:'ليلي',themeDay:'نهاري',
 footerRights:'جميع الحقوق محفوظة © 2026',footerPray:'🤲 أرجو الدعاء لي ولوالدي بالخير',
 currency:'د.ب',
 recResetBtnText:'إعادة ضبط السجل',
+autoCurrencyLabel:'جلب أسعار تحويل العملات:',
+autoCurrencyOn:'مفعّل',autoCurrencyOff:'معطل',
+autoCurrencyFetching:'جاري الجلب...',autoCurrencyFailed:'⚠️ فشل جلب أسعار الصرف',
+autoCurrencyEnabled:'✅ تم تفعيل الجلب التلقائي لأسعار الصرف',autoCurrencyDisabled:'تم إيقاف الجلب التلقائي',
+autoCurrencyTooltipOn:'مفعّل - اضغط للإيقاف',autoCurrencyTooltipOff:'معطل - اضغط للتفعيل',
 rcBankLbl:'إجمالي أرصدة البنوك',rcMetalLbl:'إجمالي المعادن',rcZakatLbl:'إجمالي الزكاة',rcRcvLbl:'تم استلامه',
 recTitleNames:'إضافة الأسماء والسنوات',btnAddName:'إضافة اسم',
 recTitleMetals:'موجود المعادن',recTitleGoldWear:'الذهب الملبوس',recTitleYears:'المبلغ الموجود في جميع البنوك',
 recTitleInv:'استثمارات وعقارات',
 recTitleSummary:'ملخص الزكاة لكل شخص لجميع السنوات',recTitleDist:'توزيع الزكاة',recTitleHelp:'مساعدة',
+recTitleCombined:'ملخص مجموع التوزيع الزكاة و المساعدة',
+btnPrintCombined:'طباعة',btnShareCombined:'مشاركة',
+noteCombined:'💡 يجمع هذا القسم جميع المبالغ لكل مستفيد من قسمي توزيع الزكاة والمساعدة، مع مراعاة رموز العملات الأجنبية.',
+combinedRecipient:'المستفيد',combinedRegion:'الدولة / الجهة',combinedZakatBHD:'الزكاة (د.ب)',combinedHelpBHD:'المساعدة (د.ب)',combinedTotalBHD:'المجموع الكلي (د.ب)',
+combinedZakatForeign:'عملات الزكاة الأجنبية',combinedHelpForeign:'عملات المساعدة الأجنبية',combinedForeignTotal:'إجمالي العملات الأجنبية',
+combinedNoData:'لا توجد بيانات. أضف مستفيدين في قسمي توزيع الزكاة والمساعدة.',
+combinedGrandTotal:'المجموع الكلي',combinedReportTitle:'تقرير ملخص مجموع التوزيع الزكاة و المساعدة',
 btnPrintHelp:'طباعة الكل',lblHelpTotal:'إجمالي الدينار:',
 lblHelpPayer:'المزكي',lblHelpYear:'السنة',
 btnAddHelp:'إضافة مستفيد',
-thHpDate:'التاريخ',thHpRecipient:'المستفيد',thHpRegion:'الجهة',thHpAmount:'المبلغ',thHpReceived:'استلم؟',thHpNote:'ملاحظات',
+thHpDate:'التاريخ',thHpReceivedFromPerson:'هل استلمت المبلغ من الشخص؟',thHpRecipient:'المستفيد',thHpRegion:'الجهة',thHpAmount:'المبلغ',thHpReceived:'استلم؟',thHpNote:'ملاحظات',
 lblDistPerson:'الشخص',lblDistYear:'السنة',
 thMtPerson:'الشخص',thMtYear:'السنة',thMtType:'النوع',thMtCarat:'العيار',thMtWeight:'الوزن (جرام)',
 thMtHawl:'الحول (من → إلى)',hawlCompleteShort:'✅ مكتمل',hawlIncompleteShort:'⚠️ غير مكتمل',hawlFirstMsg:'أدخل تاريخ الحول أولاً',
@@ -694,15 +760,27 @@ themeNight:'Night',themeDay:'Day',
 footerRights:'All rights reserved © 2026',footerPray:'🤲 Please pray for me and my parents',
 currency:'BHD',
 recResetBtnText:'Reset Record',
+autoCurrencyLabel:'Fetch exchange rates:',
+autoCurrencyOn:'Enabled',autoCurrencyOff:'Disabled',
+autoCurrencyFetching:'Fetching...',autoCurrencyFailed:'⚠️ Failed to fetch rates',
+autoCurrencyEnabled:'✅ Auto-fetch enabled',autoCurrencyDisabled:'Auto-fetch disabled',
+autoCurrencyTooltipOn:'Enabled - click to disable',autoCurrencyTooltipOff:'Disabled - click to enable',
 rcBankLbl:'Bank Total',rcMetalLbl:'Metals Total',rcZakatLbl:'Total Zakat',rcRcvLbl:'Received',
 recTitleNames:'Names & Years',btnAddName:'Add Name',
 recTitleMetals:'Metals',recTitleGoldWear:'Gold Jewelry',recTitleYears:'Total in All Banks',
 recTitleInv:'Investments & Properties',
 recTitleSummary:'Per-Person Zakat Summary',recTitleDist:'Distribution',recTitleHelp:'Help',
+recTitleCombined:'Zakat & Help Combined Summary',
+btnPrintCombined:'Print',btnShareCombined:'Share',
+noteCombined:'💡 This section sums all amounts per recipient from both Zakat Distribution and Help sections, with foreign currency symbols.',
+combinedRecipient:'Recipient',combinedRegion:'Country / Region',combinedZakatBHD:'Zakat (BHD)',combinedHelpBHD:'Help (BHD)',combinedTotalBHD:'Grand Total (BHD)',
+combinedZakatForeign:'Zakat Foreign',combinedHelpForeign:'Help Foreign',combinedForeignTotal:'Foreign Total',
+combinedNoData:'No data. Add recipients in Zakat Distribution and Help sections.',
+combinedGrandTotal:'Grand Total',combinedReportTitle:'Zakat & Help Combined Summary Report',
 btnPrintHelp:'Print All',lblHelpTotal:'BHD Total:',
 lblHelpPayer:'Payer',lblHelpYear:'Year',
 btnAddHelp:'Add Recipient',
-thHpDate:'Date',thHpRecipient:'Recipient',thHpRegion:'Region',thHpAmount:'Amount',thHpReceived:'Received?',thHpNote:'Notes',
+thHpDate:'Date',thHpReceivedFromPerson:'Received from person?',thHpRecipient:'Recipient',thHpRegion:'Region',thHpAmount:'Amount',thHpReceived:'Received?',thHpNote:'Notes',
 lblDistPerson:'Person',lblDistYear:'Year',
 thMtPerson:'Person',thMtYear:'Year',thMtType:'Type',thMtCarat:'Carat',thMtWeight:'Weight (g)',
 thMtHawl:'Hawl (From → To)',hawlCompleteShort:'✅ Complete',hawlIncompleteShort:'⚠️ Incomplete',hawlFirstMsg:'Enter Hawl dates',
@@ -769,6 +847,11 @@ let silverEqEnabled = true;
 let pendingYearDelete = null;
 let resetBackupSaved = false;
 
+let autoCurrencyEnabled = false;
+let exchangeRates = {};
+let ratesLastUpdated = null;
+let ratesFetching = false;
+
 function getText(k){ return (translations[currentLang]||translations.ar)[k]||k; }
 function fmtMoney(n){ const num=parseFloat(n)||0; return num.toLocaleString('en-US',{minimumFractionDigits:3,maximumFractionDigits:3}); }
 function fmtMoneyC(n){ return fmtMoney(n)+' '+getText('currency'); }
@@ -820,6 +903,176 @@ function buildCurrencyOptions(selected){
 function currDisplayLabel(code){
     const sym = currSymbol(code);
     return code + (sym ? ' ' + sym : '');
+}
+
+async function fetchExchangeRates(){
+    try{
+        const r = await fetch('https://open.er-api.com/v6/latest/BHD');
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        const d = await r.json();
+        if(d && d.rates && typeof d.rates === 'object'){
+            exchangeRates = d.rates;
+            exchangeRates['BHD'] = 1;
+            ratesLastUpdated = new Date();
+            try{
+                localStorage.setItem('zakatExchangeRates', JSON.stringify({
+                    rates: exchangeRates,
+                    updatedAt: ratesLastUpdated.getTime()
+                }));
+            }catch(e){}
+            return true;
+        }
+    }catch(e){ console.warn('Exchange rates fetch failed:', e); }
+    return false;
+}
+
+function loadCachedExchangeRates(){
+    try{
+        const raw = localStorage.getItem('zakatExchangeRates');
+        if(raw){
+            const d = JSON.parse(raw);
+            if(d && d.rates && d.updatedAt){
+                if(Date.now() - d.updatedAt < 24*3600*1000){
+                    exchangeRates = d.rates;
+                    ratesLastUpdated = new Date(d.updatedAt);
+                    return true;
+                }
+            }
+        }
+    }catch(e){}
+    return false;
+}
+
+function getRate(code){
+    if(!code) return null;
+    if(code === 'BHD') return 1;
+    const r = exchangeRates[code];
+    return (typeof r === 'number' && r > 0) ? r : null;
+}
+
+function convertForeignToBHD(amount, code){
+    const rate = getRate(code);
+    if(rate === null) return null;
+    return (parseFloat(amount)||0) / rate;
+}
+
+function convertBHDToForeign(amount, code){
+    const rate = getRate(code);
+    if(rate === null) return null;
+    return (parseFloat(amount)||0) * rate;
+}
+
+async function toggleAutoCurrency(){
+    if(ratesFetching) return;
+    const btn = document.getElementById('autoCurrencyBtn');
+    const txt = document.getElementById('autoCurrencyBtnText');
+
+    if(!autoCurrencyEnabled){
+        ratesFetching = true;
+        if(btn){ btn.classList.add('loading'); }
+        if(txt){ txt.textContent = getText('autoCurrencyFetching'); }
+
+        let ok = false;
+        if(Object.keys(exchangeRates).length && ratesLastUpdated && (Date.now() - ratesLastUpdated.getTime() < 6*3600*1000)){
+            ok = true;
+        } else {
+            ok = await fetchExchangeRates();
+        }
+
+        ratesFetching = false;
+        if(btn){ btn.classList.remove('loading'); }
+
+        if(!ok){
+            alert(getText('autoCurrencyFailed'));
+            updateAutoCurrencyBtn();
+            return;
+        }
+
+        autoCurrencyEnabled = true;
+        try{ localStorage.setItem('zakatAutoCurrency', '1'); }catch(e){}
+        updateAutoCurrencyBtn();
+        showToast(getText('autoCurrencyEnabled'));
+        applyAutoConversionToAllRows();
+    } else {
+        autoCurrencyEnabled = false;
+        try{ localStorage.setItem('zakatAutoCurrency', '0'); }catch(e){}
+        updateAutoCurrencyBtn();
+        showToast(getText('autoCurrencyDisabled'));
+    }
+}
+
+function updateAutoCurrencyBtn(){
+    const btn = document.getElementById('autoCurrencyBtn');
+    const txt = document.getElementById('autoCurrencyBtnText');
+    if(!btn || !txt) return;
+    if(autoCurrencyEnabled){
+        btn.classList.add('active');
+        txt.textContent = getText('autoCurrencyOn');
+        let tip = getText('autoCurrencyTooltipOn');
+        if(ratesLastUpdated){
+            const t = ratesLastUpdated.toLocaleString(currentLang==='ar'?'ar-BH':'en-GB',{hour:'2-digit',minute:'2-digit'});
+            tip += ' — ' + (currentLang==='ar'?'آخر تحديث: ':'Updated: ') + t;
+        }
+        btn.title = tip;
+    } else {
+        btn.classList.remove('active');
+        txt.textContent = getText('autoCurrencyOff');
+        btn.title = getText('autoCurrencyTooltipOff');
+    }
+}
+
+function applyAutoConversionToAllRows(){
+    if(!autoCurrencyEnabled) return;
+    let changed = false;
+
+    recData.distributions.forEach(d=>{
+        const amtF = parseFloat(d.amountForeign)||0;
+        if(amtF > 0){
+            const bhd = convertForeignToBHD(amtF, d.currency||DEFAULT_CURRENCY);
+            if(bhd !== null){
+                d.amount = bhd.toFixed(3);
+                changed = true;
+            }
+        }
+    });
+
+    recData.help.forEach(h=>{
+        const amtF = parseFloat(h.amountForeign)||0;
+        if(amtF > 0){
+            const bhd = convertForeignToBHD(amtF, h.currency||DEFAULT_CURRENCY);
+            if(bhd !== null){
+                h.amount = bhd.toFixed(3);
+                changed = true;
+            }
+        }
+    });
+
+    if(changed){
+        saveRecord();
+        renderDist();
+        renderHelp();
+        renderCombinedSummary();
+    }
+}
+
+function autoConvertFromForeign(foreignValue, currencyCode){
+    if(!autoCurrencyEnabled) return null;
+    const amt = parseFloat(foreignValue);
+    if(isNaN(amt)) return null;
+    if(amt === 0) return '0.000';
+    const bhd = convertForeignToBHD(amt, currencyCode);
+    if(bhd === null) return null;
+    return bhd.toFixed(3);
+}
+
+function autoConvertFromBHD(bhdValue, currencyCode){
+    if(!autoCurrencyEnabled) return null;
+    const amt = parseFloat(bhdValue);
+    if(isNaN(amt)) return null;
+    if(amt === 0) return '0.00';
+    const foreign = convertBHDToForeign(amt, currencyCode);
+    if(foreign === null) return null;
+    return foreign.toFixed(2);
 }
 
 function checkHawlComplete(item){
@@ -1482,6 +1735,7 @@ function renderDist(){
     container.innerHTML = '';
     if(recData.names.length===0){
         container.innerHTML = '<div style="color:var(--text-sub);padding:14px;text-align:center;">'+getText('addNameFirst')+'</div>';
+        renderCombinedSummary();
         return;
     }
     let hasAny = false;
@@ -1539,6 +1793,7 @@ function renderDist(){
         container.innerHTML = '<div style="color:var(--text-sub);padding:14px;text-align:center;">'+getText('noDistributions')+'</div>';
     }
     renderSummary();
+    renderCombinedSummary();
 }
 function buildDistTableHtml(dists){
     const nameId = dists[0].nameId;
@@ -1566,15 +1821,18 @@ function buildDistTableHtml(dists){
             yearOpts = '<option value="'+d.year+'" selected>'+d.year+'</option>' + yearOpts;
         }
         const currencyOpts = buildCurrencyOptions(curr);
+        const isAuto = autoCurrencyEnabled && getRate(curr) !== null;
+        const bhdClass = isAuto ? 'ds-amount auto-filled' : 'ds-amount';
+        const foreignClass = isAuto ? 'ds-amount-foreign auto-filled' : 'ds-amount-foreign';
         html += '<tr class="dist-row" data-id="'+d.id+'">'+
             '<td><input type="date" class="ds-date" value="'+escapeAttr(d.date)+'"/></td>'+
             '<td><input type="text" class="ds-recipient" value="'+escapeAttr(d.recipient)+'" placeholder="'+getText('recipient')+'"/></td>'+
             '<td><select class="ds-region">'+regionOpts+'</select></td>'+
             '<td><select class="ds-year">'+yearOpts+'</select></td>'+
-            '<td><input type="number" step="0.001" class="ds-amount" value="'+escapeAttr(d.amount)+'" placeholder="0.000"/></td>'+
+            '<td><input type="number" step="0.001" class="'+bhdClass+'" value="'+escapeAttr(d.amount)+'" placeholder="0.000"/></td>'+
             '<td><select class="ds-currency">'+currencyOpts+'</select></td>'+
             '<td><div class="currency-field">'+
-                '<input type="number" step="0.001" class="ds-amount-foreign" value="'+escapeAttr(d.amountForeign)+'" placeholder="0.00"/>'+
+                '<input type="number" step="0.001" class="'+foreignClass+'" value="'+escapeAttr(d.amountForeign)+'" placeholder="0.00"/>'+
                 '<span class="curr-suffix" title="'+escapeAttr(currLabel(curr))+'">'+escapeAttr(currBadge)+'</span>'+
             '</div></td>'+
             '<td><input type="checkbox" class="ds-received"'+(d.received?' checked':'')+'/></td>'+
@@ -1607,7 +1865,7 @@ function addHelpWithPersonYear(){
         id: recData.seq++, nameId: nameId, year: year,
         date:'', recipient:'', region:'bh', amount:'', amountForeign:'',
         currency: DEFAULT_CURRENCY,
-        received:false, note:''
+        received:false, receivedFromPerson:false, note:''
     });
     expandedHelpPersons[nameId] = true;
     const yKey = nameId+'_'+(year||'noYear');
@@ -1631,6 +1889,7 @@ function renderHelp(){
     container.innerHTML = '';
     if(recData.names.length===0){
         container.innerHTML = '<div style="color:var(--text-sub);padding:14px;text-align:center;">'+getText('addNameFirst')+'</div>';
+        renderCombinedSummary();
         return;
     }
     let hasAny = false;
@@ -1694,12 +1953,14 @@ function renderHelp(){
     if(!hasAny){
         container.innerHTML = '<div style="color:var(--text-sub);padding:14px;text-align:center;">'+getText('noHelp')+'</div>';
     }
+    renderCombinedSummary();
 }
 function buildHelpTableHtml(items){
     const nameId = items[0].nameId;
     const n = recData.names.find(x=>x.id===nameId);
     const availYears = n ? (n.years || []) : [];
     let html = '<div style="overflow-x:auto;"><table class="rec-table"><thead><tr>'+
+        '<th>'+getText('thHpReceivedFromPerson')+'</th>'+
         '<th>'+getText('thHpDate')+'</th>'+
         '<th>'+getText('thHpRecipient')+'</th>'+
         '<th>'+getText('thHpRegion')+'</th>'+
@@ -1721,15 +1982,19 @@ function buildHelpTableHtml(items){
             yearOpts = '<option value="'+h.year+'" selected>'+h.year+'</option>' + yearOpts;
         }
         const currencyOpts = buildCurrencyOptions(curr);
+        const isAuto = autoCurrencyEnabled && getRate(curr) !== null;
+        const bhdClass = isAuto ? 'hp-amount auto-filled' : 'hp-amount';
+        const foreignClass = isAuto ? 'hp-amount-foreign auto-filled' : 'hp-amount-foreign';
         html += '<tr class="help-row" data-id="'+h.id+'">'+
+            '<td><input type="checkbox" class="hp-received-person"'+(h.receivedFromPerson?' checked':'')+'/></td>'+
             '<td><input type="date" class="hp-date" value="'+escapeAttr(h.date)+'"/></td>'+
             '<td><input type="text" class="hp-recipient" value="'+escapeAttr(h.recipient)+'" placeholder="'+getText('recipient')+'"/></td>'+
             '<td><select class="hp-region">'+regionOpts+'</select></td>'+
             '<td><select class="hp-year">'+yearOpts+'</select></td>'+
-            '<td><input type="number" step="0.001" class="hp-amount" value="'+escapeAttr(h.amount)+'" placeholder="0.000"/></td>'+
+            '<td><input type="number" step="0.001" class="'+bhdClass+'" value="'+escapeAttr(h.amount)+'" placeholder="0.000"/></td>'+
             '<td><select class="hp-currency">'+currencyOpts+'</select></td>'+
             '<td><div class="currency-field">'+
-                '<input type="number" step="0.001" class="hp-amount-foreign" value="'+escapeAttr(h.amountForeign)+'" placeholder="0.00"/>'+
+                '<input type="number" step="0.001" class="'+foreignClass+'" value="'+escapeAttr(h.amountForeign)+'" placeholder="0.00"/>'+
                 '<span class="curr-suffix" title="'+escapeAttr(currLabel(curr))+'">'+escapeAttr(currBadge)+'</span>'+
             '</div></td>'+
             '<td><input type="checkbox" class="hp-received"'+(h.received?' checked':'')+'/></td>'+
@@ -1741,13 +2006,332 @@ function buildHelpTableHtml(items){
     return html;
 }
 
+/* ============================================================
+   ملخص مجموع التوزيع الزكاة و المساعدة
+   ============================================================ */
+
+function getCombinedSummaryData(){
+    const map = {};
+    const ensure = (name, region)=>{
+        const key = name + '||' + (region||'');
+        if(!map[key]){
+            map[key] = {name, region, zakatBHD:0, helpBHD:0, foreign:{}, zakatForeign:{}, helpForeign:{}};
+        }
+        return map[key];
+    };
+
+    recData.distributions.forEach(d=>{
+        const name = (d.recipient||'').trim();
+        if(!name) return;
+        const row = ensure(name, d.region);
+        row.zakatBHD += parseFloat(d.amount)||0;
+        const amtF = parseFloat(d.amountForeign)||0;
+        const curr = d.currency||'';
+        if(amtF > 0 && curr && curr !== 'BHD' && curr !== 'OTHER'){
+            row.zakatForeign[curr] = (row.zakatForeign[curr]||0) + amtF;
+            row.foreign[curr] = (row.foreign[curr]||0) + amtF;
+        }
+    });
+
+    recData.help.forEach(h=>{
+        const name = (h.recipient||'').trim();
+        if(!name) return;
+        const row = ensure(name, h.region);
+        row.helpBHD += parseFloat(h.amount)||0;
+        const amtF = parseFloat(h.amountForeign)||0;
+        const curr = h.currency||'';
+        if(amtF > 0 && curr && curr !== 'BHD' && curr !== 'OTHER'){
+            row.helpForeign[curr] = (row.helpForeign[curr]||0) + amtF;
+            row.foreign[curr] = (row.foreign[curr]||0) + amtF;
+        }
+    });
+
+    return Object.values(map).sort((a,b)=>{
+        const ta = a.zakatBHD + a.helpBHD;
+        const tb = b.zakatBHD + b.helpBHD;
+        return tb - ta;
+    });
+}
+
+function fmtForeignLines(foreignObj){
+    const keys = Object.keys(foreignObj);
+    if(!keys.length) return '<span style="color:var(--text-sub);">—</span>';
+    return keys.map(code=>{
+        const sym = currSymbol(code);
+        const amt = foreignObj[code];
+        const amtTxt = amt.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+        return '<div><span class="curr-sym">'+(sym?sym:code)+'</span> '+amtTxt+' <span class="curr-code">('+code+')</span></div>';
+    }).join('');
+}
+
+function renderCombinedSummary(){
+    const container = document.getElementById('combinedSummaryContainer');
+    if(!container) return;
+    const rows = getCombinedSummaryData();
+    if(!rows.length){
+        container.innerHTML = '<div style="color:var(--text-sub);padding:16px;text-align:center;background:var(--bg-body);border-radius:10px;font-size:calc(.88rem*var(--font-scale));">'+getText('combinedNoData')+'</div>';
+        return;
+    }
+
+    let totalZ = 0, totalH = 0;
+    const allForeignTotals = {};
+
+    let rowsHtml = '';
+    rows.forEach(r=>{
+        totalZ += r.zakatBHD;
+        totalH += r.helpBHD;
+        Object.keys(r.foreign).forEach(c=>{
+            allForeignTotals[c] = (allForeignTotals[c]||0) + r.foreign[c];
+        });
+        const regionTxt = r.region ? regionLabel(r.region) : '—';
+        rowsHtml += '<tr class="combined-row">'+
+            '<td style="font-weight:bold;color:var(--green);">'+escapeAttr(r.name)+'</td>'+
+            '<td style="font-weight:bold;color:var(--gold);">'+escapeAttr(regionTxt)+'</td>'+
+            '<td style="font-weight:bold;color:var(--green);">'+fmtMoneyC(r.zakatBHD)+'</td>'+
+            '<td style="font-weight:bold;color:var(--gold);">'+fmtMoneyC(r.helpBHD)+'</td>'+
+            '<td style="font-weight:bold;color:var(--danger);background:var(--bg-status-loading);">'+fmtMoneyC(r.zakatBHD+r.helpBHD)+'</td>'+
+            '<td class="foreign-cell">'+fmtForeignLines(r.zakatForeign)+'</td>'+
+            '<td class="foreign-cell">'+fmtForeignLines(r.helpForeign)+'</td>'+
+            '<td class="foreign-cell" style="background:var(--bg-status-loading);">'+fmtForeignLines(r.foreign)+'</td>'+
+            '</tr>';
+    });
+
+    const totalsForeignHtml = fmtForeignLines(allForeignTotals);
+
+    const html = '<div style="overflow-x:auto;"><table class="rec-table">'+
+        '<thead><tr>'+
+            '<th>'+getText('combinedRecipient')+'</th>'+
+            '<th>'+getText('combinedRegion')+'</th>'+
+            '<th>'+getText('combinedZakatBHD')+'</th>'+
+            '<th>'+getText('combinedHelpBHD')+'</th>'+
+            '<th>'+getText('combinedTotalBHD')+'</th>'+
+            '<th>'+getText('combinedZakatForeign')+'</th>'+
+            '<th>'+getText('combinedHelpForeign')+'</th>'+
+            '<th>'+getText('combinedForeignTotal')+'</th>'+
+        '</tr></thead>'+
+        '<tbody>'+rowsHtml+'</tbody>'+
+        '<tfoot><tr style="background:linear-gradient(135deg,var(--green) 0%,var(--green-hover) 100%);color:#fff;font-weight:bold;">'+
+            '<td style="color:#fff;">'+getText('combinedGrandTotal')+'</td>'+
+            '<td style="color:#fff;">—</td>'+
+            '<td style="color:#d4a843;font-size:calc(1rem*var(--font-scale));">'+fmtMoneyC(totalZ)+'</td>'+
+            '<td style="color:#d4a843;font-size:calc(1rem*var(--font-scale));">'+fmtMoneyC(totalH)+'</td>'+
+            '<td style="color:#fff;font-size:calc(1.05rem*var(--font-scale));">'+fmtMoneyC(totalZ+totalH)+'</td>'+
+            '<td colspan="2" style="color:#fff;"></td>'+
+            '<td class="foreign-cell" style="color:#fff;background:rgba(0,0,0,.15);">'+totalsForeignHtml+'</td>'+
+        '</tr></tfoot>'+
+    '</table></div>';
+
+    container.innerHTML = html;
+}
+
+function buildCombinedSummaryReportHtml(){
+    const rows = getCombinedSummaryData();
+    const currency = getText('currency');
+    let totalZ = 0, totalH = 0;
+    const allForeignTotals = {};
+
+    const rowsHtml = rows.map(r=>{
+        totalZ += r.zakatBHD;
+        totalH += r.helpBHD;
+        Object.keys(r.foreign).forEach(c=>{
+            allForeignTotals[c] = (allForeignTotals[c]||0) + r.foreign[c];
+        });
+        const zF = Object.keys(r.zakatForeign).length
+            ? Object.keys(r.zakatForeign).map(c=>fmtForeign(r.zakatForeign[c], c)+' ('+c+')').join(' | ')
+            : '—';
+        const hF = Object.keys(r.helpForeign).length
+            ? Object.keys(r.helpForeign).map(c=>fmtForeign(r.helpForeign[c], c)+' ('+c+')').join(' | ')
+            : '—';
+        const aF = Object.keys(r.foreign).length
+            ? Object.keys(r.foreign).map(c=>fmtForeign(r.foreign[c], c)+' ('+c+')').join(' | ')
+            : '—';
+        const regionTxt = r.region ? regionLabel(r.region) : '—';
+        return '<tr class="row-dist">'+
+            '<td style="font-weight:bold;">'+escapeAttr(r.name)+'</td>'+
+            '<td>'+escapeAttr(regionTxt)+'</td>'+
+            '<td>'+fmtPdf(r.zakatBHD)+'</td>'+
+            '<td>'+fmtPdf(r.helpBHD)+'</td>'+
+            '<td style="color:#b8860b;font-weight:bold;">'+fmtPdf(r.zakatBHD+r.helpBHD)+'</td>'+
+            '<td style="font-size:9px;">'+escapeAttr(zF)+'</td>'+
+            '<td style="font-size:9px;">'+escapeAttr(hF)+'</td>'+
+            '<td style="font-size:9px;">'+escapeAttr(aF)+'</td>'+
+        '</tr>';
+    }).join('') || '<tr class="row-dist"><td colspan="8">لا توجد بيانات</td></tr>';
+
+    const totalForeignTxt = Object.keys(allForeignTotals).length
+        ? Object.keys(allForeignTotals).map(c=>fmtForeign(allForeignTotals[c], c)+' ('+c+')').join(' | ')
+        : '—';
+
+    const cards = [
+        { lbl:'إجمالي الزكاة الموزّعة (د.ب)', val:fmtPdf(totalZ)+' د.ب', color:'#2d4b2c' },
+        { lbl:'إجمالي المساعدة (د.ب)',       val:fmtPdf(totalH)+' د.ب', color:'#b8860b' },
+        { lbl:'المجموع الكلي (د.ب)',         val:fmtPdf(totalZ+totalH)+' د.ب', color:'#c62828' }
+    ];
+
+    return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>'+getText('combinedReportTitle')+'</title><style>'+REPORT_STYLES+'</style></head><body>'
+        + buildReportHead(getText('combinedReportTitle'))
+        + pdfInfo([
+            '<div><strong>التاريخ:</strong> '+new Date().toLocaleDateString('ar-BH')+'</div>',
+            '<div><strong>عدد المستفيدين:</strong> '+rows.length+'</div>'
+          ])
+        + pdfBrand()
+        + pdfSectionTitle('📋 ملخص مجموع التوزيع الزكاة و المساعدة')
+        + '<table><thead><tr>'+
+            '<th>المستفيد</th>'+
+            '<th>الدولة / الجهة</th>'+
+            '<th>الزكاة (د.ب)</th>'+
+            '<th>المساعدة (د.ب)</th>'+
+            '<th>المجموع الكلي (د.ب)</th>'+
+            '<th>عملات الزكاة الأجنبية</th>'+
+            '<th>عملات المساعدة الأجنبية</th>'+
+            '<th>إجمالي العملات الأجنبية</th>'+
+        '</tr></thead><tbody>'+rowsHtml+'</tbody>'+
+        '<tfoot><tr class="total-row">'+
+            '<td>'+getText('combinedGrandTotal')+'</td>'+
+            '<td>—</td>'+
+            '<td class="total-value">'+fmtPdf(totalZ)+'</td>'+
+            '<td class="total-value">'+fmtPdf(totalH)+'</td>'+
+            '<td class="total-value">'+fmtPdf(totalZ+totalH)+'</td>'+
+            '<td colspan="2"></td>'+
+            '<td style="font-size:9px;color:#d4a843;">'+escapeAttr(totalForeignTxt)+'</td>'+
+        '</tr></tfoot></table>'
+        + pdfSectionTitle('💰 الملخص')
+        + '<div class="summary-grid">'+cards.map(c=>pdfSummaryCard(c.lbl, c.val, c.color)).join('')+'</div>'
+        + pdfFooter()
+        + '</body></html>';
+}
+
+function printCombinedSummary(){
+    const rows = getCombinedSummaryData();
+    if(!rows.length){ alert(getText('combinedNoData')); return; }
+    printHtml(buildCombinedSummaryReportHtml());
+}
+
+function shareCombinedSummaryWhatsApp(){
+    const rows = getCombinedSummaryData();
+    if(!rows.length){ alert(getText('combinedNoData')); return; }
+    sharePdfViaWhatsApp(buildCombinedSummaryReportHtml(), 'zakat-combined-summary.pdf', 'ملخص مجموع التوزيع الزكاة و المساعدة');
+}
+
+function exportCombinedSummaryToExcel(){
+    if(typeof XLSX === 'undefined'){ alert('⚠️ مكتبة Excel غير محملة'); return; }
+    const rows = getCombinedSummaryData();
+    if(!rows.length){ alert(getText('combinedNoData')); return; }
+    syncFromDOM();
+
+    const usedCurrs = new Set();
+    rows.forEach(r=>{
+        Object.keys(r.foreign).forEach(c=>usedCurrs.add(c));
+    });
+    const currArr = Array.from(usedCurrs);
+
+    const headers = ['المستفيد','الدولة / الجهة','الزكاة (د.ب)','المساعدة (د.ب)','المجموع الكلي (د.ب)'];
+    const foreignHeaders = currArr.map(c=>currLabel(c)+' ('+c+')');
+    const allHeaders = headers.concat(foreignHeaders);
+
+    let totalZ = 0, totalH = 0;
+    const rowsData = rows.map(r=>{
+        totalZ += r.zakatBHD;
+        totalH += r.helpBHD;
+        const regionTxt = r.region ? regionLabel(r.region) : '—';
+        const row = [r.name, regionTxt, r.zakatBHD, r.helpBHD, r.zakatBHD + r.helpBHD];
+        currArr.forEach(c=>{
+            row.push(r.foreign[c]||0);
+        });
+        return row;
+    });
+
+    const COLS = allHeaders.length;
+    const ws = {};
+    const merges = [];
+    let R = 0;
+
+    const mkBd = (color, style)=>{
+        style = style || 'thin';
+        const c = { rgb:color };
+        return { top:{style,color:c}, bottom:{style,color:c}, left:{style,color:c}, right:{style,color:c} };
+    };
+    const mkSt = (o)=>{
+        o = o || {};
+        const st = {
+            font:{ name:'Arial', sz:o.sz||11, bold:!!o.bold, color:{ rgb:o.color||'1a1a1a' } },
+            alignment:{ horizontal:o.align||'center', vertical:'center', wrapText:true, readingOrder:2 },
+            border: o.border === null ? undefined : (o.border || mkBd('b8860b'))
+        };
+        if(o.bg) st.fill = { patternType:'solid', fgColor:{ rgb:o.bg } };
+        return st;
+    };
+    const setC = (r,c,v,style)=>{
+        if(c<0||c>=COLS) return;
+        const ref = XLSX.utils.encode_cell({r,c});
+        if(v===null||v===undefined||v===''){
+            ws[ref] = { t:'s', v:'', s:style };
+        } else if(typeof v==='number' && isFinite(v)){
+            ws[ref] = { t:'n', v, s:style, z:'0.00' };
+        } else {
+            ws[ref] = { t:'s', v:String(v), s:style };
+        }
+    };
+    const fillRow = (style)=>{ for(let c=0;c<COLS;c++) setC(R,c,'',style); };
+    const merge = (r1,c1,r2,c2)=>{ merges.push({ s:{r:r1,c:c1}, e:{r:r2,c:c2} }); };
+
+    setC(R,0,'ملخص مجموع التوزيع الزكاة و المساعدة — MUHARRAQI', mkSt({ bg:'2d4b2c', color:'FFFFFF', bold:true, sz:14, border:mkBd('2d4b2c','medium') }));
+    for(let c=1;c<COLS;c++) setC(R,c,'', mkSt({ bg:'2d4b2c', border:mkBd('2d4b2c','medium') }));
+    merge(R,0,R,COLS-1); R++;
+
+    setC(R,0,'التاريخ: '+new Date().toLocaleDateString('ar-BH'), mkSt({ bg:'fefcf9', color:'444', sz:10, border:mkBd('b8860b') }));
+    for(let c=1;c<COLS;c++) setC(R,c,'', mkSt({ bg:'fefcf9', border:mkBd('b8860b') }));
+    merge(R,0,R,COLS-1); R++;
+
+    fillRow(mkSt({ border:null })); R++;
+
+    allHeaders.forEach((h,i)=>{
+        setC(R,i,h, mkSt({ bg:'b8860b', color:'FFFFFF', bold:true, sz:11, border:mkBd('2d4b2c','medium') }));
+    });
+    R++;
+
+    rowsData.forEach((row,ri)=>{
+        row.forEach((v,i)=>{
+            setC(R,i, v, mkSt({ bg: ri%2?'f5f3f0':'fff8e1', sz:10, border:mkBd('b8860b') }));
+        });
+        R++;
+    });
+
+    const totalsRow = ['المجموع الكلي (د.ب)', '—', totalZ, totalH, totalZ + totalH];
+    currArr.forEach(c=>{
+        let sum = 0;
+        rows.forEach(r=>{ sum += r.foreign[c]||0; });
+        totalsRow.push(sum);
+    });
+    totalsRow.forEach((v,i)=>{
+        setC(R,i, v, mkSt({ bg:'2d4b2c', color:(i>=2&&i<=4)?'d4a843':'FFFFFF', bold:true, sz:11, border:mkBd('2d4b2c','medium') }));
+    });
+    R++;
+
+    ws['!ref'] = XLSX.utils.encode_range({ s:{r:0,c:0}, e:{r:R-1, c:COLS-1} });
+    ws['!merges'] = merges;
+    ws['!views'] = [{ RTL:true }];
+    ws['!cols'] = allHeaders.map((h,i)=>({ wch: i===0?24:(i===1?16:16) }));
+    ws['!rows'] = [{ hpt:28 }];
+
+    const wb = XLSX.utils.book_new();
+    wb.Workbook = { Views:[{RTL:true}] };
+    XLSX.utils.book_append_sheet(wb, ws, 'ملخص التوزيع والمساعدة');
+    const today = new Date().toISOString().slice(0,10);
+    try{
+        XLSX.writeFile(wb, 'zakat-combined-summary-'+today+'.xlsx', { bookType:'xlsx', cellStyles:true });
+        showToast('تم تصدير Excel بنجاح');
+    }catch(e){ console.error(e); alert('❌ فشل التصدير'); }
+}
+
 function refreshRecord(){
     renderNames(); renderCompactNames(); renderMetals(); renderGoldWearRec(); renderBanks(); renderInvestmentsRec();
-    renderDist(); renderHelp(); renderSummary(); renderPrintDropdown();
+    renderDist(); renderHelp(); renderSummary(); renderPrintDropdown(); renderCombinedSummary();
+    updateAutoCurrencyBtn();
 }
 
 /* ============================================================
-   PDF / Print — تصميم مطابق تماماً لثيم التطبيق
+   PDF / Print
    ============================================================ */
 
 const REPORT_STYLES = `
@@ -1893,7 +2477,6 @@ function buildFullReportHtml(nameId){
     }).join('');
     if(!invRows) invRows = '<tr class="row-inv"><td>—</td><td>—</td><td>—</td><td>0.00</td><td>0.00</td></tr>';
 
-    /* ===== تم تغيير ترتيب الأعمدة: المبلغ الأجنبي قبل العملة ===== */
     let distRows = dists.map(d=>{
         const curr = d.currency||'';
         const amtF = parseFloat(d.amountForeign)||0;
@@ -1941,15 +2524,14 @@ function buildFullReportHtml(nameId){
 
 function buildHelpReportHtml(){
     const list = recData.help || [];
-    /* ===== تم تغيير ترتيب الأعمدة: المبلغ الأجنبي قبل العملة ===== */
     const rows = list.map(h=>{
         const n = recData.names.find(x=>x.id===h.nameId);
         const amt = parseFloat(h.amount)||0;
         const amtF = parseFloat(h.amountForeign)||0;
         const curr = h.currency||'';
         const foreignTxt = amtF>0 ? fmtForeign(amtF, curr) : '—';
-        return '<tr class="row-help"><td>'+escapeAttr(n?n.name:'—')+'</td><td>'+escapeAttr(h.year||'')+'</td><td>'+escapeAttr(h.date||'—')+'</td><td>'+escapeAttr(h.recipient||'—')+'</td><td>'+regionLabel(h.region)+'</td><td>'+fmtPdf(amt)+'</td><td>'+escapeAttr(foreignTxt)+'</td><td>'+escapeAttr(curr||'—')+'</td><td>'+(h.received?'✅':'⏳')+'</td><td>'+escapeAttr(h.note||'—')+'</td></tr>';
-    }).join('') || '<tr class="row-help"><td colspan="10">لا توجد سجلات</td></tr>';
+        return '<tr class="row-help"><td>'+(h.receivedFromPerson?'✅':'❌')+'</td><td>'+escapeAttr(n?n.name:'—')+'</td><td>'+escapeAttr(h.year||'')+'</td><td>'+escapeAttr(h.date||'—')+'</td><td>'+escapeAttr(h.recipient||'—')+'</td><td>'+regionLabel(h.region)+'</td><td>'+fmtPdf(amt)+'</td><td>'+escapeAttr(foreignTxt)+'</td><td>'+escapeAttr(curr||'—')+'</td><td>'+(h.received?'✅':'⏳')+'</td><td>'+escapeAttr(h.note||'—')+'</td></tr>';
+    }).join('') || '<tr class="row-help"><td colspan="11">لا توجد سجلات</td></tr>';
     const total = list.reduce((s,h)=>s+(parseFloat(h.amount)||0),0);
     const recv = list.reduce((s,h)=>s+(h.received?(parseFloat(h.amount)||0):0),0);
 
@@ -1967,7 +2549,7 @@ function buildHelpReportHtml(){
           ])
         + pdfBrand()
         + pdfSectionTitle('💚 تفاصيل المساعدة')
-        + '<table><thead><tr><th>الشخص</th><th>السنة</th><th>التاريخ</th><th>المستفيد</th><th>الجهة</th><th>المبلغ (د.ب)</th><th>المبلغ الأجنبي</th><th>العملة</th><th>استلم؟</th><th>ملاحظات</th></tr></thead><tbody>'+rows+'</tbody><tfoot><tr class="total-row"><td colspan="5">المجموع (د.ب)</td><td class="total-value">'+fmtPdf(total)+'</td><td colspan="4"></td></tr></tfoot></table>'
+        + '<table><thead><tr><th>هل استلمت من الشخص؟</th><th>الشخص</th><th>السنة</th><th>التاريخ</th><th>المستفيد</th><th>الجهة</th><th>المبلغ (د.ب)</th><th>المبلغ الأجنبي</th><th>العملة</th><th>استلم؟</th><th>ملاحظات</th></tr></thead><tbody>'+rows+'</tbody><tfoot><tr class="total-row"><td colspan="6">المجموع (د.ب)</td><td class="total-value">'+fmtPdf(total)+'</td><td colspan="4"></td></tr></tfoot></table>'
         + pdfSectionTitle('💰 الملخص')
         + '<div class="summary-grid">'+cards.map(c=>pdfSummaryCard(c.lbl, c.val, c.color)).join('')+'</div>'
         + pdfFooter()
@@ -1998,18 +2580,17 @@ function buildHelpPersonReportHtml(nameId){
         const yLabel = yk==='noYear' ? getText('noYearLabel') : yk;
         const yTotal = yItems.reduce((s,h)=>s+(parseFloat(h.amount)||0),0);
         grandTotal += yTotal;
-        /* ===== ترتيب الأعمدة: المبلغ الأجنبي قبل العملة ===== */
         const rows = yItems.map(h=>{
             const amt = parseFloat(h.amount)||0;
             const amtF = parseFloat(h.amountForeign)||0;
             const curr = h.currency||'';
             if(h.received) grandRecv += amt;
             const foreignTxt = amtF>0 ? fmtForeign(amtF, curr) : '—';
-            return '<tr class="row-help"><td>'+escapeAttr(h.date||'—')+'</td><td>'+escapeAttr(h.recipient||'—')+'</td><td>'+regionLabel(h.region)+'</td><td>'+fmtPdf(amt)+'</td><td>'+escapeAttr(foreignTxt)+'</td><td>'+escapeAttr(curr||'—')+'</td><td>'+(h.received?'✅':'⏳')+'</td><td>'+escapeAttr(h.note||'—')+'</td></tr>';
-        }).join('') || '<tr class="row-help"><td colspan="8">لا توجد سجلات</td></tr>';
+            return '<tr class="row-help"><td>'+(h.receivedFromPerson?'✅':'❌')+'</td><td>'+escapeAttr(h.date||'—')+'</td><td>'+escapeAttr(h.recipient||'—')+'</td><td>'+regionLabel(h.region)+'</td><td>'+fmtPdf(amt)+'</td><td>'+escapeAttr(foreignTxt)+'</td><td>'+escapeAttr(curr||'—')+'</td><td>'+(h.received?'✅':'⏳')+'</td><td>'+escapeAttr(h.note||'—')+'</td></tr>';
+        }).join('') || '<tr class="row-help"><td colspan="9">لا توجد سجلات</td></tr>';
 
         return pdfSectionTitle('📅 سنة: '+yLabel+' — المجموع: '+fmtPdf(yTotal)+' د.ب')
-            + '<table><thead><tr><th>التاريخ</th><th>المستفيد</th><th>الجهة</th><th>المبلغ (د.ب)</th><th>المبلغ الأجنبي</th><th>العملة</th><th>استلم؟</th><th>ملاحظات</th></tr></thead><tbody>'+rows+'</tbody><tfoot><tr class="total-row"><td colspan="3">مجموع '+yLabel+' (د.ب)</td><td class="total-value">'+fmtPdf(yTotal)+'</td><td colspan="4"></td></tr></tfoot></table>';
+            + '<table><thead><tr><th>هل استلمت من الشخص؟</th><th>التاريخ</th><th>المستفيد</th><th>الجهة</th><th>المبلغ (د.ب)</th><th>المبلغ الأجنبي</th><th>العملة</th><th>استلم؟</th><th>ملاحظات</th></tr></thead><tbody>'+rows+'</tbody><tfoot><tr class="total-row"><td colspan="4">مجموع '+yLabel+' (د.ب)</td><td class="total-value">'+fmtPdf(yTotal)+'</td><td colspan="4"></td></tr></tfoot></table>';
     }).join('');
 
     const foreignByCurr = {};
@@ -2093,7 +2674,7 @@ async function shareWebsite(ev){
 }
 
 /* ============================================================
-   Excel Export — xlsx-js-style (بثيم التطبيق + ترتيب الأعمدة الجديد)
+   Excel Export
    ============================================================ */
 
 function syncFromDOM(){ try{ saveRecord(); }catch(e){} }
@@ -2461,7 +3042,6 @@ function exportToExcel(){
     totalRow('المجموع (د.ب)', {6:iTotal, 7:iZakat}, 5);
     spacer();
 
-    /* ===== ترتيب الأعمدة الجديد: المبلغ الأجنبي قبل العملة ===== */
     sectionTitle('🤲 توزيع الزكاة');
     headerRow(['الشخص','السنة','التاريخ','المستفيد','الجهة','المبلغ (د.ب)','المبلغ الأجنبي','العملة','استلم؟','ملاحظات'], C.hdrConv);
     let dTotal=0, dRecv=0;
@@ -2481,9 +3061,8 @@ function exportToExcel(){
     totalRow('المجموع (د.ب)', {5:dTotal, 8:'مستلم: ' + dRecv.toFixed(2)}, 4);
     spacer();
 
-    /* ===== ترتيب الأعمدة الجديد في المساعدة ===== */
     sectionTitle('💚 المساعدة');
-    headerRow(['الشخص','السنة','التاريخ','المستفيد','الجهة','المبلغ (د.ب)','المبلغ الأجنبي','العملة','استلم؟','ملاحظات'], C.hdrConv);
+    headerRow(['الشخص','السنة','هل استلمت من الشخص؟','التاريخ','المستفيد','المبلغ (د.ب)','المبلغ الأجنبي','العملة','استلم؟','ملاحظات'], C.hdrConv);
     let hTotal=0, hRecv=0;
     recData.help.forEach(h=>{
         const n = recData.names.find(x=>x.id===h.nameId);
@@ -2493,9 +3072,8 @@ function exportToExcel(){
         const amtF = parseFloat(h.amountForeign)||0;
         const foreignTxt = amtF > 0 ? fmtForeign(amtF, curr) : '—';
         dataRow([
-            n?n.name:'—', h.year||'', h.date||'', h.recipient||'—',
-            regionLabel(h.region), amt, foreignTxt, curr,
-            h.received?'✅':'⏳', h.note||'—'
+            n?n.name:'—', h.year||'', h.receivedFromPerson?'✅ نعم':'❌ لا', h.date||'', h.recipient||'—',
+            amt, foreignTxt, curr, h.received?'✅':'⏳', h.note||'—'
         ], C.helpRow);
     });
     totalRow('المجموع (د.ب)', {5:hTotal, 8:'مستلم: ' + hRecv.toFixed(2)}, 4);
@@ -2505,7 +3083,7 @@ function exportToExcel(){
     ws['!merges'] = merges;
     ws['!views']  = [{ RTL:true }];
     ws['!cols']   = [
-        {wch:20},{wch:10},{wch:22},{wch:10},{wch:14},
+        {wch:20},{wch:10},{wch:22},{wch:22},{wch:14},
         {wch:14},{wch:16},{wch:16},{wch:22},{wch:20}
     ];
     ws['!rows']   = [{ hpt:30 }];
@@ -2640,7 +3218,6 @@ function exportFullReportToExcel(){
     });
     if(!invRows.length) invRows.push(['—','—','—',0,0]);
 
-    /* ===== ترتيب الأعمدة: المبلغ الأجنبي قبل العملة ===== */
     const distRows = dists.map(d=>{
         const curr = d.currency||'';
         const amtF = parseFloat(d.amountForeign)||0;
@@ -2691,28 +3268,27 @@ function exportAllHelpToExcel(){
     if(typeof XLSX === 'undefined'){ alert('⚠️ مكتبة Excel غير محملة'); return; }
     syncFromDOM();
     const list = recData.help || [];
-    /* ===== ترتيب الأعمدة: المبلغ الأجنبي قبل العملة ===== */
     const rows = list.map(h=>{
         const n = recData.names.find(x=>x.id===h.nameId);
         const amtF = parseFloat(h.amountForeign)||0;
         const curr = h.currency||'';
         const foreignTxt = amtF>0 ? fmtForeign(amtF, curr) : '—';
-        return [n?n.name:'—', h.year||'', h.date||'—', h.recipient||'—', regionLabel(h.region), parseFloat(h.amount)||0, foreignTxt, curr, h.received?'✅':'⏳', h.note||'—'];
+        return [n?n.name:'—', h.year||'', h.receivedFromPerson?'✅ نعم':'❌ لا', h.date||'—', h.recipient||'—', regionLabel(h.region), parseFloat(h.amount)||0, foreignTxt, curr, h.received?'✅':'⏳', h.note||'—'];
     });
-    if(!rows.length) rows.push(['—','—','—','—','—',0,'—','—','—','—']);
+    if(!rows.length) rows.push(['—','—','—','—','—','—',0,'—','—','—','—']);
 
     const total = list.reduce((s,h)=>s+(parseFloat(h.amount)||0),0);
     const recv  = list.reduce((s,h)=>s+(h.received?(parseFloat(h.amount)||0):0),0);
 
     const ws = _buildReportSheet({
         title: 'تقرير المساعدة الشامل (بالدينار البحريني د.ب)',
-        numCols: 10,
+        numCols: 11,
         infoLine: 'التاريخ: '+new Date().toLocaleDateString('ar-BH')+'  |  عدد السجلات: '+list.length,
         sections: [{
             title: '💚 تفاصيل المساعدة',
-            headers: ['الشخص','السنة','التاريخ','المستفيد','الجهة','المبلغ (د.ب)','المبلغ الأجنبي','العملة','استلم؟','ملاحظات'],
+            headers: ['الشخص','السنة','هل استلمت من الشخص؟','التاريخ','المستفيد','الجهة','المبلغ (د.ب)','المبلغ الأجنبي','العملة','استلم؟','ملاحظات'],
             rows: rows,
-            amountCol: 5, rowBg:'fef3c7', totalLabel:'المجموع (د.ب)'
+            amountCol: 6, rowBg:'fef3c7', totalLabel:'المجموع (د.ب)'
         }],
         summaryCards: [
             { label:'عدد السجلات', value:list.length, color:'b8860b' },
@@ -2757,19 +3333,18 @@ function exportHelpPersonToExcel(nameId){
         const yLabel = yk==='noYear' ? 'بدون سنة' : yk;
         const yTotal = yItems.reduce((s,h)=>s+(parseFloat(h.amount)||0),0);
         grandTotal += yTotal;
-        /* ===== ترتيب الأعمدة: المبلغ الأجنبي قبل العملة ===== */
         const rows = yItems.map(h=>{
             const amtF = parseFloat(h.amountForeign)||0;
             const curr = h.currency||'';
             if(h.received) grandRecv += parseFloat(h.amount)||0;
             const foreignTxt = amtF>0 ? fmtForeign(amtF, curr) : '—';
-            return [h.date||'—', h.recipient||'—', regionLabel(h.region), parseFloat(h.amount)||0, foreignTxt, curr, h.received?'✅':'⏳', h.note||'—'];
+            return [h.receivedFromPerson?'✅ نعم':'❌ لا', h.date||'—', h.recipient||'—', regionLabel(h.region), parseFloat(h.amount)||0, foreignTxt, curr, h.received?'✅':'⏳', h.note||'—'];
         });
         return {
             title: '📅 سنة: '+yLabel+'  —  المجموع: '+yTotal.toFixed(2)+' د.ب',
-            headers: ['التاريخ','المستفيد','الجهة','المبلغ (د.ب)','المبلغ الأجنبي','العملة','استلم؟','ملاحظات'],
+            headers: ['هل استلمت من الشخص؟','التاريخ','المستفيد','الجهة','المبلغ (د.ب)','المبلغ الأجنبي','العملة','استلم؟','ملاحظات'],
             rows: rows,
-            amountCol: 3, rowBg:'fef3c7', totalLabel:'مجموع '+yLabel+' (د.ب)'
+            amountCol: 4, rowBg:'fef3c7', totalLabel:'مجموع '+yLabel+' (د.ب)'
         };
     });
 
@@ -2797,7 +3372,7 @@ function exportHelpPersonToExcel(nameId){
 
     const ws = _buildReportSheet({
         title: 'تقرير المساعدة (بالدينار البحريني د.ب) — ' + (n.name||'—'),
-        numCols: 8,
+        numCols: 9,
         infoLine: 'الاسم: '+(n.name||'—')+'  |  عدد المستفيدين: '+items.length
                 + '  |  التاريخ: '+new Date().toLocaleDateString('ar-BH'),
         sections: sections,
@@ -2829,7 +3404,7 @@ function loadRecord(){
                 recData.banks = (Array.isArray(d.banks)?d.banks:[]).map(x=>({...x, hawlStart:x.hawlStart||'', hawlEnd:x.hawlEnd||''}));
                 recData.investments = (Array.isArray(d.investments)?d.investments:[]).map(x=>({...x, hawlStart:x.hawlStart||'', hawlEnd:x.hawlEnd||'', name:x.name||'', value:x.value||''}));
                 recData.distributions = (Array.isArray(d.distributions)?d.distributions:[]).map(x=>({...x, year:x.year||'', currency:x.currency||'INR', amountForeign:x.amountForeign||''}));
-                recData.help = (Array.isArray(d.help)?d.help:[]).map(x=>({...x, year:x.year||'', currency:x.currency||'INR', amountForeign:x.amountForeign||''}));
+                recData.help = (Array.isArray(d.help)?d.help:[]).map(x=>({...x, year:x.year||'', currency:x.currency||'INR', amountForeign:x.amountForeign||'', receivedFromPerson: !!x.receivedFromPerson}));
                 recData.seq = d.seq || 1;
                 loaded = true;
             }
@@ -3114,13 +3689,44 @@ function renderNames(){
             const d = recData.distributions.find(x=>x.id===Number(tr.dataset.id)); if(!d) return;
             const t = ev.target;
             if(t.classList.contains('ds-date')){ d.date = t.value; saveRecord(); }
-            else if(t.classList.contains('ds-recipient')){ d.recipient = t.value; saveRecord(); }
-            else if(t.classList.contains('ds-region')){ d.region = t.value; saveRecord(); }
-            else if(t.classList.contains('ds-amount')){ d.amount = t.value; saveRecord(); }
-            else if(t.classList.contains('ds-amount-foreign')){ d.amountForeign = t.value; saveRecord(); }
+            else if(t.classList.contains('ds-recipient')){ d.recipient = t.value; saveRecord(); renderCombinedSummary(); }
+            else if(t.classList.contains('ds-region')){ d.region = t.value; saveRecord(); renderCombinedSummary(); }
+            else if(t.classList.contains('ds-amount')){
+                d.amount = t.value;
+                if(autoCurrencyEnabled){
+                    const curr = d.currency || DEFAULT_CURRENCY;
+                    const conv = autoConvertFromBHD(t.value, curr);
+                    if(conv !== null){
+                        d.amountForeign = conv;
+                        const fi = tr.querySelector('.ds-amount-foreign');
+                        if(fi && fi !== t){ fi.value = conv; }
+                    }
+                }
+                saveRecord(); renderCombinedSummary();
+            }
+            else if(t.classList.contains('ds-amount-foreign')){
+                d.amountForeign = t.value;
+                if(autoCurrencyEnabled){
+                    const curr = d.currency || DEFAULT_CURRENCY;
+                    const conv = autoConvertFromForeign(t.value, curr);
+                    if(conv !== null){
+                        d.amount = conv;
+                        const ai = tr.querySelector('.ds-amount');
+                        if(ai && ai !== t){ ai.value = conv; }
+                    }
+                }
+                saveRecord(); renderCombinedSummary();
+            }
             else if(t.classList.contains('ds-received')){ d.received = t.checked; saveRecord(); }
             else if(t.classList.contains('ds-note')){ d.note = t.value; saveRecord(); }
-            else if(t.classList.contains('ds-currency')){ d.currency = t.value; saveRecord(); renderDist(); return; }
+            else if(t.classList.contains('ds-currency')){
+                d.currency = t.value;
+                if(autoCurrencyEnabled){
+                    const conv = autoConvertFromForeign(d.amountForeign, t.value);
+                    if(conv !== null) d.amount = conv;
+                }
+                saveRecord(); renderDist(); return;
+            }
             else if(t.classList.contains('ds-year')){ d.year = t.value; saveRecord(); renderDist(); return; }
         };
         dgc.addEventListener('input', h); dgc.addEventListener('change', h);
@@ -3132,22 +3738,67 @@ function renderNames(){
             const x = recData.help.find(y=>y.id===Number(tr.dataset.id)); if(!x) return;
             const t = ev.target;
             if(t.classList.contains('hp-date')){ x.date = t.value; saveRecord(); }
-            else if(t.classList.contains('hp-recipient')){ x.recipient = t.value; saveRecord(); }
-            else if(t.classList.contains('hp-region')){ x.region = t.value; saveRecord(); }
-            else if(t.classList.contains('hp-amount')){ x.amount = t.value; saveRecord(); }
-            else if(t.classList.contains('hp-amount-foreign')){ x.amountForeign = t.value; saveRecord(); }
+            else if(t.classList.contains('hp-recipient')){ x.recipient = t.value; saveRecord(); renderCombinedSummary(); }
+            else if(t.classList.contains('hp-region')){ x.region = t.value; saveRecord(); renderCombinedSummary(); }
+            else if(t.classList.contains('hp-received-person')){ x.receivedFromPerson = t.checked; saveRecord(); }
+            else if(t.classList.contains('hp-amount')){
+                x.amount = t.value;
+                if(autoCurrencyEnabled){
+                    const curr = x.currency || DEFAULT_CURRENCY;
+                    const conv = autoConvertFromBHD(t.value, curr);
+                    if(conv !== null){
+                        x.amountForeign = conv;
+                        const fi = tr.querySelector('.hp-amount-foreign');
+                        if(fi && fi !== t){ fi.value = conv; }
+                    }
+                }
+                saveRecord(); renderCombinedSummary();
+            }
+            else if(t.classList.contains('hp-amount-foreign')){
+                x.amountForeign = t.value;
+                if(autoCurrencyEnabled){
+                    const curr = x.currency || DEFAULT_CURRENCY;
+                    const conv = autoConvertFromForeign(t.value, curr);
+                    if(conv !== null){
+                        x.amount = conv;
+                        const ai = tr.querySelector('.hp-amount');
+                        if(ai && ai !== t){ ai.value = conv; }
+                    }
+                }
+                saveRecord(); renderCombinedSummary();
+            }
             else if(t.classList.contains('hp-received')){ x.received = t.checked; saveRecord(); }
             else if(t.classList.contains('hp-note')){ x.note = t.value; saveRecord(); }
-            else if(t.classList.contains('hp-currency')){ x.currency = t.value; saveRecord(); renderHelp(); return; }
+            else if(t.classList.contains('hp-currency')){
+                x.currency = t.value;
+                if(autoCurrencyEnabled){
+                    const conv = autoConvertFromForeign(x.amountForeign, t.value);
+                    if(conv !== null) x.amount = conv;
+                }
+                saveRecord(); renderHelp(); return;
+            }
             else if(t.classList.contains('hp-year')){ x.year = t.value; saveRecord(); renderHelp(); return; }
         };
         hgc.addEventListener('input', h); hgc.addEventListener('change', h);
     }
 })();
 
-window.onload = function(){
+window.onload = async function(){
     try{ const s = localStorage.getItem('zakatSilverEqEnabled'); if(s!==null){ silverEqEnabled = s==='1'; } }catch(e){}
+    try{
+        const s = localStorage.getItem('zakatAutoCurrency');
+        if(s === '1'){
+            const ok = loadCachedExchangeRates();
+            if(ok){
+                autoCurrencyEnabled = true;
+            } else {
+                const fetched = await fetchExchangeRates();
+                autoCurrencyEnabled = fetched;
+            }
+        }
+    }catch(e){}
     loadRecord();
+    updateAutoCurrencyBtn();
     fetchGoldPrices();
 };
 
@@ -3245,7 +3896,7 @@ function importAllData(ev){
                     banks: Array.isArray(data.record.banks)?data.record.banks:[],
                     investments: Array.isArray(data.record.investments)?data.record.investments:[],
                     distributions: (Array.isArray(data.record.distributions)?data.record.distributions:[]).map(x=>({...x, currency:x.currency||'INR', amountForeign:x.amountForeign||''})),
-                    help: (Array.isArray(data.record.help)?data.record.help:[]).map(x=>({...x, currency:x.currency||'INR', amountForeign:x.amountForeign||''})),
+                    help: (Array.isArray(data.record.help)?data.record.help:[]).map(x=>({...x, currency:x.currency||'INR', amountForeign:x.amountForeign||'', receivedFromPerson: !!x.receivedFromPerson})),
                     seq: data.record.seq || 1
                 };
                 saveRecord();
@@ -3277,12 +3928,15 @@ function applyLanguage(){
     setH('recTitleSummary','<i class="fas fa-file-invoice-dollar"></i> '+t.recTitleSummary);
     setH('recTitleDist','<i class="fas fa-hand-holding-heart"></i> '+t.recTitleDist);
     setH('recTitleHelp','<i class="fas fa-hand-holding-heart"></i> '+t.recTitleHelp);
+    setH('recTitleCombined','<i class="fas fa-calculator"></i> '+t.recTitleCombined);
+    set('btnPrintCombined',t.btnPrintCombined); set('btnShareCombined',t.btnShareCombined);
+    const nc = document.getElementById('noteCombined'); if(nc) nc.innerHTML = t.noteCombined;
     set('btnPrintHelp',t.btnPrintHelp);
     set('btnShareDist',t.btnShareDist); set('btnShareHelp',t.btnShareHelp);
     set('lblHelpPayer',t.lblHelpPayer); set('lblHelpYear',t.lblHelpYear);
     set('btnAddHelp',t.btnAddHelp);
     set('lblDistPerson',t.lblDistPerson); set('lblDistYear',t.lblDistYear);
-    set('thHpDate',t.thHpDate); set('thHpRecipient',t.thHpRecipient); set('thHpRegion',t.thHpRegion); set('thHpAmount',t.thHpAmount); set('thHpReceived',t.thHpReceived); set('thHpNote',t.thHpNote);
+    set('thHpDate',t.thHpDate); set('thHpReceivedFromPerson',t.thHpReceivedFromPerson); set('thHpRecipient',t.thHpRecipient); set('thHpRegion',t.thHpRegion); set('thHpAmount',t.thHpAmount); set('thHpReceived',t.thHpReceived); set('thHpNote',t.thHpNote);
     set('thMtHawl',t.thMtHawl); set('thMtPerson',t.thMtPerson); set('thMtYear',t.thMtYear); set('thMtType',t.thMtType); set('thMtCarat',t.thMtCarat);
     set('thMtWeight',t.thMtWeight); set('thMtPrice',t.thMtPrice); set('thMtTotal',t.thMtTotal); set('thMtZakat',t.thMtZakat); set('tfMtTotal',t.tfMtTotal); set('thMtNisab',t.thMtNisab);
     set('thGwHawl',t.thGwHawl); set('thGwPerson',t.thGwPerson); set('thGwYear',t.thGwYear); set('thGwCarat',t.thGwCarat);
@@ -3300,8 +3954,10 @@ function applyLanguage(){
     const nmmH = document.getElementById('nmmHint'); if(nmmH) nmmH.textContent = t.nmmHint;
     const nmmD = document.getElementById('nmmDoneText'); if(nmmD) nmmD.textContent = t.nmmDoneText;
     const ssb = document.getElementById('shareSiteBtnText'); if(ssb) ssb.textContent = t.shareSiteBtnText;
+    const acl = document.getElementById('autoCurrencyLabel'); if(acl) acl.textContent = t.autoCurrencyLabel;
     document.dir = currentLang==='ar'?'rtl':'ltr';
     document.documentElement.lang = currentLang;
+    updateAutoCurrencyBtn();
     refreshRecord();
 }
 window.applyLanguage = applyLanguage;
@@ -3379,6 +4035,15 @@ window.showToast = showToast;
 window.exportFullReportToExcel = exportFullReportToExcel;
 window.exportAllHelpToExcel = exportAllHelpToExcel;
 window.exportHelpPersonToExcel = exportHelpPersonToExcel;
+
+window.renderCombinedSummary = renderCombinedSummary;
+window.printCombinedSummary = printCombinedSummary;
+window.shareCombinedSummaryWhatsApp = shareCombinedSummaryWhatsApp;
+window.exportCombinedSummaryToExcel = exportCombinedSummaryToExcel;
+
+window.toggleAutoCurrency = toggleAutoCurrency;
+window.updateAutoCurrencyBtn = updateAutoCurrencyBtn;
+window.applyAutoConversionToAllRows = applyAutoConversionToAllRows;
 </script>
 </body>
 </html>
