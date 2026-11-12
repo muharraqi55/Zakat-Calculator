@@ -212,9 +212,117 @@ input:focus,select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 
     .person-actions{width:100%;justify-content:flex-start}
     .currency-field .curr-suffix{min-width:44px;font-size:calc(.68rem*var(--font-scale))}
 }
+
+/* ============================================================
+   🆕 شاشة طلب التدوير والوضع الأفقي
+   ============================================================ */
+.rotate-prompt {
+  display: none; position: fixed; inset: 0; z-index: 99999;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #4c1d95 100%);
+  color: #fff; flex-direction: column; align-items: center; justify-content: center;
+  padding: 24px; text-align: center; gap: 18px; font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+.rotate-prompt .rp-icon {
+  width: 100px; height: 100px; border-radius: 24px; background: rgba(255,255,255,.12);
+  border: 2px solid rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; font-size: 56px;
+  animation: rotatePhone 2.6s ease-in-out infinite; box-shadow: 0 15px 40px rgba(0,0,0,.35);
+}
+@keyframes rotatePhone { 0%, 25% { transform: rotate(0); } 55%, 100% { transform: rotate(90deg); } }
+.rotate-prompt h2 { margin: 0; font-size: 22px; font-weight: 900; max-width: 340px; line-height: 1.4; }
+.rotate-prompt p { margin: 0; font-size: 14px; color: #cbd5e1; max-width: 340px; line-height: 1.7; }
+.rotate-prompt .rp-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; width: 100%; max-width: 300px; }
+.rotate-prompt .rp-btn { padding: 13px 20px; border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 700; font-family: inherit; transition: .2s; border: 0; }
+.rotate-prompt .rp-auto { background: linear-gradient(135deg, #0ea5e9, #14b8a6); color: #fff; box-shadow: 0 8px 24px rgba(14,165,233,.45); }
+.rotate-prompt .rp-auto:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(14,165,233,.6); }
+.rotate-prompt .rp-skip { background: rgba(255,255,255,.15); color: #fff; border: 1.5px solid rgba(255,255,255,.3); }
+.rotate-prompt .rp-skip:hover { background: rgba(255,255,255,.25); }
+
+@media screen and (max-width: 932px) and (orientation: portrait) {
+  body:not(.rotate-skipped) .rotate-prompt { display: flex; }
+}
+
+/* زر التبديل العائم - يظهر دائماً على الهاتف */
+.landscape-fab {
+  display: none; position: fixed; bottom: 20px; left: 20px; z-index: 99999;
+  padding: 12px 20px; background: linear-gradient(135deg, #0ea5e9, #14b8a6);
+  color: #fff; border: 0; border-radius: 999px; box-shadow: 0 8px 24px rgba(14,165,233,.55), 0 0 0 4px rgba(14,165,233,.15);
+  font-family: inherit; font-weight: 800; font-size: 14px; cursor: pointer; align-items: center; gap: 8px;
+  animation: pulseFab 2s infinite;
+}
+.landscape-fab .lf-icon { font-size: 18px; line-height: 1; }
+@keyframes pulseFab {
+  0%, 100% { box-shadow: 0 8px 24px rgba(14,165,233,.55), 0 0 0 4px rgba(14,165,233,.15); }
+  50% { box-shadow: 0 8px 24px rgba(14,165,233,.55), 0 0 0 10px rgba(14,165,233,.05); }
+}
+
+/* إظهار الزر على الهاتف دائماً */
+@media screen and (max-width: 932px) {
+  .landscape-fab { display: inline-flex; }
+}
+
+/* في الوضع الأفقي، تكبير الزر قليلاً ليكون سهل الوصول */
+@media screen and (max-width: 932px) and (orientation: landscape) {
+  .rotate-prompt { display: none !important; }
+  .landscape-fab { 
+    display: inline-flex !important; 
+    bottom: 15px; 
+    left: 15px; 
+    padding: 10px 16px; 
+    font-size: 13px; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: none;
+  }
+  body { padding: 6px; font-size: 14px; }
+  .container { padding: 12px 14px; border-radius: 16px; max-width: 100%; }
+  .header-tools { flex-direction: row; flex-wrap: wrap; justify-content: center; padding-bottom: 5px; margin-bottom: 10px; }
+  .tools-group { justify-content: center; gap: 4px; }
+  .tools-group button, .font-btn { padding: 4px 8px; font-size: 0.75rem; }
+  .main-title h1 { font-size: 1.4rem; margin: 0; }
+  .main-title { padding: 4px 0 8px; margin-bottom: 8px; }
+  .section { padding: 10px; margin-bottom: 10px; }
+  .accordion-header { padding: 8px 12px; }
+  .accordion-header h2 { font-size: 1rem; }
+  .rec-summary-grid { flex-wrap: nowrap; gap: 5px; margin-bottom: 10px; }
+  .rec-card { padding: 6px; }
+  .rec-card .val { font-size: 1rem; }
+  .rec-card .lbl { font-size: 0.7rem; }
+  .rec-table th, .rec-table td { padding: 4px; font-size: 0.75rem; }
+  .rec-table input, .rec-table select { padding: 4px; font-size: 0.75rem; }
+  .add-btn, .btn { padding: 6px 12px; font-size: 0.8rem; }
+  .btn-manage-names { padding: 6px 12px; font-size: 0.8rem; }
+  .names-manage-modal .nmm-box { padding: 15px; max-height: 95vh; }
+  .footer { margin-top: 10px; padding-top: 10px; }
+  .footer .brand { font-size: 0.9rem; }
+  .footer .rights { font-size: 0.7rem; }
+  .compact-names-display { gap: 4px; margin-top: 5px; padding: 4px; }
+  .compact-name-chip { padding: 4px 8px; font-size: 0.75rem; }
+  .year-row-collapsible { padding: 6px 10px; margin-bottom: 4px; }
+  .year-row-collapsible .year-title { font-size: 0.85rem; }
+  .year-row-collapsible .year-total-mini { font-size: 0.75rem; padding: 2px 8px; }
+  .add-bar { padding: 6px; margin-bottom: 8px; gap: 6px; }
+  .add-bar .field { flex: 1 1 auto !important; max-width: 100% !important; min-width: 120px !important; }
+  .help-modal .help-content { padding: 15px; }
+}
 </style>
 </head>
 <body>
+
+<!-- شاشة طلب التدوير -->
+<div class="rotate-prompt" id="rotatePrompt">
+  <div class="rp-icon">📱</div>
+  <h2 id="rpTitle">للحصول على أفضل تجربة، قم بتدوير جهازك</h2>
+  <p id="rpMessage">سيتم عرض جميع الأعمدة والبيانات بوضوح أكبر عند استخدام الوضع الأفقي (Landscape).</p>
+  <div class="rp-actions">
+    <button class="rp-btn rp-auto" id="rpAuto" type="button">🔄 تحويل تلقائي للوضع الأفقي</button>
+    <button class="rp-btn rp-skip" id="rpSkip" type="button">متابعة على أي حال (وضع رأسي)</button>
+  </div>
+</div>
+
+<button class="landscape-fab" id="btnLandscape" type="button">
+  <span class="lf-icon">🔄</span>
+  <span class="lf-text">وضع أفقي</span>
+</button>
+
 <div class="container">
 
 <div class="main-title">
@@ -4114,6 +4222,20 @@ function applyLanguage(){
     const nmmD = document.getElementById('nmmDoneText'); if(nmmD) nmmD.textContent = t.nmmDoneText;
     const ssb = document.getElementById('shareSiteBtnText'); if(ssb) ssb.textContent = t.shareSiteBtnText;
     const acl = document.getElementById('autoCurrencyLabel'); if(acl) acl.textContent = t.autoCurrencyLabel;
+    
+    // تحديث نصوص شاشة التدوير والزر العائم
+    const rpTitle = document.getElementById('rpTitle');
+    if(rpTitle) rpTitle.textContent = currentLang==='ar'?'للحصول على أفضل تجربة، قم بتدوير جهازك':'For the best experience, rotate your device';
+    const rpMessage = document.getElementById('rpMessage');
+    if(rpMessage) rpMessage.textContent = currentLang==='ar'?'سيتم عرض جميع الأعمدة والبيانات بوضوح أكبر عند استخدام الوضع الأفقي (Landscape).':'All columns and data will be displayed clearly in landscape mode.';
+    const rpAuto = document.getElementById('rpAuto');
+    if(rpAuto) rpAuto.textContent = currentLang==='ar'?'🔄 تحويل تلقائي للوضع الأفقي':'🔄 Auto Landscape Mode';
+    const rpSkip = document.getElementById('rpSkip');
+    if(rpSkip) rpSkip.textContent = currentLang==='ar'?'متابعة على أي حال (وضع رأسي)':'Continue anyway (Portrait)';
+    
+    // تحديث الزر العائم حسب الاتجاه الحالي
+    updateFabUI();
+
     document.dir = currentLang==='ar'?'rtl':'ltr';
     document.documentElement.lang = currentLang;
     updateAutoCurrencyBtn();
@@ -4203,6 +4325,81 @@ window.exportCombinedSummaryToExcel = exportCombinedSummaryToExcel;
 window.toggleAutoCurrency = toggleAutoCurrency;
 window.updateAutoCurrencyBtn = updateAutoCurrencyBtn;
 window.applyAutoConversionToAllRows = applyAutoConversionToAllRows;
+
+// ========== كود الوضع الأفقي ==========
+async function toggleOrientation() {
+  if (document.fullscreenElement) {
+    // العودة للوضع الرأسي
+    try { await document.exitFullscreen(); } catch(e) {}
+    if (screen.orientation && screen.orientation.unlock) {
+      try { screen.orientation.unlock(); } catch(e) {}
+    }
+  } else {
+    // التحويل للوضع الأفقي
+    try {
+      if (document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch(e) {}
+
+    try {
+      if (screen.orientation && screen.orientation.lock) {
+        await screen.orientation.lock('landscape');
+      }
+    } catch(e) {
+      console.log('Orientation lock rejected, but fullscreen succeeded.');
+    }
+  }
+}
+
+function updateFabUI() {
+  const lfText = document.querySelector('.landscape-fab .lf-text');
+  const lfIcon = document.querySelector('.landscape-fab .lf-icon');
+  if (!lfText || !lfIcon) return;
+
+  // التحقق من اتجاه الشاشة الفعلي
+  const isLandscape = window.innerHeight < window.innerWidth;
+  
+  if (isLandscape) {
+    lfText.textContent = currentLang === 'ar' ? 'وضع رأسي' : 'Portrait';
+    lfIcon.textContent = '📱';
+  } else {
+    lfText.textContent = currentLang === 'ar' ? 'وضع أفقي' : 'Landscape';
+    lfIcon.textContent = '🔄';
+  }
+}
+
+// تحديث الزر عند تغير اتجاه الشاشة
+window.addEventListener('resize', updateFabUI);
+window.addEventListener('orientationchange', () => setTimeout(updateFabUI, 200));
+
+const rpAutoBtn = document.getElementById('rpAuto');
+if(rpAutoBtn) {
+  rpAutoBtn.addEventListener('click', toggleOrientation);
+}
+
+const rpSkipBtn = document.getElementById('rpSkip');
+if(rpSkipBtn) {
+  rpSkipBtn.addEventListener('click', () => {
+    document.body.classList.add('rotate-skipped');
+    try { localStorage.setItem('zakat_landscape_skipped', '1'); } catch(e){}
+  });
+}
+
+const btnLandscape = document.getElementById('btnLandscape');
+if(btnLandscape) {
+  btnLandscape.addEventListener('click', toggleOrientation);
+}
+
+try {
+  if (localStorage.getItem('zakat_landscape_skipped') === '1') {
+    document.body.classList.add('rotate-skipped');
+  }
+} catch(e) {}
+// ===========================================
+
+// استدعاء الدالة عند التحميل لضبط النص الصحيح
+updateFabUI();
 </script>
 </body>
 </html>
